@@ -89,6 +89,12 @@
     .process-connector{display:none}@media(min-width:768px){.process-connector{display:block}}
     @keyframes step-fade-in{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}.step-animate{animation:step-fade-in .6s ease forwards;opacity:0}.step-animate:nth-child(1){animation-delay:.1s}.step-animate:nth-child(2){animation-delay:.25s}.step-animate:nth-child(3){animation-delay:.4s}.step-animate:nth-child(4){animation-delay:.55s}
     .lang-badge{transition:all .2s ease}.lang-badge:hover{transform:scale(1.05)}
+    
+    /* Gördítősáv a modálhoz */
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
 </head>
 <body class="bg-white text-slate-800 antialiased">
@@ -467,14 +473,14 @@
           <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden">
             <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4 flex items-center justify-between">
               <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-dental-600 flex items-center justify-center text-white shadow-md shadow-dental-600/20"><svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg></div><div><h3 class="font-semibold text-slate-900" data-i18n="cal-title">Anna élő naptára</h3><p class="text-[11px] text-slate-400" data-i18n="cal-sub">Szabad időpontok valós időben</p></div></div>
-              <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap" data-i18n="cal-sync">Szinkron: <strong id="countdown-text" class="text-dental-600">10s</strong></span></div>
+              <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap" data-i18n="cal-sync">Szinkron: <strong id="countdown-text" class="text-dental-600">30s</strong></span></div>
             </div>
             <div class="relative" style="padding-top:75%;">
               <iframe id="calendar-iframe" class="absolute inset-0 w-full h-full border-0" src="https://calendar.google.com/calendar/embed?src=dental.ai.naptar%40gmail.com&ctz=Europe%2FBudapest&showTitle=0&showPrint=0&showCalendars=0&mode=WEEK" frameborder="0" scrolling="no" loading="lazy" title="Anna naptár — Dental-AI Klinika" allowfullscreen></iframe>
               <div id="calendar-placeholder" class="absolute inset-0 bg-white flex items-center justify-center"><div class="text-center"><div class="shimmer-placeholder w-64 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-48 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-56 h-3 rounded mx-auto mb-5"></div><svg class="w-8 h-8 mx-auto text-slate-300 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg><p class="text-xs text-slate-400 mt-2" data-i18n="cal-loading">Anna naptárának betöltése...</p></div></div>
             </div>
             <div class="bg-slate-50/60 border-t border-slate-200/60 px-6 py-3 flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-slate-500" data-i18n="cal-auto">Automatikus frissítés 15 másodpercenként</span></div>
+              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-slate-500" data-i18n="cal-auto">Automatikus frissítés 30 másodpercenként</span></div>
               <button onclick="refreshCalendar()" class="text-xs font-semibold text-dental-600 hover:text-dental-700 transition-colors flex items-center gap-1.5 bg-dental-50 hover:bg-dental-100 px-3 py-1.5 rounded-lg"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg data-i18n="cal-refresh">Frissítés most</button>
             </div>
           </div>
@@ -484,35 +490,49 @@
   </section>
 
   <!-- Legal/Consent Modal -->
-  <div id="consent-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300 bg-slate-900/60 backdrop-blur-sm">
-    <div id="consent-modal-content" class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 transform scale-95 translate-y-4 transition-all duration-300 border border-slate-200">
-      <div class="flex items-center gap-3 mb-5">
-        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        </div>
-        <h3 class="text-xl font-bold text-slate-900" data-i18n="modal-title">Adatkezelési és Jogi Nyilatkozat (Demo verzió)</h3>
-      </div>
-      <div class="text-sm text-slate-600 space-y-3 mb-6">
-        <p data-i18n="modal-p1">Mielőtt elindítaná a hívást, kérem, vegye figyelembe, hogy ez egy technológiai demonstráció.</p>
-        <ul class="list-disc pl-5 space-y-1.5 text-slate-500">
-          <li data-i18n="modal-li1" data-i18n-html="true"><strong>Kizárólag demo célok:</strong> Ez az oldal egy portfolió bemutató. Nem nyújtok valós egészségügyi szolgáltatást, és nem rögzítek valós időpontokat.</li>
-          <li data-i18n="modal-li2" data-i18n-html="true"><strong>Nincs valós adatkezelés:</strong> Kérjük, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.</li>
-          <li data-i18n="modal-li3" data-i18n-html="true"><strong>AI adatfeldolgozás:</strong> A hangalapú interakciót harmadik fél (ElevenLabs) technológiája biztosítja. A hangadatok ideiglenesen feldolgozásra kerülnek a válaszgenerálás érdekében.</li>
-          <li data-i18n="modal-li4" data-i18n-html="true"><strong>Felelősségkizárás:</strong> Semmilyen felelősséget nem vállalok a megadott adatokért vagy a mesterséges intelligencia által adott válaszokért. A tesztelést mindenki saját felelősségére végzi.</li>
-        </ul>
-      </div>
-      <label class="flex items-start gap-3 cursor-pointer mb-6 group">
-        <div class="relative flex items-start mt-0.5">
-          <input type="checkbox" id="consent-checkbox" class="peer sr-only">
-          <div class="w-5 h-5 rounded border-2 border-slate-300 bg-white peer-checked:bg-dental-600 peer-checked:border-dental-600 transition-colors flex items-center justify-center">
-            <svg class="w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+  <div id="consent-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-opacity duration-300 bg-slate-900/60 backdrop-blur-sm">
+    <div id="consent-modal-content" class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col transform scale-95 translate-y-4 transition-all duration-300 border border-slate-200">
+      
+      <div class="p-6 sm:p-8 flex flex-col h-full overflow-hidden">
+        
+        <!-- Header -->
+        <div class="flex items-start sm:items-center gap-3 mb-5 flex-shrink-0">
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
           </div>
+          <h3 class="text-xl font-bold text-slate-900 leading-tight pt-1 sm:pt-0" data-i18n="modal-title">Adatkezelési és Jogi Nyilatkozat (Demo verzió)</h3>
         </div>
-        <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors" data-i18n="modal-agree">Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.</span>
-      </label>
-      <div class="flex items-center gap-3 justify-end">
-        <button id="consent-cancel-btn" class="px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors" data-i18n="modal-cancel">Mégse</button>
-        <button id="consent-accept-btn" class="px-5 py-2.5 text-sm font-bold text-white bg-slate-300 rounded-xl pointer-events-none transition-all" data-i18n="modal-start">Hívás indítása</button>
+        
+        <!-- Scrollable Content -->
+        <div class="overflow-y-auto pr-2 flex-1 min-h-0 space-y-6 custom-scrollbar">
+          <div class="text-sm text-slate-600 space-y-3">
+            <p data-i18n="modal-p1">Mielőtt elindítaná a hívást, kérem, vegye figyelembe, hogy ez egy technológiai demonstráció.</p>
+            <ul class="list-disc pl-5 space-y-2 text-slate-500">
+              <li data-i18n="modal-li1" data-i18n-html="true"><strong>Kizárólag demo célok:</strong> Ez az oldal egy portfolió bemutató. Nem nyújtok valós egészségügyi szolgáltatást, és nem rögzítek valós időpontokat.</li>
+              <li data-i18n="modal-li2" data-i18n-html="true"><strong>Nincs valós adatkezelés:</strong> Kérjük, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.</li>
+              <li data-i18n="modal-li3" data-i18n-html="true"><strong>AI adatfeldolgozás:</strong> A hangalapú interakciót harmadik fél (ElevenLabs) technológiája biztosítja. A hangadatok ideiglenesen feldolgozásra kerülnek a válaszgenerálás érdekében.</li>
+              <li data-i18n="modal-li4" data-i18n-html="true"><strong>Felelősségkizárás:</strong> Semmilyen felelősséget nem vállalok a megadott adatokért vagy a mesterséges intelligencia által adott válaszokért. A tesztelést mindenki saját felelősségére végzi.</li>
+            </ul>
+          </div>
+          
+          <label class="flex items-start gap-3 cursor-pointer group pb-2">
+            <!-- flex-shrink-0 hozzáadva, hogy a checkbox sose nyomódjon össze -->
+            <div class="relative flex items-start mt-0.5 flex-shrink-0">
+              <input type="checkbox" id="consent-checkbox" class="peer sr-only">
+              <div class="w-6 h-6 rounded border-2 border-slate-300 bg-white peer-checked:bg-dental-600 peer-checked:border-dental-600 transition-colors flex items-center justify-center shadow-sm">
+                <svg class="w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              </div>
+            </div>
+            <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors leading-snug" data-i18n="modal-agree">Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.</span>
+          </label>
+        </div>
+
+        <!-- Footer Actions: Mobilon függőlegesen egymás alatt -->
+        <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 justify-end mt-6 flex-shrink-0 pt-4 border-t border-slate-100">
+          <button id="consent-cancel-btn" class="px-4 py-3 sm:py-2.5 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors bg-slate-100 hover:bg-slate-200 sm:bg-transparent sm:hover:bg-transparent rounded-xl" data-i18n="modal-cancel">Mégse</button>
+          <button id="consent-accept-btn" class="px-5 py-3 sm:py-2.5 text-sm font-bold text-white bg-slate-300 rounded-xl pointer-events-none transition-all" data-i18n="modal-start">Hívás indítása</button>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -548,7 +568,8 @@
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
   <script>
-    const REFRESH_INTERVAL=15;let countdown=REFRESH_INTERVAL;const calendarIframe=document.getElementById('calendar-iframe'),countdownText=document.getElementById('countdown-text'),countdownCircle=document.getElementById('countdown-circle'),placeholder=document.getElementById('calendar-placeholder');calendarIframe.addEventListener('load',()=>{if(placeholder)placeholder.style.display='none'});function refreshCalendar(){const src=calendarIframe.src.split('&_t=')[0];calendarIframe.src=src+'&_t='+Date.now();countdown=REFRESH_INTERVAL;updateCountdownUI()}function updateCountdownUI(){countdownText.textContent=countdown+'s';const offset=((REFRESH_INTERVAL-countdown)/REFRESH_INTERVAL)*88;countdownCircle.style.strokeDashoffset=offset}setInterval(()=>{countdown--;if(countdown<=0){refreshCalendar()}else{updateCountdownUI()}},1000);
+    // Itt módosult az időközt 30-ra
+    const REFRESH_INTERVAL=30;let countdown=REFRESH_INTERVAL;const calendarIframe=document.getElementById('calendar-iframe'),countdownText=document.getElementById('countdown-text'),countdownCircle=document.getElementById('countdown-circle'),placeholder=document.getElementById('calendar-placeholder');calendarIframe.addEventListener('load',()=>{if(placeholder)placeholder.style.display='none'});function refreshCalendar(){const src=calendarIframe.src.split('&_t=')[0];calendarIframe.src=src+'&_t='+Date.now();countdown=REFRESH_INTERVAL;updateCountdownUI()}function updateCountdownUI(){countdownText.textContent=countdown+'s';const offset=((REFRESH_INTERVAL-countdown)/REFRESH_INTERVAL)*88;countdownCircle.style.strokeDashoffset=offset}setInterval(()=>{countdown--;if(countdown<=0){refreshCalendar()}else{updateCountdownUI()}},1000);
     
     // --- Mobile Nav Logic ---
     const menuToggle = document.getElementById('menu-toggle');
@@ -744,7 +765,7 @@
         'cal-title': 'Anna élő naptára',
         'cal-sub': 'Szabad időpontok valós időben',
         'cal-sync': 'Szinkron:',
-        'cal-auto': 'Automatikus frissítés 15 másodpercenként',
+        'cal-auto': 'Automatikus frissítés 30 másodpercenként',
         'cal-refresh': 'Frissítés most',
         'cal-loading': 'Anna naptárának betöltése...',
         'footer-desc': 'Anna — a Dental-AI Klinika Senior Asszisztense. 0-24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.',
@@ -851,7 +872,7 @@
         'cal-title': 'Anna\'s live calendar',
         'cal-sub': 'Available slots in real time',
         'cal-sync': 'Sync:',
-        'cal-auto': 'Auto-refresh every 15 seconds',
+        'cal-auto': 'Auto-refresh every 30 seconds',
         'cal-refresh': 'Refresh now',
         'cal-loading': 'Loading Anna\'s calendar...',
         'footer-desc': 'Anna — the Dental-AI Clinic\'s Senior Assistant. 24/7 call handling, online booking, and automatic confirmation, so your practice always runs smoothly.',
@@ -958,7 +979,7 @@
         'cal-title': 'Annas Live-Kalender',
         'cal-sub': 'Freie Termine in Echtzeit',
         'cal-sync': 'Sync:',
-        'cal-auto': 'Automatische Aktualisierung alle 15 Sekunden',
+        'cal-auto': 'Automatische Aktualisierung alle 30 Sekunden',
         'cal-refresh': 'Jetzt aktualisieren',
         'cal-loading': 'Annas Kalender wird geladen...',
         'footer-desc': 'Anna — die Senior Assistentin der Dental-AI Klinik. 24/7 Anrufbearbeitung, Online-Buchung und automatische Bestätigung, damit Ihre Praxis immer reibungslos läuft.',
@@ -969,7 +990,7 @@
         'footer-gdpr': 'Haftungsausschluss: Dies ist eine Portfolio-Demo. Bitte geben Sie keine echten Daten an! Ich übernehme keine Haftung für KI-Antworten.',
         'footer-copy': '© 2026 Dental-AI Klinik. Alle Rechte vorbehalten. Betrieben von Anna AI.',
         'modal-title': 'Datenschutz & Rechtlicher Hinweis (Demo)',
-        'modal-p1': 'Bevor Sie den Anruf starten, beachten Sie bitte, dass dies eine Technologie-Demonstration ist.',
+        'modal-p1': 'Bevor Sie den Anruf starten, beachten Sie bitte, dass dies eine Technologie-Demonstration.',
         'modal-li1': '<strong>Nur zu Demo-Zwecken:</strong> Diese Seite ist ein Portfolio-Showcase. Ich biete keine echten medizinischen Dienstleistungen an und es werden keine echten Termine gebucht.',
         'modal-li2': '<strong>Keine echten Daten:</strong> Bitte teilen Sie während des Gesprächs <strong>keine echten persönlichen oder gesundheitlichen Daten</strong> mit! Verwenden Sie fiktive Daten zum Testen.',
         'modal-li3': '<strong>KI-Verarbeitung:</strong> Die Sprachinteraktion wird von einem Drittanbieter (ElevenLabs) bereitgestellt. Sprachdaten werden vorübergehend verarbeitet, um Antworten zu generieren.',
