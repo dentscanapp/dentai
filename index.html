@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
@@ -34,7 +33,41 @@
     @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
     .shimmer-placeholder{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:800px 100%;animation:shimmer 1.8s infinite}
     .tooth-icon{display:inline-block;width:32px;height:32px;vertical-align:middle}
-    .mobile-nav{transform:translateX(100%);transition:transform .3s ease;z-index:9999}.mobile-nav.open{transform:translateX(0)}.mobile-nav-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9998;backdrop-filter:blur(2px)}.mobile-nav-backdrop.open{display:block}
+    
+    /* Új mobil menü animációk és teljes képernyős beállítások */
+    body.menu-open { overflow: hidden; }
+    body.menu-open #header { background-color: #ffffff !important; backdrop-filter: none !important; border-bottom-color: transparent !important; }
+    
+    .hamburger-top, .hamburger-middle, .hamburger-bottom { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+    body.menu-open .hamburger-top { transform: translateY(8px) rotate(45deg); }
+    body.menu-open .hamburger-middle { opacity: 0; transform: translateX(10px); }
+    body.menu-open .hamburger-bottom { transform: translateY(-8px) rotate(-45deg); }
+    
+    #mobile-nav {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      background: #ffffff;
+      z-index: 40; /* A header (50) alatt marad, de a tartalom is fehér, így egybeforr */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-20px) scale(0.98);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      padding-top: 5rem;
+      padding-bottom: 2rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    #mobile-nav.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
     .phone-frame{position:relative;width:280px;height:580px;border-radius:40px;background:#0f172a;padding:12px;box-shadow:0 0 0 2px #334155,0 25px 60px -12px rgba(0,0,0,.4),0 0 80px rgba(59,130,246,.15)}
     .phone-screen{width:100%;height:100%;border-radius:30px;background:#fff;overflow:hidden;position:relative}
     .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#0f172a;border-radius:0 0 18px 18px;z-index:10}.phone-notch::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:50px;height:6px;border-radius:3px;background:#1e293b}
@@ -56,10 +89,81 @@
     .process-connector{display:none}@media(min-width:768px){.process-connector{display:block}}
     @keyframes step-fade-in{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}.step-animate{animation:step-fade-in .6s ease forwards;opacity:0}.step-animate:nth-child(1){animation-delay:.1s}.step-animate:nth-child(2){animation-delay:.25s}.step-animate:nth-child(3){animation-delay:.4s}.step-animate:nth-child(4){animation-delay:.55s}
     .lang-badge{transition:all .2s ease}.lang-badge:hover{transform:scale(1.05)}
+
+    /* === COOKIE BANNER === */
+    .cookie-banner{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:60;background:#ffffff;border:1px solid #e2e8f0;border-radius:1.25rem;box-shadow:0 20px 50px -12px rgba(15,23,42,.25);padding:1.25rem 1.5rem;max-width:42rem;margin-left:auto;margin-right:auto;transform:translateY(120%);transition:transform .5s cubic-bezier(.4,0,.2,1);opacity:0;pointer-events:none}
+    .cookie-banner.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    @media (min-width:768px){.cookie-banner{left:auto;right:1.5rem;bottom:1.5rem;max-width:28rem}}
+
+    /* === LEGAL MODAL === */
+    .legal-modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);z-index:80;display:none;align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity .25s ease}
+    .legal-modal-overlay.show{display:flex;opacity:1}
+    .legal-modal{background:#ffffff;border-radius:1.5rem;max-width:48rem;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);transform:scale(.96);transition:transform .25s ease;overflow:hidden}
+    .legal-modal-overlay.show .legal-modal{transform:scale(1)}
+    .legal-modal-header{padding:1.5rem 1.75rem 1rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-shrink:0}
+    .legal-modal-body{padding:1.5rem 1.75rem;overflow-y:auto;flex:1;line-height:1.7;color:#475569;font-size:.95rem}
+    .legal-modal-body h3{font-weight:700;color:#0f172a;font-size:1rem;margin-top:1.5rem;margin-bottom:.5rem}
+    .legal-modal-body h3:first-child{margin-top:0}
+    .legal-modal-body p{margin-bottom:.75rem}
+    .legal-modal-body ul{list-style:disc;padding-left:1.25rem;margin-bottom:.75rem}
+    .legal-modal-body strong{color:#0f172a;font-weight:600}
+    .legal-modal-body a{color:#2563eb;text-decoration:underline}
+    .legal-close{background:#f1f5f9;border:none;width:2rem;height:2rem;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;flex-shrink:0;transition:all .15s ease}
+    .legal-close:hover{background:#e2e8f0;color:#0f172a}
+
+    /* === VOICE CONSENT MODAL === */
+    .consent-modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:90;display:none;align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity .25s ease}
+    .consent-modal-overlay.show{display:flex;opacity:1}
+    .consent-modal{background:#ffffff;border-radius:1.5rem;max-width:32rem;width:100%;padding:2rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.4);transform:scale(.96);transition:transform .25s ease}
+    .consent-modal-overlay.show .consent-modal{transform:scale(1)}
+
+    /* === LIVE TRANSCRIPT === */
+    @keyframes transcript-slide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .transcript-panel{display:none;background:#ffffff;border:1px solid #e2e8f0;border-radius:1.25rem;box-shadow:0 10px 40px -10px rgba(15,23,42,.15);overflow:hidden;animation:transcript-slide .4s ease}
+    .transcript-panel.show{display:block}
+    .transcript-header{background:linear-gradient(90deg,#eff6ff,#ffffff);border-bottom:1px solid #f1f5f9;padding:.85rem 1.15rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .transcript-body{padding:1rem 1.15rem;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:.6rem}
+    .transcript-msg{animation:transcript-slide .35s ease;display:flex;gap:.6rem;align-items:flex-start}
+    .transcript-msg-avatar{width:1.75rem;height:1.75rem;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff}
+    .transcript-msg-anna .transcript-msg-avatar{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+    .transcript-msg-user .transcript-msg-avatar{background:#64748b}
+    .transcript-msg-text{background:#f8fafc;border:1px solid #f1f5f9;border-radius:.85rem;padding:.55rem .85rem;font-size:.85rem;color:#334155;line-height:1.5;flex:1}
+    .transcript-msg-anna .transcript-msg-text{background:#eff6ff;border-color:#dbeafe;color:#1e40af}
+    .transcript-typing{display:inline-flex;gap:3px;align-items:center;height:1rem}
+    .transcript-typing span{width:5px;height:5px;border-radius:50%;background:#94a3b8;animation:typing-dot 1.2s infinite}
+    .transcript-typing span:nth-child(1){animation-delay:0s}
+    .transcript-typing span:nth-child(2){animation-delay:.2s}
+    .transcript-typing span:nth-child(3){animation-delay:.4s}
+
+    /* === FAKE CALENDAR === */
+    .fcal-grid{display:grid;grid-template-columns:auto repeat(5,1fr);gap:1px;background:#f1f5f9;border-radius:.75rem;overflow:hidden;font-size:.75rem}
+    .fcal-cell{background:#ffffff;padding:.5rem .35rem;min-height:2.4rem;display:flex;align-items:center;justify-content:center;text-align:center;transition:all .15s ease;position:relative}
+    .fcal-cell-header{background:#f8fafc;font-weight:600;color:#0f172a;padding:.65rem .35rem;flex-direction:column;gap:.1rem;font-size:.7rem;line-height:1.2}
+    .fcal-cell-header .fcal-day-num{font-size:1.05rem;font-weight:700}
+    .fcal-cell-header.today{background:linear-gradient(135deg,#dbeafe,#eff6ff);color:#1e40af}
+    .fcal-cell-time{background:#f8fafc;color:#64748b;font-weight:600;font-size:.7rem;justify-content:flex-end;padding-right:.65rem}
+    .fcal-slot-free{cursor:pointer;color:#16a34a;font-weight:600;background:#f0fdf4}
+    .fcal-slot-free:hover{background:#dcfce7;color:#166534;transform:scale(1.02);z-index:1;box-shadow:0 2px 8px rgba(22,163,74,.15)}
+    .fcal-slot-busy{background:#fafafa;color:#cbd5e1;cursor:not-allowed}
+    .fcal-slot-busy::before{content:'×';font-size:.95rem;font-weight:700}
+    .fcal-slot-free::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;display:block}
+    .fcal-slot-mine{background:#fef3c7;color:#b45309;font-weight:700;cursor:default}
+    .fcal-slot-mine::before{content:'●';font-size:.65rem}
+    .fcal-legend{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;font-size:.7rem;color:#64748b;padding:.5rem 0}
+    .fcal-legend-dot{width:.65rem;height:.65rem;border-radius:50%;display:inline-block;margin-right:.35rem;vertical-align:middle}
+    .fcal-nav-btn{padding:.4rem .65rem;border-radius:.55rem;background:#f8fafc;border:1px solid #e2e8f0;color:#475569;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .15s ease}
+    .fcal-nav-btn:hover{background:#f1f5f9;color:#0f172a;border-color:#cbd5e1}
+    .fcal-nav-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+
+    /* Footer legal links */
+    .footer-legal-links{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;align-items:center;justify-content:center}
+    @media (min-width:640px){.footer-legal-links{justify-content:flex-start}}
+    .footer-legal-links button{background:none;border:none;color:#94a3b8;font-size:.8rem;cursor:pointer;padding:.25rem 0;transition:color .15s ease}
+    .footer-legal-links button:hover{color:#e2e8f0;text-decoration:underline}
   </style>
 </head>
 <body class="bg-white text-slate-800 antialiased">
-  <header id="header" class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 transition-shadow duration-300">
+  <header id="header" class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 lg:h-[72px]">
         <a href="#" class="flex items-center gap-2.5 group">
@@ -91,37 +195,57 @@
             <span data-i18n="hero-call">Beszéljen Annával</span>
           </button>
         </div>
-        <button id="menu-toggle" class="md:hidden p-2 -mr-2 text-slate-600 hover:text-slate-900" aria-label="Menü">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <!-- Animált Hamburger Menü Gomb -->
+        <button id="menu-toggle" class="md:hidden relative w-10 h-10 flex items-center justify-center text-slate-800 hover:text-slate-900 focus:outline-none -mr-2" aria-label="Menü">
+          <div class="relative w-6 h-[18px]">
+            <span class="hamburger-top absolute top-0 left-0 w-full h-[2px] bg-current rounded"></span>
+            <span class="hamburger-middle absolute top-1/2 -translate-y-1/2 left-0 w-full h-[2px] bg-current rounded"></span>
+            <span class="hamburger-bottom absolute bottom-0 left-0 w-full h-[2px] bg-current rounded"></span>
+          </div>
         </button>
       </div>
     </div>
-    <div id="mobile-nav" class="mobile-nav fixed inset-y-0 right-0 w-72 bg-white shadow-2xl z-50 md:hidden">
-      <div class="flex items-center justify-between px-5 h-16 border-b border-slate-100">
-        <span class="font-semibold text-slate-900" data-i18n="menu-label">Menü</span>
-        <button id="menu-close" class="p-2 -mr-2 text-slate-500 hover:text-slate-900" aria-label="Bezárás">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <nav class="flex flex-col gap-1 p-5">
-        <!-- Mobile language badges -->
-        <div class="flex items-center gap-1.5 px-4 py-2">
-          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-0.5 text-[10px] font-bold text-red-700" data-lang="hu">HU</span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-0.5 text-[10px] font-bold text-blue-700" data-lang="en">EN</span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-0.5 text-[10px] font-bold text-amber-700" data-lang="de">DE</span>
-        </div>
-        <div class="flex items-center gap-2 px-4 py-3">
-          <div class="pulse-dot flex-shrink-0"></div>
-          <span id="mobile-status-text" class="text-sm font-semibold text-emerald-700" data-i18n="mobile-available">Anna elérhető</span>
-        </div>
-        <button id="mobile-call-btn" class="mt-2 w-full text-center bg-dental-600 hover:bg-dental-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
-          Beszéljen Annával
-        </button>
-      </nav>
-    </div>
-    <div id="mobile-nav-backdrop" class="mobile-nav-backdrop md:hidden"></div>
   </header>
+
+  <!-- Teljes Képernyős Mobil Menü -->
+  <div id="mobile-nav" class="md:hidden">
+    <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm mx-auto h-full pb-10">
+      <div class="w-full flex flex-col items-center gap-6">
+        
+        <!-- Mobile language badges -->
+        <div class="flex items-center justify-center gap-4 bg-slate-50 w-full py-4 rounded-2xl border border-slate-100">
+          <span class="lang-badge inline-flex items-center gap-1.5 bg-red-50 border border-red-200/60 rounded-full px-3 py-1.5 text-xs font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" data-lang="hu">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg> HU
+          </span>
+          <span class="lang-badge inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200/60 rounded-full px-3 py-1.5 text-xs font-bold text-blue-700" data-lang="en">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg> EN
+          </span>
+          <span class="lang-badge inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/60 rounded-full px-3 py-1.5 text-xs font-bold text-amber-700" data-lang="de">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg> DE
+          </span>
+        </div>
+
+        <!-- Status indicator -->
+        <div class="flex items-center justify-center gap-2.5 bg-emerald-50/80 w-full py-4 rounded-2xl border border-emerald-100/60">
+          <div class="pulse-dot flex-shrink-0"></div>
+          <span id="mobile-status-text" class="text-base font-semibold text-emerald-700" data-i18n="mobile-available">Anna elérhető</span>
+        </div>
+
+        <!-- Call Button -->
+        <button id="mobile-call-btn" class="w-full text-center bg-dental-600 hover:bg-dental-700 text-white font-bold px-6 py-4 rounded-2xl shadow-lg shadow-dental-600/25 transition-all flex items-center justify-center gap-3 text-lg">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          <span data-i18n="hero-call">Beszéljen Annával</span>
+        </button>
+
+        <!-- Calendar Button -->
+        <a href="#calendar" id="mobile-calendar-link" class="w-full text-center bg-white text-slate-700 hover:bg-slate-50 font-semibold px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all flex items-center justify-center gap-3 text-base">
+          <svg class="w-5 h-5 text-dental-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+          <span data-i18n="hero-calendar">Naptár megtekintése</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
 
   <section class="hero-bg relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-20 lg:pb-24">
@@ -138,31 +262,37 @@
           <p class="mt-6 text-lg text-slate-600 leading-relaxed" data-i18n="hero-desc" data-i18n-html="true">Ismerje meg <strong class="text-slate-800">Annát</strong> — a Dental-AI Klinika Senior Asszisztensét, aki <strong class="text-slate-800">0–24 órában</strong> fogadja a hívásokat, foglal időpontot, és azonnal visszaigazol — hogy a recepciója végre a pácienseknek szentelhesse magát.</p>
           <div class="mt-8">
             <div class="relative inline-flex flex-col items-center lg:items-start gap-4">
+              
+              <!-- Ide került be a megszakítás gomb is, így pontosan egy helyen cserélődnek -->
               <div class="relative">
                 <div id="call-rings" class="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div class="call-ring-1 absolute w-full h-full rounded-2xl border-2 border-dental-400/40"></div>
                   <div class="call-ring-2 absolute w-full h-full rounded-2xl border border-dental-300/20"></div>
                 </div>
+                
                 <button id="hero-call-btn" class="relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:shadow-dental-600/30 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md text-lg">
                   <svg id="icon-mic" class="w-6 h-6 mic-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
                   <svg id="icon-spinner" class="w-6 h-6 animate-spin hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                   <div id="icon-wave" class="hidden items-center gap-[3px] h-6"><span class="voice-wave-bar" style="height:4px"></span><span class="voice-wave-bar" style="height:8px"></span><span class="voice-wave-bar" style="height:12px"></span><span class="voice-wave-bar" style="height:8px"></span><span class="voice-wave-bar" style="height:4px"></span></div>
                   <span id="hero-call-text" data-i18n="hero-call">Beszéljen Annával</span>
                 </button>
+
+                <button id="hero-hangup-btn" class="hidden relative inline-flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-red-500/25 transition-all hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md text-lg">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 3.75L18 6m0 0l2.25 2.25M18 6l2.25-2.25M18 6l-2.25 2.25m1.5 13.5c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.055.902-.417 1.173l-1.293.97a4.5 4.5 0 005.614 5.614l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.501.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"/></svg>
+                  <span data-i18n="hero-hangup">Hívás megszakítása</span>
+                </button>
               </div>
+
               <div id="call-status" class="flex items-center gap-2.5 transition-all duration-300">
                 <div id="status-dot" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300"></div>
                 <span id="status-text" class="text-sm font-medium text-slate-400 transition-colors duration-300" data-i18n="status-ready">Anna készen áll — hívja!</span>
               </div>
             </div>
-            <button id="hero-hangup-btn" class="hidden mt-4 inline-flex items-center justify-center gap-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-500/20 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md text-base">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 3.75L18 6m0 0l2.25 2.25M18 6l2.25-2.25M18 6l-2.25 2.25m1.5 13.5c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.055.902-.417 1.173l-1.293.97a4.5 4.5 0 005.614 5.614l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.501.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"/></svg>
-              Hívás megszakítása
-            </button>
+            
             <div class="mt-4">
               <a href="#calendar" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-semibold px-7 py-3.5 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                 <svg class="w-5 h-5 text-dental-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
-                Naptár megtekintése
+                <span data-i18n="hero-calendar">Naptár megtekintése</span>
               </a>
             </div>
           </div>
@@ -402,21 +532,56 @@
             <button id="demo-call-btn" class="mt-5 w-full inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-semibold py-3.5 rounded-2xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:shadow-dental-600/30 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg><span id="demo-call-text" data-i18n="hero-call">Beszéljen Annával</span></button>
             <button id="demo-hangup-btn" class="hidden mt-5 w-full inline-flex items-center justify-center gap-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold py-3.5 rounded-2xl shadow-lg shadow-red-500/20 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 3.75L18 6m0 0l2.25 2.25M18 6l2.25-2.25M18 6l-2.25 2.25m1.5 13.5c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.055.902-.417 1.173l-1.293.97a4.5 4.5 0 005.614 5.614l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.501.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"/></svg data-i18n="hero-hangup">Hívás megszakítása</button>
             <div id="demo-status" class="mt-3 flex items-center justify-center gap-2"><div id="demo-status-dot" class="w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300"></div><span id="demo-status-text" class="text-[11px] text-slate-400 transition-colors duration-300" data-i18n="demo-voice">Hangalapú beszélgetés Annával</span></div>
+            <p class="mt-3 text-[11px] text-slate-400 text-center leading-relaxed">
+              <svg class="w-3 h-3 inline-block mr-0.5 -mt-0.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span data-i18n="demo-disclaimer">A hívást rögzítjük minőségbiztosítás céljából.</span>
+              <button onclick="openLegalModal('privacy')" class="text-dental-600 hover:underline font-medium" data-i18n="demo-disclaimer-link">Részletek</button>
+            </p>
+
+            <!-- Live Transcript Panel -->
+            <div id="transcript-panel" class="transcript-panel mt-5">
+              <div class="transcript-header">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white text-[10px] font-bold">A</div>
+                  <div class="leading-tight">
+                    <p class="text-xs font-semibold text-slate-800" data-i18n="transcript-title">Élő átirat</p>
+                    <p class="text-[10px] text-slate-400" data-i18n="transcript-sub">Olvassa, amit Anna mond</p>
+                  </div>
+                </div>
+                <button id="transcript-close" class="text-slate-400 hover:text-slate-600 text-xs px-2 py-1 rounded hover:bg-slate-100 transition-colors">×</button>
+              </div>
+              <div id="transcript-body" class="transcript-body">
+                <div class="text-center text-xs text-slate-400 py-4" data-i18n="transcript-waiting">Várakozás Anna válaszára...</div>
+              </div>
+            </div>
           </div>
         </div>
         <div id="calendar" class="mt-10 lg:mt-0 lg:col-span-3">
           <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4 flex items-center justify-between">
-              <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-dental-600 flex items-center justify-center text-white shadow-md shadow-dental-600/20"><svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg></div><div><h3 class="font-semibold text-slate-900" data-i18n="cal-title">Anna élő naptára</h3><p class="text-[11px] text-slate-400" data-i18n="cal-sub">Szabad időpontok valós időben</p></div></div>
-              <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap" data-i18n="cal-sync">Szinkron: <strong id="countdown-text" class="text-dental-600">10s</strong></span></div>
+            <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4 flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-dental-600 flex items-center justify-center text-white shadow-md shadow-dental-600/20"><svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg></div><div><h3 class="font-semibold text-slate-900" data-i18n="cal-title">Anna naptára — demo</h3><p class="text-[11px] text-slate-400" data-i18n="cal-sub">Kattintson egy szabad időpontra a foglaláshoz</p></div></div>
+              <div class="flex items-center gap-2 ml-auto">
+                <button class="fcal-nav-btn active" data-loc="bp" data-i18n="cal-loc-bp">Budapest</button>
+                <button class="fcal-nav-btn" data-loc="sp" data-i18n="cal-loc-sp">Sopron</button>
+              </div>
             </div>
-            <div class="relative" style="padding-top:75%;">
-              <iframe id="calendar-iframe" class="absolute inset-0 w-full h-full border-0" src="https://calendar.google.com/calendar/embed?src=dental.ai.naptar%40gmail.com&ctz=Europe%2FBudapest&showTitle=0&showPrint=0&showCalendars=0&mode=WEEK" frameborder="0" scrolling="no" loading="lazy" title="Anna naptár — Dental-AI Klinika" allowfullscreen></iframe>
-              <div id="calendar-placeholder" class="absolute inset-0 bg-white flex items-center justify-center"><div class="text-center"><div class="shimmer-placeholder w-64 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-48 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-56 h-3 rounded mx-auto mb-5"></div><svg class="w-8 h-8 mx-auto text-slate-300 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg><p class="text-xs text-slate-400 mt-2" data-i18n="cal-loading">Anna naptárának betöltése...</p></div></div>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between mb-3 gap-2">
+                <button id="fcal-prev" class="fcal-nav-btn">‹</button>
+                <span id="fcal-week-label" class="text-xs sm:text-sm font-semibold text-slate-700">—</span>
+                <button id="fcal-next" class="fcal-nav-btn">›</button>
+              </div>
+              <div id="fcal-grid" class="fcal-grid"></div>
+              <div class="fcal-legend">
+                <span><span class="fcal-legend-dot" style="background:#22c55e"></span><span data-i18n="cal-legend-free">Szabad</span></span>
+                <span><span class="fcal-legend-dot" style="background:#cbd5e1"></span><span data-i18n="cal-legend-busy">Foglalt</span></span>
+                <span><span class="fcal-legend-dot" style="background:#f59e0b"></span><span data-i18n="cal-legend-mine">Az Ön foglalása</span></span>
+                <span class="ml-auto text-slate-400" data-i18n="cal-disclaimer">Demonstrációs adatok</span>
+              </div>
             </div>
-            <div class="bg-slate-50/60 border-t border-slate-200/60 px-6 py-3 flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-slate-500" data-i18n="cal-auto">Automatikus frissítés 15 másodpercenként</span></div>
-              <button onclick="refreshCalendar()" class="text-xs font-semibold text-dental-600 hover:text-dental-700 transition-colors flex items-center gap-1.5 bg-dental-50 hover:bg-dental-100 px-3 py-1.5 rounded-lg"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg data-i18n="cal-refresh">Frissítés most</button>
+            <div class="bg-slate-50/60 border-t border-slate-200/60 px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg><span class="text-xs text-slate-500" data-i18n="cal-demo-note">Ez egy demonstrációs naptár — valós foglalás Annán keresztül történik</span></div>
+              <button id="fcal-call-cta" class="text-xs font-semibold text-dental-600 hover:text-dental-700 transition-colors flex items-center gap-1.5 bg-dental-50 hover:bg-dental-100 px-3 py-1.5 rounded-lg"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg><span data-i18n="cal-cta">Foglaljon Annán keresztül</span></button>
             </div>
           </div>
         </div>
@@ -427,24 +592,219 @@
   <footer class="bg-slate-900 text-slate-400 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8 sm:gap-16">
-        <div class="text-center sm:text-left">
+        <div class="text-center sm:text-left flex-1">
           <div class="flex items-center gap-2 mb-4 justify-center sm:justify-start"><svg class="w-7 h-7 text-dental-400" viewBox="0 0 64 64" fill="currentColor"><path d="M32 4C24.5 4 19 8 17 14c-2 6-.5 12 1 18s3.5 14 5 20c.8 3.2 2.5 6 5 6s3.5-3 4-6l2-10c.3-1.5.8-2 2-2s1.7.5 2 2l2 10c.5 3 1.5 6 4 6s4.2-2.8 5-6c1.5-6 3.5-14 5-20s3-12 1-18C45 8 39.5 4 32 4zm0 4c6.2 0 10.3 3 11.8 7.8 1.3 4.2.2 9-1.3 14.5-1.4 5.2-3.2 11.5-4.7 17.4-.3 1.2-.7 2.3-1 2.3s-.7-1-1-2.3l-2-10c-.5-2.5-1.8-4.7-4.8-4.7s-4.3 2.2-4.8 4.7l-2 10c-.3 1.3-.7 2.3-1 2.3s-.7-1.1-1-2.3c-1.5-5.9-3.3-12.2-4.7-17.4-1.5-5.5-2.6-10.3-1.3-14.5C21.7 11 25.8 8 32 8z"/></svg><span class="text-lg font-bold text-white">Dental<span class="text-dental-400">-AI</span></span></div>
           <p class="text-sm leading-relaxed max-w-xs" data-i18n="footer-desc">Anna — a Dental-AI Klinika Senior Asszisztense. 0-24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.</p>
         </div>
-        <div class="text-center sm:text-left"><h4 class="font-semibold text-white mb-3" data-i18n="footer-contact">Kapcsolat</h4><ul class="space-y-2 text-sm"><li class="flex items-center gap-2 justify-center sm:justify-start"><svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>+36 1 555 1234</li><li class="flex items-center gap-2 justify-center sm:justify-start"><svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>hello@dental-ai.hu</li></ul></div>
-        <div class="text-center sm:text-left"><h4 class="font-semibold text-white mb-3" data-i18n="footer-langs">Nyelvek</h4><div class="flex items-center gap-2 justify-center sm:justify-start"><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>Magyar</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>English</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>Deutsch</span></div></div>
+        <div class="text-center sm:text-left">
+          <h4 class="font-semibold text-white mb-3 text-sm" data-i18n="footer-contact">Kapcsolat</h4>
+          <ul class="space-y-2 text-sm">
+            <li class="flex items-center gap-2 justify-center sm:justify-start">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>hello@dentai.me
+            </li>
+          </ul>
+        </div>
+        <div class="text-center sm:text-left"><h4 class="font-semibold text-white mb-3 text-sm" data-i18n="footer-langs">Nyelvek</h4><div class="flex items-center gap-2 justify-center sm:justify-start"><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>Magyar</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>English</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>Deutsch</span></div></div>
+        <div class="text-center sm:text-left">
+          <h4 class="font-semibold text-white mb-3 text-sm" data-i18n="footer-legal">Jogi információk</h4>
+          <div class="footer-legal-links">
+            <button onclick="openLegalModal('privacy')" data-i18n="legal-privacy">Adatvédelmi tájékoztató</button>
+            <button onclick="openLegalModal('data')" data-i18n="legal-data">Adatkezelés</button>
+            <button onclick="openLegalModal('terms')" data-i18n="legal-terms">ÁSZF</button>
+            <button onclick="openLegalModal('imprint')" data-i18n="legal-imprint">Impresszum</button>
+            <button onclick="openCookieSettings()" data-i18n="legal-cookies">Cookie-beállítások</button>
+          </div>
+        </div>
       </div>
       <div class="mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500" data-i18n="footer-copy">© 2026 Dental-AI Klinika. Minden jog fenntartva. Anna AI által működtetve.</div>
     </div>
   </footer>
 
+  <!-- ================== COOKIE BANNER ================== -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl bg-dental-50 flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 text-dental-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><circle cx="9" cy="10" r="1.2" fill="currentColor"/><circle cx="14" cy="14" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r=".8" fill="currentColor"/></svg>
+      </div>
+      <div class="flex-1">
+        <p class="text-sm font-semibold text-slate-900 mb-1" data-i18n="cookie-title">Cookie-k és adatvédelem</p>
+        <p class="text-xs text-slate-500 leading-relaxed" data-i18n="cookie-desc">Sütiket használunk a működéshez és anonim statisztikai célokra. Egészségügyi adatait soha nem küldjük harmadik félnek.</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button id="cookie-accept-all" class="flex-1 bg-dental-600 hover:bg-dental-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors" data-i18n="cookie-accept-all">Mindent elfogadok</button>
+      <button id="cookie-essential-only" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors" data-i18n="cookie-essential">Csak nélkülözhetetlen</button>
+      <button onclick="openLegalModal('privacy')" class="text-xs text-dental-600 hover:underline font-medium px-2 py-2.5" data-i18n="cookie-more">Részletek</button>
+    </div>
+  </div>
+
+  <!-- ================== VOICE CONSENT MODAL ================== -->
+  <div id="consent-modal" class="consent-modal-overlay" role="dialog" aria-modal="true">
+    <div class="consent-modal">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+          <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900" data-i18n="consent-title">Hangrögzítés tájékoztató</h3>
+      </div>
+      <div class="space-y-3 text-sm text-slate-600 leading-relaxed mb-6">
+        <p data-i18n="consent-p1">A hívás megkezdése előtt kérjük tájékoztatását: a beszélgetést <strong class="text-slate-900">minőségbiztosítás és szolgáltatásfejlesztés</strong> céljából rögzítjük.</p>
+        <ul class="space-y-2 bg-slate-50 rounded-xl p-4 text-xs">
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="consent-li1">A felvételt EU-s szervereken, titkosítva tároljuk</span></li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="consent-li2">30 nap után automatikusan töröljük</span></li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="consent-li3">Soha nem adjuk át harmadik félnek marketing célból</span></li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="consent-li4">A GDPR 9. cikk szerinti egészségügyi adatkezelési szabályzat vonatkozik rá</span></li>
+        </ul>
+        <p class="text-xs"><span data-i18n="consent-p2">Részletek:</span> <button onclick="openLegalModal('privacy')" class="text-dental-600 hover:underline font-medium" data-i18n="legal-privacy">Adatvédelmi tájékoztató</button> · <button onclick="openLegalModal('data')" class="text-dental-600 hover:underline font-medium" data-i18n="legal-data">Adatkezelés</button></p>
+      </div>
+      <div class="flex flex-col-reverse sm:flex-row gap-2">
+        <button id="consent-decline" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-5 py-3 rounded-xl transition-colors text-sm" data-i18n="consent-decline">Mégse</button>
+        <button id="consent-accept" class="flex-1 bg-dental-600 hover:bg-dental-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors text-sm shadow-lg shadow-dental-600/20" data-i18n="consent-accept">Elfogadom és hívok</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================== LEGAL MODAL ================== -->
+  <div id="legal-modal" class="legal-modal-overlay" role="dialog" aria-modal="true">
+    <div class="legal-modal">
+      <div class="legal-modal-header">
+        <div>
+          <h3 id="legal-modal-title" class="text-xl font-bold text-slate-900">—</h3>
+          <p id="legal-modal-updated" class="text-xs text-slate-400 mt-1" data-i18n="legal-updated">Utoljára frissítve: 2026.04.26.</p>
+        </div>
+        <button class="legal-close" onclick="closeLegalModal()" aria-label="Bezárás">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="legal-modal-body" class="legal-modal-body">—</div>
+    </div>
+  </div>
+
   <elevenlabs-convai agent-id="agent_2301kq22b6v9f04sr88gmbtksw04"></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
   <script>
-    const REFRESH_INTERVAL=15;let countdown=REFRESH_INTERVAL;const calendarIframe=document.getElementById('calendar-iframe'),countdownText=document.getElementById('countdown-text'),countdownCircle=document.getElementById('countdown-circle'),placeholder=document.getElementById('calendar-placeholder');calendarIframe.addEventListener('load',()=>{if(placeholder)placeholder.style.display='none'});function refreshCalendar(){const src=calendarIframe.src.split('&_t=')[0];calendarIframe.src=src+'&_t='+Date.now();countdown=REFRESH_INTERVAL;updateCountdownUI()}function updateCountdownUI(){countdownText.textContent=countdown+'s';const offset=((REFRESH_INTERVAL-countdown)/REFRESH_INTERVAL)*88;countdownCircle.style.strokeDashoffset=offset}setInterval(()=>{countdown--;if(countdown<=0){refreshCalendar()}else{updateCountdownUI()}},1000);
-    const menuToggle=document.getElementById('menu-toggle'),menuClose=document.getElementById('menu-close'),mobileNav=document.getElementById('mobile-nav');const mobileBackdrop=document.getElementById('mobile-nav-backdrop');menuToggle.addEventListener('click',()=>{mobileNav.classList.add('open');mobileBackdrop.classList.add('open')});menuClose.addEventListener('click',()=>{mobileNav.classList.remove('open');mobileBackdrop.classList.remove('open')});mobileBackdrop.addEventListener('click',()=>{mobileNav.classList.remove('open');mobileBackdrop.classList.remove('open')});
-    const header=document.getElementById('header');window.addEventListener('scroll',()=>{header.classList.toggle('shadow-md',window.scrollY>10)},{passive:true});
+    // === FAKE DEMO CALENDAR ===
+    (function(){
+      const grid = document.getElementById('fcal-grid');
+      const weekLabel = document.getElementById('fcal-week-label');
+      const prevBtn = document.getElementById('fcal-prev');
+      const nextBtn = document.getElementById('fcal-next');
+      const callCta = document.getElementById('fcal-call-cta');
+      const locBtns = document.querySelectorAll('[data-loc]');
+      let weekOffset = 0; // 0 = current week, 1 = next, etc
+      let currentLoc = 'bp';
+      const HOURS = [9,10,11,12,13,14,15,16];
+      const DAY_NAMES = {
+        hu:['Hétfő','Kedd','Szerda','Csütörtök','Péntek'],
+        en:['Mon','Tue','Wed','Thu','Fri'],
+        de:['Mo','Di','Mi','Do','Fr']
+      };
+
+      // Deterministic pseudo-random based on day+hour+location: ~30% busy
+      function isSlotBusy(date, hour, loc){
+        const seed = date.getTime() + hour*1000 + (loc==='bp'?1:7);
+        const x = Math.sin(seed) * 10000;
+        const r = x - Math.floor(x); // 0..1
+        return r < 0.32;
+      }
+
+      function getMonday(offset){
+        const d = new Date();
+        const dow = d.getDay() || 7;
+        d.setDate(d.getDate() - dow + 1 + offset*7);
+        d.setHours(0,0,0,0);
+        return d;
+      }
+
+      function fmtDate(d, lang){
+        return d.toLocaleDateString(lang==='hu'?'hu-HU':lang==='de'?'de-DE':'en-US',{month:'short',day:'numeric'});
+      }
+
+      function render(){
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'hu';
+        const monday = getMonday(weekOffset);
+        const friday = new Date(monday); friday.setDate(friday.getDate()+4);
+        weekLabel.textContent = fmtDate(monday, lang) + ' – ' + fmtDate(friday, lang);
+        prevBtn.disabled = weekOffset <= 0;
+        prevBtn.style.opacity = weekOffset <= 0 ? '.4' : '1';
+        prevBtn.style.cursor = weekOffset <= 0 ? 'not-allowed' : 'pointer';
+
+        const today = new Date(); today.setHours(0,0,0,0);
+        const dayNames = DAY_NAMES[lang] || DAY_NAMES.hu;
+
+        let html = '<div class="fcal-cell fcal-cell-header"></div>';
+        for (let i=0; i<5; i++){
+          const d = new Date(monday); d.setDate(d.getDate()+i);
+          const isToday = d.getTime() === today.getTime();
+          html += `<div class="fcal-cell fcal-cell-header${isToday?' today':''}">
+            <span>${dayNames[i]}</span>
+            <span class="fcal-day-num">${d.getDate()}</span>
+          </div>`;
+        }
+        for (const h of HOURS){
+          html += `<div class="fcal-cell fcal-cell-time">${h}:00</div>`;
+          for (let i=0; i<5; i++){
+            const d = new Date(monday); d.setDate(d.getDate()+i);
+            const isPast = d.getTime() < today.getTime();
+            const busy = isPast || isSlotBusy(d, h, currentLoc);
+            html += `<div class="fcal-cell fcal-slot-${busy?'busy':'free'}"${busy?'':` data-day="${i}" data-hour="${h}"`}></div>`;
+          }
+        }
+        grid.innerHTML = html;
+        // Attach click handlers to free slots
+        grid.querySelectorAll('.fcal-slot-free').forEach(c => {
+          c.addEventListener('click', () => triggerSlotBook(c));
+        });
+      }
+
+      function triggerSlotBook(cell){
+        // Mark as "mine" (visual feedback) and prompt to call Anna
+        cell.classList.remove('fcal-slot-free');
+        cell.classList.add('fcal-slot-mine');
+        cell.removeAttribute('data-day');
+        cell.removeAttribute('data-hour');
+        // Trigger call
+        if (typeof startCall === 'function') startCall();
+      }
+
+      prevBtn.addEventListener('click', () => { if (weekOffset > 0) { weekOffset--; render(); } });
+      nextBtn.addEventListener('click', () => { weekOffset++; render(); });
+      locBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          locBtns.forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          currentLoc = b.getAttribute('data-loc');
+          render();
+        });
+      });
+      if (callCta) callCta.addEventListener('click', () => { if (typeof startCall === 'function') startCall(); });
+
+      window.fcalRender = render; // expose for lang switch
+      render();
+    })();
+    
+    // --- Mobile Nav Logic ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileCalendarLink = document.getElementById('mobile-calendar-link');
+    const header = document.getElementById('header');
+
+    function closeMenu() {
+        document.body.classList.remove('menu-open');
+        mobileNav.classList.remove('open');
+    }
+
+    menuToggle.addEventListener('click', () => {
+        document.body.classList.toggle('menu-open');
+        mobileNav.classList.toggle('open');
+    });
+
+    if (mobileCalendarLink) {
+        mobileCalendarLink.addEventListener('click', closeMenu);
+    }
+    
+    window.addEventListener('scroll',()=>{header.classList.toggle('shadow-md',window.scrollY>10)},{passive:true});
     const chatBubbles=document.querySelectorAll('.chat-bubble'),phoneScreen=document.querySelector('.phone-screen');if(phoneScreen){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){chatBubbles.forEach(b=>{b.style.animation='none';b.offsetHeight;b.style.animation=''})}})},{threshold:0.3});observer.observe(phoneScreen)}
 
     // Step animation on scroll
@@ -454,15 +814,116 @@
     const heroCallBtn=document.getElementById('hero-call-btn'),heroHangupBtn=document.getElementById('hero-hangup-btn'),heroCallText=document.getElementById('hero-call-text'),callRings=document.getElementById('call-rings'),iconMic=document.getElementById('icon-mic'),iconSpinner=document.getElementById('icon-spinner'),iconWave=document.getElementById('icon-wave'),statusDot=document.getElementById('status-dot'),statusText=document.getElementById('status-text'),headerStatus=document.getElementById('header-status'),headerStatusText=document.getElementById('header-status-text'),headerCallBtn=document.getElementById('header-call-btn'),mobileCallBtn=document.getElementById('mobile-call-btn'),mobileStatusText=document.getElementById('mobile-status-text'),demoCallBtn=document.getElementById('demo-call-btn'),demoHangupBtn=document.getElementById('demo-hangup-btn'),demoCallText=document.getElementById('demo-call-text'),demoStatusDot=document.getElementById('demo-status-dot'),demoStatusText=document.getElementById('demo-status-text');
     let widget=null,widgetReady=false,pollTimer=null,debugLog=[];function logDebug(msg){const ts=new Date().toLocaleTimeString();debugLog.push(`[${ts}] ${msg}`);if(debugLog.length>50)debugLog.shift();console.log(`[Anna] ${msg}`)}function getWidget(){if(!widget)widget=document.querySelector('elevenlabs-convai');return widget}function waitForWidget(cb,attempts=0){const w=getWidget();if(w){widgetReady=true;logDebug('Widget DOM elem megtalálva (attempt #'+attempts+')');logDebug('shadowRoot: '+!!w.shadowRoot);logDebug('startConversation: '+(typeof w.startConversation));logDebug('endConversation: '+(typeof w.endConversation));cb(w);return}if(attempts<40){setTimeout(()=>waitForWidget(cb,attempts+1),500)}else{logDebug('HIBA: Widget nem töltődött be 20 másodperc után!')}}
     function clickWidgetFab(){const w=getWidget();if(!w){logDebug('Nincs widget elem!');return false}if(typeof w.startConversation==='function'){try{w.startConversation();logDebug('startConversation() sikeresen meghívva');return true}catch(e){logDebug('startConversation() hiba: '+e.message)}}try{const shadow=w.shadowRoot;if(shadow){const selectors=['button','[role="button"]','[data-testid="fab"]','[class*="fab"]','[class*="Fab"]','[class*="trigger"]','[class*="Trigger"]','[class*="circle"]','[class*="Circle"]'];for(const sel of selectors){const btns=shadow.querySelectorAll(sel);for(const btn of btns){if(btn.offsetParent!==null||btn.offsetWidth>0){btn.click();logDebug('Shadow DOM gomb kattintva: '+sel+' ('+btn.textContent?.trim()?.substring(0,30)+')');return true}}}const firstBtn=shadow.querySelector('button');if(firstBtn){firstBtn.click();logDebug('Első shadow DOM gomb kattintva');return true}}}catch(e){logDebug('Shadow DOM hiba: '+e.message)}try{w.click();logDebug('Közvetlen kattintás a widget elemen');return true}catch(e){logDebug('Közvetlen kattintás hiba: '+e.message)}return false}
-    function startCall(){if(currentCallState!==CALL_STATE.IDLE)return;const w=getWidget();if(!w){alert('A hívás indítása sikertelen – Anna beszélgetési widgetje még nem töltődött be.\n\nKérjük, frissítse az oldalt (Ctrl+R) és próbálja újra!');return}setCallState(CALL_STATE.CONNECTING);logDebug('Hívás indítása Annához...');const clicked=clickWidgetFab();if(!clicked){logDebug('Nem sikerült automatikusan indítani — widget popup megjelenítése')}startPolling();setTimeout(()=>{if(currentCallState===CALL_STATE.CONNECTING){logDebug('Timeout — connecting → listening');setCallState(CALL_STATE.LISTENING)}},8000)}
+    function startCallActual(){if(currentCallState!==CALL_STATE.IDLE)return;const w=getWidget();if(!w){alert('A hívás indítása sikertelen – Anna beszélgetési widgetje még nem töltődött be.\n\nKérjük, frissítse az oldalt (Ctrl+R) és próbálja újra!');return}setCallState(CALL_STATE.CONNECTING);logDebug('Hívás indítása Annához...');const clicked=clickWidgetFab();if(!clicked){logDebug('Nem sikerült automatikusan indítani — widget popup megjelenítése')}startPolling();setTimeout(()=>{if(currentCallState===CALL_STATE.CONNECTING){logDebug('Timeout — connecting → listening');setCallState(CALL_STATE.LISTENING)}},8000)}
+    function startCall(){if(currentCallState!==CALL_STATE.IDLE)return;if(localStorage.getItem('anna_voice_consent')==='1'){startCallActual();return}showConsentModal()}
     function endCall(){const w=getWidget();logDebug('Hívás megszakítása...');if(w&&typeof w.endConversation==='function'){try{w.endConversation();logDebug('endConversation() meghívva')}catch(e){logDebug('endConversation() hiba: '+e.message)}}if(w&&w.shadowRoot){try{const shadow=w.shadowRoot;const allBtns=shadow.querySelectorAll('button');for(const b of allBtns){const txt=(b.textContent||'').toLowerCase();const label=(b.getAttribute('aria-label')||'').toLowerCase();const cls=(b.className||'').toString().toLowerCase();if(txt.includes('end')||txt.includes('close')||txt.includes('stop')||label.includes('end')||label.includes('close')||label.includes('stop')||cls.includes('end')||cls.includes('close')||cls.includes('hang')){b.click();logDebug('Shadow close gomb kattintva: '+(txt||label||cls).substring(0,30));break}}}catch(e){}}stopPolling();setCallState(CALL_STATE.IDLE);logDebug('Hívás befejezve')}
-    function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-sm font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-sm font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-sm font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent='Anna válaszol Önnek';headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-sm font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
+    function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-base font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent='Anna válaszol Önnek';headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-base font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
     function detectWidgetState(){const w=getWidget();if(!w||!w.shadowRoot)return;try{const shadow=w.shadowRoot;const allElements=shadow.querySelectorAll('*');let foundListening=false,foundSpeaking=false,foundConnecting=false,foundIdle=false;for(const el of allElements){const text=(el.textContent||'').toLowerCase().trim();const cls=(el.className||'').toString().toLowerCase();if(text.includes('listening')||cls.includes('listening'))foundListening=true;if(text.includes('speaking')||cls.includes('speaking'))foundSpeaking=true;if(text.includes('connecting')||cls.includes('connecting'))foundConnecting=true;if(text.includes('idle')||text.includes('ready')||text.includes('click to start'))foundIdle=true}if(foundSpeaking&&currentCallState!==CALL_STATE.SPEAKING){setCallState(CALL_STATE.SPEAKING)}else if(foundListening&&currentCallState!==CALL_STATE.LISTENING){setCallState(CALL_STATE.LISTENING)}else if(foundConnecting&&currentCallState!==CALL_STATE.CONNECTING){setCallState(CALL_STATE.CONNECTING)}}catch(e){}}
     function startPolling(){stopPolling();pollTimer=setInterval(detectWidgetState,1000);detectWidgetState()}function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}}
-    function setupWidgetListeners(){const w=getWidget();if(!w)return;const events=['elevenlabs-convai:callStarted','elevenlabs-convai:callEnded','elevenlabs-convai:listening','elevenlabs-convai:speaking','elevenlabs-convai:connected','callStarted','callEnded','listening','speaking'];events.forEach(eventName=>{w.addEventListener(eventName,(e)=>{logDebug('Widget event: '+eventName);switch(eventName){case'elevenlabs-convai:callStarted':case'elevenlabs-convai:connected':case'callStarted':setCallState(CALL_STATE.LISTENING);break;case'elevenlabs-convai:callEnded':case'callEnded':endCall();break;case'elevenlabs-convai:listening':case'listening':setCallState(CALL_STATE.LISTENING);break;case'elevenlabs-convai:speaking':case'speaking':setCallState(CALL_STATE.SPEAKING);break}})})}
-    heroCallBtn.addEventListener('click',startCall);heroHangupBtn.addEventListener('click',endCall);headerCallBtn.addEventListener('click',startCall);mobileCallBtn.addEventListener('click',()=>{mobileNav.classList.remove('open');startCall()});demoCallBtn.addEventListener('click',startCall);demoHangupBtn.addEventListener('click',endCall);
-    waitForWidget((w)=>{logDebug('Widget betöltődött és inicializálva');setupWidgetListeners();setTimeout(()=>{logDebug('Widget shadowRoot: '+!!w.shadowRoot);if(w.shadowRoot){const btns=w.shadowRoot.querySelectorAll('button');logDebug('Shadow DOM gombok száma: '+btns.length);btns.forEach((b,i)=>{logDebug('  Button['+i+']: text="'+(b.textContent||'').trim().substring(0,40)+'" class="'+(b.className||'').toString().substring(0,40)+'"')})}},2000)});updateCountdownUI();
+    function setupWidgetListeners(){const w=getWidget();if(!w)return;const events=['elevenlabs-convai:callStarted','elevenlabs-convai:callEnded','elevenlabs-convai:listening','elevenlabs-convai:speaking','elevenlabs-convai:connected','callStarted','callEnded','listening','speaking','message','elevenlabs-convai:message','userMessage','agentMessage','elevenlabs-convai:userMessage','elevenlabs-convai:agentMessage'];events.forEach(eventName=>{w.addEventListener(eventName,(e)=>{logDebug('Widget event: '+eventName);switch(eventName){case'elevenlabs-convai:callStarted':case'elevenlabs-convai:connected':case'callStarted':setCallState(CALL_STATE.LISTENING);showTranscript();break;case'elevenlabs-convai:callEnded':case'callEnded':endCall();break;case'elevenlabs-convai:listening':case'listening':setCallState(CALL_STATE.LISTENING);break;case'elevenlabs-convai:speaking':case'speaking':setCallState(CALL_STATE.SPEAKING);break;case'message':case'elevenlabs-convai:message':case'userMessage':case'agentMessage':case'elevenlabs-convai:userMessage':case'elevenlabs-convai:agentMessage':handleTranscriptMessage(e,eventName);break}})})}
     
+    // Call Button Events
+    heroCallBtn.addEventListener('click',startCall);
+    heroHangupBtn.addEventListener('click',endCall);
+    headerCallBtn.addEventListener('click',startCall);
+    mobileCallBtn.addEventListener('click',() => { closeMenu(); startCall(); });
+    demoCallBtn.addEventListener('click',startCall);
+    demoHangupBtn.addEventListener('click',endCall);
+    
+    waitForWidget((w)=>{logDebug('Widget betöltődött és inicializálva');setupWidgetListeners();setTimeout(()=>{logDebug('Widget shadowRoot: '+!!w.shadowRoot);if(w.shadowRoot){const btns=w.shadowRoot.querySelectorAll('button');logDebug('Shadow DOM gombok száma: '+btns.length);btns.forEach((b,i)=>{logDebug('  Button['+i+']: text="'+(b.textContent||'').trim().substring(0,40)+'" class="'+(b.className||'').toString().substring(0,40)+'"')})}},2000)});
+    
+    // === COOKIE BANNER ===
+    const cookieBanner = document.getElementById('cookie-banner');
+    function showCookieBanner(){ setTimeout(()=>cookieBanner.classList.add('show'), 600); }
+    function hideCookieBanner(){ cookieBanner.classList.remove('show'); }
+    function setCookieChoice(level){ localStorage.setItem('anna_cookie_consent', level); localStorage.setItem('anna_cookie_consent_ts', Date.now().toString()); hideCookieBanner(); }
+    document.getElementById('cookie-accept-all').addEventListener('click', ()=>setCookieChoice('all'));
+    document.getElementById('cookie-essential-only').addEventListener('click', ()=>setCookieChoice('essential'));
+    function openCookieSettings(){ localStorage.removeItem('anna_cookie_consent'); showCookieBanner(); }
+    if (!localStorage.getItem('anna_cookie_consent')) showCookieBanner();
+
+    // === VOICE CONSENT MODAL ===
+    const consentModal = document.getElementById('consent-modal');
+    function showConsentModal(){ consentModal.classList.add('show'); }
+    function hideConsentModal(){ consentModal.classList.remove('show'); }
+    document.getElementById('consent-accept').addEventListener('click', ()=>{
+      localStorage.setItem('anna_voice_consent', '1');
+      localStorage.setItem('anna_voice_consent_ts', Date.now().toString());
+      hideConsentModal();
+      startCallActual();
+    });
+    document.getElementById('consent-decline').addEventListener('click', hideConsentModal);
+    consentModal.addEventListener('click', (e)=>{ if (e.target === consentModal) hideConsentModal(); });
+
+    // === LEGAL MODAL ===
+    const legalModal = document.getElementById('legal-modal');
+    const legalTitle = document.getElementById('legal-modal-title');
+    const legalBody = document.getElementById('legal-modal-body');
+    function openLegalModal(type){
+      const t = translations[currentLang] || translations.hu;
+      legalTitle.textContent = t['legal-'+type+'-title'] || type;
+      legalBody.innerHTML = t['legal-'+type+'-body'] || '';
+      legalModal.classList.add('show');
+      legalBody.scrollTop = 0;
+    }
+    function closeLegalModal(){ legalModal.classList.remove('show'); }
+    legalModal.addEventListener('click', (e)=>{ if (e.target === legalModal) closeLegalModal(); });
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape'){
+        if (legalModal.classList.contains('show')) closeLegalModal();
+        else if (consentModal.classList.contains('show')) hideConsentModal();
+      }
+    });
+    window.openLegalModal = openLegalModal;
+    window.closeLegalModal = closeLegalModal;
+    window.openCookieSettings = openCookieSettings;
+
+    // === LIVE TRANSCRIPT ===
+    const transcriptPanel = document.getElementById('transcript-panel');
+    const transcriptBody = document.getElementById('transcript-body');
+    const transcriptClose = document.getElementById('transcript-close');
+    let transcriptShown = false;
+    function showTranscript(){ if (transcriptShown) return; transcriptShown=true; transcriptPanel.classList.add('show'); }
+    function hideTranscript(){ transcriptShown=false; transcriptPanel.classList.remove('show'); }
+    transcriptClose.addEventListener('click', hideTranscript);
+
+    function extractMessageText(e, eventName){
+      const d = e.detail || {};
+      const text = d.text || d.message || d.content || d.transcript || (typeof d === 'string' ? d : null);
+      let role = d.role || d.source || d.from || null;
+      if (!role){
+        if (eventName.toLowerCase().includes('user')) role = 'user';
+        else if (eventName.toLowerCase().includes('agent')) role = 'agent';
+      }
+      return { text, role };
+    }
+    function addTranscriptMsg(role, text){
+      if (!text) return;
+      // Clear "waiting" placeholder
+      const waiting = transcriptBody.querySelector('[data-i18n="transcript-waiting"]');
+      if (waiting) waiting.remove();
+      const msg = document.createElement('div');
+      msg.className = 'transcript-msg ' + (role==='agent' ? 'transcript-msg-anna' : 'transcript-msg-user');
+      msg.innerHTML = `
+        <div class="transcript-msg-avatar">${role==='agent'?'A':'Ön'}</div>
+        <div class="transcript-msg-text"></div>
+      `;
+      msg.querySelector('.transcript-msg-text').textContent = text;
+      transcriptBody.appendChild(msg);
+      transcriptBody.scrollTop = transcriptBody.scrollHeight;
+      // Keep last 8 messages
+      const msgs = transcriptBody.querySelectorAll('.transcript-msg');
+      if (msgs.length > 8) msgs[0].remove();
+    }
+    function handleTranscriptMessage(e, eventName){
+      try {
+        const { text, role } = extractMessageText(e, eventName);
+        if (text && role) addTranscriptMsg(role, text);
+      } catch(err){ logDebug('Transcript handler error: '+err.message); }
+    }
+    window.showTranscript = showTranscript;
+    window.handleTranscriptMessage = handleTranscriptMessage;
+
     // --- i18n Language Switching ---
     const translations = {
       hu: {
@@ -558,7 +1019,205 @@
         'footer-desc': 'Anna — a Dental-AI Klinika Senior Asszisztense. 0-24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.',
         'footer-contact': 'Kapcsolat',
         'footer-langs': 'Nyelvek',
-        'footer-copy': '© 2026 Dental-AI Klinika. Minden jog fenntartva. Anna AI által működtetve.'
+        'footer-legal': 'Jogi információk',
+        'footer-copy': '© 2026 Dental-AI Klinika. Minden jog fenntartva. Anna AI által működtetve.',
+        // Calendar (fake demo) keys
+        'cal-title': 'Anna naptára — demo',
+        'cal-sub': 'Kattintson egy szabad időpontra a foglaláshoz',
+        'cal-loc-bp': 'Budapest',
+        'cal-loc-sp': 'Sopron',
+        'cal-legend-free': 'Szabad',
+        'cal-legend-busy': 'Foglalt',
+        'cal-legend-mine': 'Az Ön foglalása',
+        'cal-disclaimer': 'Demonstrációs adatok',
+        'cal-demo-note': 'Ez egy demonstrációs naptár — valós foglalás Annán keresztül történik',
+        'cal-cta': 'Foglaljon Annán keresztül',
+        // Demo extras
+        'demo-disclaimer': 'A hívást rögzítjük minőségbiztosítás céljából.',
+        'demo-disclaimer-link': 'Részletek',
+        // Transcript
+        'transcript-title': 'Élő átirat',
+        'transcript-sub': 'Olvassa, amit Anna mond',
+        'transcript-waiting': 'Várakozás Anna válaszára...',
+        // Cookie banner
+        'cookie-title': 'Cookie-k és adatvédelem',
+        'cookie-desc': 'Sütiket használunk a működéshez és anonim statisztikai célokra. Egészségügyi adatait soha nem küldjük harmadik félnek.',
+        'cookie-accept-all': 'Mindent elfogadok',
+        'cookie-essential': 'Csak nélkülözhetetlen',
+        'cookie-more': 'Részletek',
+        // Voice consent
+        'consent-title': 'Hangrögzítés tájékoztató',
+        'consent-p1': 'A hívás megkezdése előtt kérjük tájékoztatását: a beszélgetést <strong class="text-slate-900">minőségbiztosítás és szolgáltatásfejlesztés</strong> céljából rögzítjük.',
+        'consent-li1': 'A felvételt EU-s szervereken, titkosítva tároljuk',
+        'consent-li2': '30 nap után automatikusan töröljük',
+        'consent-li3': 'Soha nem adjuk át harmadik félnek marketing célból',
+        'consent-li4': 'A GDPR 9. cikk szerinti egészségügyi adatkezelési szabályzat vonatkozik rá',
+        'consent-p2': 'Részletek:',
+        'consent-decline': 'Mégse',
+        'consent-accept': 'Elfogadom és hívok',
+        // Legal
+        'legal-privacy': 'Adatvédelmi tájékoztató',
+        'legal-terms': 'ÁSZF',
+        'legal-imprint': 'Impresszum',
+        'legal-data': 'Adatkezelés',
+        'legal-cookies': 'Cookie-beállítások',
+        'legal-updated': 'Utoljára frissítve: 2026.04.26.',
+        // Legal — Privacy
+        'legal-privacy-title': 'Adatvédelmi tájékoztató',
+        'legal-privacy-body': `
+          <h3>1. Adatkezelő</h3>
+          <p><strong>Dental-AI Klinika Kft.</strong><br>Székhely: 1051 Budapest, [utca, házszám]<br>Cégjegyzékszám: [01-09-XXXXXX]<br>Adószám: [XXXXXXXX-X-XX]<br>Email: hello@dentai.me</p>
+
+          <h3>2. Kezelt adatok köre</h3>
+          <ul>
+            <li><strong>Foglaláshoz:</strong> név, telefonszám, e-mail cím, kívánt időpont, panasz/kezelési igény leírása</li>
+            <li><strong>Hangrögzítés:</strong> a hívás teljes hanganyaga + automatikus szöveges átirat</li>
+            <li><strong>Technikai adatok:</strong> IP-cím, böngésző típusa, oldalmegtekintési időpont (anonim statisztikai célból)</li>
+          </ul>
+
+          <h3>3. Adatkezelés célja és jogalapja</h3>
+          <ul>
+            <li><strong>Foglalás teljesítése</strong> — GDPR 6. cikk (1) b) szerződés teljesítése</li>
+            <li><strong>Egészségügyi adatok kezelése</strong> — GDPR 9. cikk (2) h) egészségügyi szolgáltatás nyújtása</li>
+            <li><strong>Hangrögzítés minőségbiztosítás céljából</strong> — GDPR 6. cikk (1) a) hozzájárulás alapján</li>
+            <li><strong>Statisztikai célú adatok</strong> — GDPR 6. cikk (1) f) jogos érdek</li>
+          </ul>
+
+          <h3>4. Adatkezelés időtartama</h3>
+          <ul>
+            <li>Hangfelvételek: <strong>30 nap</strong>, utána automatikus törlés</li>
+            <li>Foglalási adatok: <strong>5 év</strong> (1997. évi CLIV. törvény szerinti egészségügyi dokumentációs kötelezettség)</li>
+            <li>Anonim statisztika: <strong>26 hónap</strong></li>
+          </ul>
+
+          <h3>5. Adatfeldolgozók</h3>
+          <ul>
+            <li><strong>ElevenLabs Inc.</strong> — hangalapú AI-asszisztens szolgáltató (EU-s adatközpont)</li>
+            <li><strong>[Tárhelyszolgáltató]</strong> — weboldal hosting</li>
+            <li><strong>[SMS-szolgáltató]</strong> — visszaigazoló SMS küldése</li>
+          </ul>
+
+          <h3>6. Az érintett jogai</h3>
+          <p>Önnek joga van: hozzáférést kérni, helyesbítést kérni, törlést kérni („elfeledtetéshez való jog"), kezelés korlátozását kérni, adathordozhatósághoz, hozzájárulás visszavonásához bármikor, panasszal a NAIH-hoz fordulni.</p>
+
+          <h3>7. Kapcsolat / panasz</h3>
+          <p>Adatvédelmi kérdések: <a href="mailto:hello@dentai.me">hello@dentai.me</a><br>NAIH (Nemzeti Adatvédelmi és Információszabadság Hatóság): 1055 Budapest, Falk Miksa utca 9-11. — <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Ez egy minta-tájékoztató. Éles használat előtt jogi szakértővel ellenőriztesse és töltse ki a [szögletes zárójelek] közötti adatokat.</em></p>
+        `,
+        // Legal — Terms (ÁSZF)
+        'legal-terms-title': 'Általános Szerződési Feltételek',
+        'legal-terms-body': `
+          <h3>1. A Szolgáltató</h3>
+          <p><strong>Dental-AI Klinika Kft.</strong><br>Székhely: 1051 Budapest, [utca, házszám]<br>Email: hello@dentai.me</p>
+
+          <h3>2. A szolgáltatás tárgya</h3>
+          <p>A weboldalon keresztül a páciens online vagy hangalapú AI-asszisztens (Anna) útján fogászati időpontot foglalhat. A foglalás visszaigazolása e-mailben és/vagy SMS-ben történik.</p>
+
+          <h3>3. Foglalás menete</h3>
+          <ul>
+            <li>A páciens megadja a kívánt helyszínt, kezelést, időpontot, nevét, e-mail címét és telefonszámát</li>
+            <li>Anna ellenőrzi a szabad időpontot és visszaigazolja</li>
+            <li>A foglalás akkor véglegesül, amikor a páciens írásban (email/SMS) megkapja a megerősítést</li>
+          </ul>
+
+          <h3>4. Lemondás és módosítás</h3>
+          <p>A foglalás a tervezett időpont előtt legalább <strong>24 órával</strong> ingyenesen lemondható vagy módosítható. Késői lemondás vagy meg nem jelenés esetén a klinika fenntartja a jogot a kezelési díj egy részének felszámítására.</p>
+
+          <h3>5. Árak és fizetés</h3>
+          <p>A kezelés pontos ára <strong>kizárólag a helyszíni vizsgálat után</strong> állapítható meg. Telefonon, online vagy az AI-asszisztensen keresztül konkrét árajánlat nem adható. Tájékoztató árlista a weboldalon érhető el.</p>
+
+          <h3>6. Felelősség</h3>
+          <p>A Szolgáltató nem vállal felelősséget olyan károkért, amelyek a páciens által megadott helytelen adatokból (pl. hibás telefonszám miatt elmaradt SMS) erednek.</p>
+
+          <h3>7. Az AI-asszisztens (Anna) sajátosságai</h3>
+          <ul>
+            <li>Az Anna mesterséges intelligencián alapuló asszisztens, nem fogorvos</li>
+            <li>Anna NEM ad orvosi diagnózist, kezelési javaslatot vagy ártájékoztatást</li>
+            <li>Sürgős esetben a klinika 24 órán belül emberi ügyintéző útján visszahívja a pácienst</li>
+          </ul>
+
+          <h3>8. Vitás kérdések</h3>
+          <p>Hatáskörrel és illetékességgel rendelkező bíróság: a Szolgáltató székhelye szerinti bíróság. Fogyasztói panasz: területileg illetékes Békéltető Testület.</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Ez egy minta-ÁSZF. Éles használat előtt jogi szakértővel ellenőriztesse.</em></p>
+        `,
+        // Legal — Imprint
+        'legal-imprint-title': 'Impresszum',
+        'legal-imprint-body': `
+          <h3>Üzemeltető</h3>
+          <p><strong>Dental-AI Klinika Kft.</strong></p>
+
+          <h3>Cégjogi adatok</h3>
+          <ul>
+            <li>Székhely: 1051 Budapest, [utca, házszám]</li>
+            <li>Cégjegyzékszám: [01-09-XXXXXX]</li>
+            <li>Adószám: [XXXXXXXX-X-XX]</li>
+            <li>Bejegyző bíróság: Fővárosi Törvényszék Cégbírósága</li>
+          </ul>
+
+          <h3>Egészségügyi tevékenység</h3>
+          <ul>
+            <li>ÁNTSZ engedélyszám: [XXXXXX/2024]</li>
+            <li>Felelős vezető fogorvos: Dr. [Név], pecsétszám: [XXXXX]</li>
+            <li>Szakmai felügyelet: Magyar Orvosi Kamara Fogorvosi Tagozat</li>
+          </ul>
+
+          <h3>Kapcsolat</h3>
+          <ul>
+            <li>Email: <a href="mailto:hello@dentai.me">hello@dentai.me</a></li>
+            <li>Telefon: [+36 ...]</li>
+            <li>Honlap: <a href="https://dentai.me">dentai.me</a></li>
+          </ul>
+
+          <h3>Tárhelyszolgáltató</h3>
+          <p>[Tárhelyszolgáltató neve]<br>[Cím]<br>Email: [hosting@...]</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Ez egy minta-impresszum. A tényleges adatokat (szögletes zárójelek) ki kell tölteni.</em></p>
+        `,
+        // Legal — Data Processing
+        'legal-data-title': 'Adatkezelési tájékoztató — egészségügyi adatok',
+        'legal-data-body': `
+          <h3>Miért külön tájékoztató?</h3>
+          <p>A fogászati kezeléssel összefüggő adatok a GDPR 9. cikk szerinti <strong>különleges (egészségügyi) adatok</strong>nak minősülnek, melyekre szigorúbb védelmi szabályok vonatkoznak.</p>
+
+          <h3>1. Milyen egészségügyi adatokat kezelünk?</h3>
+          <ul>
+            <li>A pácienst érintő panasz / kezelési igény (pl. „fogfájás", „fogkő", „implantátum-konzultáció")</li>
+            <li>A kezelés során rögzített orvosi dokumentáció (csak a klinikai rendszerben)</li>
+            <li>Sürgősségi jelzés (pl. [SÜRGŐS] prefixű foglalás)</li>
+          </ul>
+
+          <h3>2. Hangrögzítés</h3>
+          <p>A telefonos hívások teljes hanganyagát rögzítjük. A felvétel <strong>különleges adatot</strong> tartalmazhat (pl. tüneti leírás), ezért külön kifejezett hozzájárulását kérjük a hívás megkezdése előtt.</p>
+          <ul>
+            <li>Tárolási hely: <strong>EU-s szerverek</strong>, AES-256 titkosítással</li>
+            <li>Tárolási idő: <strong>30 nap</strong>, utána automatikus, visszaállíthatatlan törlés</li>
+            <li>Hozzáférés: csak a klinika kijelölt munkatársai, naplózott módon</li>
+          </ul>
+
+          <h3>3. AI-feldolgozás</h3>
+          <p>A hanganyagot egy mesterséges intelligencia rendszer (ElevenLabs Conversational AI) dolgozza fel a beszélgetés idején. <strong>A rendszer nem használja a felvételt modell-tanításra.</strong> A hívás után az átirat a klinika rendszerébe kerül, a hanganyag pedig 30 napon belül törlődik.</p>
+
+          <h3>4. Adattovábbítás</h3>
+          <p>Egészségügyi adatait <strong>NEM adjuk át</strong>:</p>
+          <ul>
+            <li>Marketing-cégeknek</li>
+            <li>Biztosítóknak (kivéve, ha Ön külön kéri)</li>
+            <li>Harmadik országok szolgáltatóinak (csak EU-n belüli feldolgozás)</li>
+          </ul>
+
+          <h3>5. Hozzájárulás visszavonása</h3>
+          <p>Hozzájárulását bármikor, indokolás nélkül visszavonhatja a <a href="mailto:hello@dentai.me">hello@dentai.me</a> címen. A visszavonás nem érinti a már elvégzett feldolgozás jogszerűségét.</p>
+
+          <h3>6. Adatvédelmi tisztviselő (DPO)</h3>
+          <p>[Név]<br>Email: [dpo@dentai.me]</p>
+
+          <h3>7. Panasz</h3>
+          <p>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)<br>1055 Budapest, Falk Miksa utca 9-11.<br>Tel: +36 (1) 391-1400 · <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Ez egy minta-tájékoztató. Éles használat előtt egészségügyi adatvédelemre szakosodott jogásszal ellenőriztesse.</em></p>
+        `
       },
       en: {
         'page-title': 'Anna — Dental-AI Clinic Senior Assistant | 24/7 Call Handling & Booking',
@@ -653,7 +1312,195 @@
         'footer-desc': 'Anna — the Dental-AI Clinic\'s Senior Assistant. 24/7 call handling, online booking, and automatic confirmation, so your practice always runs smoothly.',
         'footer-contact': 'Contact',
         'footer-langs': 'Languages',
-        'footer-copy': '© 2026 Dental-AI Clinic. All rights reserved. Powered by Anna AI.'
+        'footer-legal': 'Legal',
+        'footer-copy': '© 2026 Dental-AI Clinic. All rights reserved. Powered by Anna AI.',
+        'cal-title': 'Anna\'s calendar — demo',
+        'cal-sub': 'Click an open slot to book',
+        'cal-loc-bp': 'Budapest',
+        'cal-loc-sp': 'Sopron',
+        'cal-legend-free': 'Available',
+        'cal-legend-busy': 'Booked',
+        'cal-legend-mine': 'Your booking',
+        'cal-disclaimer': 'Demo data',
+        'cal-demo-note': 'This is a demo calendar — actual booking happens through Anna',
+        'cal-cta': 'Book through Anna',
+        'demo-disclaimer': 'Calls are recorded for quality assurance.',
+        'demo-disclaimer-link': 'Details',
+        'transcript-title': 'Live transcript',
+        'transcript-sub': 'Read what Anna says',
+        'transcript-waiting': 'Waiting for Anna\'s response...',
+        'cookie-title': 'Cookies & Privacy',
+        'cookie-desc': 'We use cookies for site functionality and anonymous analytics. We never share your health data with third parties.',
+        'cookie-accept-all': 'Accept all',
+        'cookie-essential': 'Essential only',
+        'cookie-more': 'Details',
+        'consent-title': 'Voice recording notice',
+        'consent-p1': 'Before starting the call, please be informed: we record the conversation for <strong class="text-slate-900">quality assurance and service improvement</strong>.',
+        'consent-li1': 'Recordings stored on EU servers, encrypted',
+        'consent-li2': 'Automatically deleted after 30 days',
+        'consent-li3': 'Never shared with third parties for marketing',
+        'consent-li4': 'GDPR Art. 9 health-data processing rules apply',
+        'consent-p2': 'Details:',
+        'consent-decline': 'Cancel',
+        'consent-accept': 'Accept and call',
+        'legal-privacy': 'Privacy Policy',
+        'legal-terms': 'Terms of Service',
+        'legal-imprint': 'Imprint',
+        'legal-data': 'Data Processing',
+        'legal-cookies': 'Cookie Settings',
+        'legal-updated': 'Last updated: 26 April 2026',
+        'legal-privacy-title': 'Privacy Policy',
+        'legal-privacy-body': `
+          <h3>1. Data Controller</h3>
+          <p><strong>Dental-AI Clinic Ltd.</strong><br>Registered seat: 1051 Budapest, [street, number], Hungary<br>Company reg. no.: [01-09-XXXXXX]<br>Tax no.: [XXXXXXXX-X-XX]<br>Email: hello@dentai.me</p>
+
+          <h3>2. Data Collected</h3>
+          <ul>
+            <li><strong>For booking:</strong> name, phone number, email address, requested time, complaint/treatment description</li>
+            <li><strong>Voice recording:</strong> full call audio + automatic written transcript</li>
+            <li><strong>Technical data:</strong> IP address, browser type, page-view timestamp (for anonymous analytics)</li>
+          </ul>
+
+          <h3>3. Purpose & Legal Basis</h3>
+          <ul>
+            <li><strong>Booking fulfilment</strong> — GDPR Art. 6(1)(b), contract performance</li>
+            <li><strong>Health data processing</strong> — GDPR Art. 9(2)(h), provision of healthcare</li>
+            <li><strong>Voice recording for quality assurance</strong> — GDPR Art. 6(1)(a), consent</li>
+            <li><strong>Statistical data</strong> — GDPR Art. 6(1)(f), legitimate interest</li>
+          </ul>
+
+          <h3>4. Retention Period</h3>
+          <ul>
+            <li>Voice recordings: <strong>30 days</strong>, then automatically deleted</li>
+            <li>Booking data: <strong>5 years</strong> (Hungarian Healthcare Act 1997/CLIV documentation requirement)</li>
+            <li>Anonymous analytics: <strong>26 months</strong></li>
+          </ul>
+
+          <h3>5. Data Processors</h3>
+          <ul>
+            <li><strong>ElevenLabs Inc.</strong> — voice AI assistant provider (EU data centre)</li>
+            <li><strong>[Hosting provider]</strong> — website hosting</li>
+            <li><strong>[SMS provider]</strong> — confirmation SMS delivery</li>
+          </ul>
+
+          <h3>6. Your Rights</h3>
+          <p>You have the right to: access, rectify, erasure ("right to be forgotten"), restrict processing, data portability, withdraw consent at any time, lodge a complaint with NAIH.</p>
+
+          <h3>7. Contact / Complaints</h3>
+          <p>Privacy queries: <a href="mailto:hello@dentai.me">hello@dentai.me</a><br>NAIH (Hungarian Data Protection Authority): 1055 Budapest, Falk Miksa u. 9-11. — <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>This is a sample policy. Have it reviewed by a legal expert before going live and fill in [bracketed] data.</em></p>
+        `,
+        'legal-terms-title': 'Terms of Service',
+        'legal-terms-body': `
+          <h3>1. Service Provider</h3>
+          <p><strong>Dental-AI Clinic Ltd.</strong><br>Registered seat: 1051 Budapest, [street, number], Hungary<br>Email: hello@dentai.me</p>
+
+          <h3>2. Service Description</h3>
+          <p>Through this website, patients may book a dental appointment online or via the AI voice assistant (Anna). Confirmation is sent by email and/or SMS.</p>
+
+          <h3>3. Booking Process</h3>
+          <ul>
+            <li>Patient provides location, treatment, time, name, email and phone number</li>
+            <li>Anna verifies the slot and confirms</li>
+            <li>The booking becomes final once written confirmation (email/SMS) is received</li>
+          </ul>
+
+          <h3>4. Cancellation & Modification</h3>
+          <p>The booking can be cancelled or modified free of charge at least <strong>24 hours</strong> before the scheduled time. Late cancellation or no-show may result in a partial treatment fee being charged.</p>
+
+          <h3>5. Pricing</h3>
+          <p>Exact pricing can <strong>only be determined after on-site examination</strong>. No specific quotes are given by phone, online or via the AI assistant. A guideline price list is available on the website.</p>
+
+          <h3>6. Liability</h3>
+          <p>The Service Provider is not liable for damages caused by incorrect data submitted by the patient (e.g. wrong phone number leading to missed SMS).</p>
+
+          <h3>7. AI Assistant (Anna) Specifics</h3>
+          <ul>
+            <li>Anna is an AI-based assistant, not a dentist</li>
+            <li>Anna does NOT provide medical diagnosis, treatment recommendations, or pricing information</li>
+            <li>In urgent cases the clinic will call back via a human staff member within 24 hours</li>
+          </ul>
+
+          <h3>8. Disputes</h3>
+          <p>Court of competent jurisdiction: court at the Service Provider's seat. Consumer complaints: territorially competent Conciliation Board.</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>This is a sample ToS. Have it reviewed by legal counsel before going live.</em></p>
+        `,
+        'legal-imprint-title': 'Imprint',
+        'legal-imprint-body': `
+          <h3>Operator</h3>
+          <p><strong>Dental-AI Clinic Ltd.</strong></p>
+
+          <h3>Company Details</h3>
+          <ul>
+            <li>Registered seat: 1051 Budapest, [street, number]</li>
+            <li>Company reg. no.: [01-09-XXXXXX]</li>
+            <li>Tax no.: [XXXXXXXX-X-XX]</li>
+            <li>Registered with: Metropolitan Court of Budapest</li>
+          </ul>
+
+          <h3>Healthcare Activity</h3>
+          <ul>
+            <li>ÁNTSZ licence no.: [XXXXXX/2024]</li>
+            <li>Responsible dentist: Dr. [Name], stamp no.: [XXXXX]</li>
+            <li>Professional supervision: Hungarian Medical Chamber, Dental Section</li>
+          </ul>
+
+          <h3>Contact</h3>
+          <ul>
+            <li>Email: <a href="mailto:hello@dentai.me">hello@dentai.me</a></li>
+            <li>Phone: [+36 ...]</li>
+            <li>Web: <a href="https://dentai.me">dentai.me</a></li>
+          </ul>
+
+          <h3>Hosting Provider</h3>
+          <p>[Hosting provider name]<br>[Address]<br>Email: [hosting@...]</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>This is a sample imprint. Fill in actual data (bracketed fields).</em></p>
+        `,
+        'legal-data-title': 'Data Processing — Health Data',
+        'legal-data-body': `
+          <h3>Why a separate notice?</h3>
+          <p>Data related to dental treatment qualifies as <strong>special-category (health) data</strong> under GDPR Art. 9, subject to stricter protection rules.</p>
+
+          <h3>1. What health data we process</h3>
+          <ul>
+            <li>Patient complaint / treatment request (e.g. "toothache", "scaling", "implant consultation")</li>
+            <li>Clinical documentation during treatment (only in clinical system)</li>
+            <li>Urgency flag (e.g. [URGENT] prefix on bookings)</li>
+          </ul>
+
+          <h3>2. Voice recording</h3>
+          <p>The full audio of phone calls is recorded. The recording may contain <strong>special-category data</strong> (e.g. symptom descriptions), so we ask for explicit consent before the call begins.</p>
+          <ul>
+            <li>Storage location: <strong>EU servers</strong>, AES-256 encryption</li>
+            <li>Retention: <strong>30 days</strong>, then automatic, irreversible deletion</li>
+            <li>Access: only designated clinic staff, with audit logging</li>
+          </ul>
+
+          <h3>3. AI processing</h3>
+          <p>Audio is processed by an AI system (ElevenLabs Conversational AI) during the call. <strong>The system does not use the recording for model training.</strong> After the call, the transcript goes to the clinic system; the audio is deleted within 30 days.</p>
+
+          <h3>4. Data transfers</h3>
+          <p>Your health data is <strong>NOT transferred</strong> to:</p>
+          <ul>
+            <li>Marketing companies</li>
+            <li>Insurance companies (unless you specifically request)</li>
+            <li>Third-country processors (EU-only processing)</li>
+          </ul>
+
+          <h3>5. Withdrawing consent</h3>
+          <p>You may withdraw consent at any time, without giving reasons, by emailing <a href="mailto:hello@dentai.me">hello@dentai.me</a>. Withdrawal does not affect the lawfulness of processing already carried out.</p>
+
+          <h3>6. Data Protection Officer (DPO)</h3>
+          <p>[Name]<br>Email: [dpo@dentai.me]</p>
+
+          <h3>7. Complaints</h3>
+          <p>NAIH (Hungarian Data Protection Authority)<br>1055 Budapest, Falk Miksa u. 9-11.<br>Phone: +36 (1) 391-1400 · <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>This is a sample notice. Have it reviewed by a healthcare data privacy specialist before going live.</em></p>
+        `
       },
       de: {
         'page-title': 'Anna — Dental-AI Klinik Senior Assistentin | 24/7 Anrufbearbeitung & Terminbuchung',
@@ -748,7 +1595,195 @@
         'footer-desc': 'Anna — die Senior Assistentin der Dental-AI Klinik. 24/7 Anrufbearbeitung, Online-Buchung und automatische Bestätigung, damit Ihre Praxis immer reibungslos läuft.',
         'footer-contact': 'Kontakt',
         'footer-langs': 'Sprachen',
-        'footer-copy': '© 2026 Dental-AI Klinik. Alle Rechte vorbehalten. Betrieben von Anna AI.'
+        'footer-legal': 'Rechtliches',
+        'footer-copy': '© 2026 Dental-AI Klinik. Alle Rechte vorbehalten. Betrieben von Anna AI.',
+        'cal-title': 'Annas Kalender — Demo',
+        'cal-sub': 'Klicken Sie auf einen freien Slot zum Buchen',
+        'cal-loc-bp': 'Budapest',
+        'cal-loc-sp': 'Sopron',
+        'cal-legend-free': 'Frei',
+        'cal-legend-busy': 'Belegt',
+        'cal-legend-mine': 'Ihre Buchung',
+        'cal-disclaimer': 'Demo-Daten',
+        'cal-demo-note': 'Dies ist ein Demo-Kalender — die tatsächliche Buchung erfolgt über Anna',
+        'cal-cta': 'Über Anna buchen',
+        'demo-disclaimer': 'Anrufe werden zur Qualitätssicherung aufgezeichnet.',
+        'demo-disclaimer-link': 'Details',
+        'transcript-title': 'Live-Transkript',
+        'transcript-sub': 'Lesen Sie, was Anna sagt',
+        'transcript-waiting': 'Warte auf Annas Antwort...',
+        'cookie-title': 'Cookies & Datenschutz',
+        'cookie-desc': 'Wir verwenden Cookies für die Funktionalität und anonyme Statistik. Ihre Gesundheitsdaten geben wir niemals an Dritte weiter.',
+        'cookie-accept-all': 'Alle akzeptieren',
+        'cookie-essential': 'Nur notwendige',
+        'cookie-more': 'Details',
+        'consent-title': 'Hinweis zur Sprachaufzeichnung',
+        'consent-p1': 'Vor Beginn des Anrufs informieren wir Sie: Das Gespräch wird zur <strong class="text-slate-900">Qualitätssicherung und Servicenoptimierung</strong> aufgezeichnet.',
+        'consent-li1': 'Aufnahme verschlüsselt auf EU-Servern gespeichert',
+        'consent-li2': 'Automatische Löschung nach 30 Tagen',
+        'consent-li3': 'Niemals Weitergabe an Dritte für Marketing',
+        'consent-li4': 'Es gilt die DSGVO Art. 9 Gesundheitsdaten-Verarbeitung',
+        'consent-p2': 'Details:',
+        'consent-decline': 'Abbrechen',
+        'consent-accept': 'Akzeptieren und anrufen',
+        'legal-privacy': 'Datenschutzerklärung',
+        'legal-terms': 'AGB',
+        'legal-imprint': 'Impressum',
+        'legal-data': 'Datenverarbeitung',
+        'legal-cookies': 'Cookie-Einstellungen',
+        'legal-updated': 'Zuletzt aktualisiert: 26.04.2026',
+        'legal-privacy-title': 'Datenschutzerklärung',
+        'legal-privacy-body': `
+          <h3>1. Verantwortlicher</h3>
+          <p><strong>Dental-AI Klinik GmbH</strong><br>Sitz: 1051 Budapest, [Straße, Nr.], Ungarn<br>Handelsregister-Nr.: [01-09-XXXXXX]<br>Steuer-Nr.: [XXXXXXXX-X-XX]<br>E-Mail: hello@dentai.me</p>
+
+          <h3>2. Erfasste Daten</h3>
+          <ul>
+            <li><strong>Für die Buchung:</strong> Name, Telefonnummer, E-Mail-Adresse, Wunschtermin, Beschwerde-/Behandlungsbeschreibung</li>
+            <li><strong>Sprachaufzeichnung:</strong> vollständige Audio-Aufnahme + automatisches Transkript</li>
+            <li><strong>Technische Daten:</strong> IP-Adresse, Browser-Typ, Seitenaufrufzeit (anonyme Statistik)</li>
+          </ul>
+
+          <h3>3. Zweck & Rechtsgrundlage</h3>
+          <ul>
+            <li><strong>Buchungsabwicklung</strong> — DSGVO Art. 6 Abs. 1 lit. b, Vertragserfüllung</li>
+            <li><strong>Verarbeitung von Gesundheitsdaten</strong> — DSGVO Art. 9 Abs. 2 lit. h, Gesundheitsversorgung</li>
+            <li><strong>Sprachaufzeichnung zur Qualitätssicherung</strong> — DSGVO Art. 6 Abs. 1 lit. a, Einwilligung</li>
+            <li><strong>Statistische Daten</strong> — DSGVO Art. 6 Abs. 1 lit. f, berechtigtes Interesse</li>
+          </ul>
+
+          <h3>4. Speicherdauer</h3>
+          <ul>
+            <li>Sprachaufnahmen: <strong>30 Tage</strong>, danach automatische Löschung</li>
+            <li>Buchungsdaten: <strong>5 Jahre</strong> (ungarisches Gesundheitsgesetz 1997/CLIV)</li>
+            <li>Anonyme Statistik: <strong>26 Monate</strong></li>
+          </ul>
+
+          <h3>5. Auftragsverarbeiter</h3>
+          <ul>
+            <li><strong>ElevenLabs Inc.</strong> — Sprach-KI-Dienstleister (EU-Rechenzentrum)</li>
+            <li><strong>[Hosting-Anbieter]</strong> — Webseiten-Hosting</li>
+            <li><strong>[SMS-Anbieter]</strong> — Bestätigungs-SMS</li>
+          </ul>
+
+          <h3>6. Ihre Rechte</h3>
+          <p>Sie haben das Recht auf: Auskunft, Berichtigung, Löschung („Recht auf Vergessenwerden"), Einschränkung der Verarbeitung, Datenübertragbarkeit, jederzeitigen Widerruf der Einwilligung, Beschwerde bei NAIH.</p>
+
+          <h3>7. Kontakt / Beschwerde</h3>
+          <p>Datenschutzfragen: <a href="mailto:hello@dentai.me">hello@dentai.me</a><br>NAIH (Ungarische Datenschutzbehörde): 1055 Budapest, Falk Miksa u. 9-11. — <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Dies ist eine Mustererklärung. Vor dem Live-Einsatz von einem Rechtsexperten prüfen lassen und die [Klammer-Felder] ausfüllen.</em></p>
+        `,
+        'legal-terms-title': 'Allgemeine Geschäftsbedingungen',
+        'legal-terms-body': `
+          <h3>1. Anbieter</h3>
+          <p><strong>Dental-AI Klinik GmbH</strong><br>Sitz: 1051 Budapest, [Straße, Nr.], Ungarn<br>E-Mail: hello@dentai.me</p>
+
+          <h3>2. Leistungsumfang</h3>
+          <p>Über die Webseite kann der Patient online oder per Sprach-KI-Assistentin (Anna) einen Zahnarzttermin buchen. Die Bestätigung erfolgt per E-Mail und/oder SMS.</p>
+
+          <h3>3. Buchungsablauf</h3>
+          <ul>
+            <li>Patient gibt gewünschten Standort, Behandlung, Zeit, Name, E-Mail und Telefonnummer an</li>
+            <li>Anna prüft den freien Slot und bestätigt</li>
+            <li>Die Buchung ist erst gültig, wenn der Patient eine schriftliche Bestätigung (E-Mail/SMS) erhält</li>
+          </ul>
+
+          <h3>4. Stornierung & Änderung</h3>
+          <p>Die Buchung kann mindestens <strong>24 Stunden</strong> vor dem geplanten Termin kostenlos storniert oder geändert werden. Bei verspäteter Stornierung oder Nichterscheinen behält sich die Klinik vor, einen Teil der Behandlungsgebühr zu berechnen.</p>
+
+          <h3>5. Preise</h3>
+          <p>Genaue Preise können <strong>ausschließlich nach Untersuchung vor Ort</strong> festgelegt werden. Per Telefon, online oder über die KI-Assistentin werden keine konkreten Preise genannt. Eine Richtpreisliste finden Sie auf der Webseite.</p>
+
+          <h3>6. Haftung</h3>
+          <p>Der Anbieter haftet nicht für Schäden, die durch fehlerhafte Patientenangaben entstehen (z. B. falsche Telefonnummer und damit nicht zugestellte SMS).</p>
+
+          <h3>7. KI-Assistentin (Anna)</h3>
+          <ul>
+            <li>Anna ist eine KI-basierte Assistentin, keine Zahnärztin</li>
+            <li>Anna stellt KEINE medizinische Diagnose, Behandlungsempfehlung oder Preisauskunft</li>
+            <li>Bei Notfällen ruft die Klinik innerhalb von 24 Stunden über einen menschlichen Mitarbeiter zurück</li>
+          </ul>
+
+          <h3>8. Streitigkeiten</h3>
+          <p>Zuständiges Gericht: am Sitz des Anbieters. Verbraucherbeschwerden: territorial zuständige Schlichtungsstelle.</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Dies ist eine Muster-AGB. Vor dem Live-Einsatz von einem Rechtsexperten prüfen lassen.</em></p>
+        `,
+        'legal-imprint-title': 'Impressum',
+        'legal-imprint-body': `
+          <h3>Betreiber</h3>
+          <p><strong>Dental-AI Klinik GmbH</strong></p>
+
+          <h3>Unternehmensdaten</h3>
+          <ul>
+            <li>Sitz: 1051 Budapest, [Straße, Nr.], Ungarn</li>
+            <li>Handelsregister-Nr.: [01-09-XXXXXX]</li>
+            <li>Steuer-Nr.: [XXXXXXXX-X-XX]</li>
+            <li>Registergericht: Hauptstadtgericht Budapest</li>
+          </ul>
+
+          <h3>Gesundheitstätigkeit</h3>
+          <ul>
+            <li>ÁNTSZ Lizenz-Nr.: [XXXXXX/2024]</li>
+            <li>Verantwortlicher Zahnarzt: Dr. [Name], Stempel-Nr.: [XXXXX]</li>
+            <li>Fachaufsicht: Ungarische Ärztekammer, Sektion Zahnmedizin</li>
+          </ul>
+
+          <h3>Kontakt</h3>
+          <ul>
+            <li>E-Mail: <a href="mailto:hello@dentai.me">hello@dentai.me</a></li>
+            <li>Telefon: [+36 ...]</li>
+            <li>Web: <a href="https://dentai.me">dentai.me</a></li>
+          </ul>
+
+          <h3>Hosting-Anbieter</h3>
+          <p>[Hosting-Anbieter Name]<br>[Adresse]<br>E-Mail: [hosting@...]</p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Dies ist ein Muster-Impressum. Tatsächliche Daten ([Klammer-Felder]) bitte ausfüllen.</em></p>
+        `,
+        'legal-data-title': 'Datenverarbeitung — Gesundheitsdaten',
+        'legal-data-body': `
+          <h3>Warum eine separate Erklärung?</h3>
+          <p>Daten im Zusammenhang mit der zahnärztlichen Behandlung gelten als <strong>besondere Kategorien personenbezogener Daten (Gesundheitsdaten)</strong> nach DSGVO Art. 9 und unterliegen strengeren Schutzregeln.</p>
+
+          <h3>1. Welche Gesundheitsdaten verarbeiten wir?</h3>
+          <ul>
+            <li>Patientenbeschwerde / Behandlungswunsch (z. B. „Zahnschmerzen", „Zahnsteinentfernung", „Implantat-Beratung")</li>
+            <li>Während der Behandlung erhobene klinische Dokumentation (nur im Klinik-System)</li>
+            <li>Notfall-Kennzeichnung (z. B. [DRINGEND]-Präfix bei Buchungen)</li>
+          </ul>
+
+          <h3>2. Sprachaufzeichnung</h3>
+          <p>Das vollständige Audio der Anrufe wird aufgezeichnet. Die Aufnahme kann <strong>besondere Kategorien</strong> enthalten (z. B. Symptombeschreibungen), daher bitten wir vor Beginn des Anrufs um ausdrückliche Einwilligung.</p>
+          <ul>
+            <li>Speicherort: <strong>EU-Server</strong>, AES-256-Verschlüsselung</li>
+            <li>Speicherdauer: <strong>30 Tage</strong>, danach automatische, unwiderrufliche Löschung</li>
+            <li>Zugriff: nur autorisierte Klinik-Mitarbeiter, mit Audit-Log</li>
+          </ul>
+
+          <h3>3. KI-Verarbeitung</h3>
+          <p>Audio wird während des Anrufs von einem KI-System (ElevenLabs Conversational AI) verarbeitet. <strong>Das System verwendet die Aufnahme nicht für das Modelltraining.</strong> Nach dem Anruf gelangt das Transkript ins Klinik-System; das Audio wird innerhalb von 30 Tagen gelöscht.</p>
+
+          <h3>4. Datenweitergabe</h3>
+          <p>Ihre Gesundheitsdaten werden <strong>NICHT übermittelt</strong> an:</p>
+          <ul>
+            <li>Marketing-Unternehmen</li>
+            <li>Versicherungen (außer auf Ihre ausdrückliche Bitte)</li>
+            <li>Drittland-Auftragsverarbeiter (Verarbeitung nur innerhalb der EU)</li>
+          </ul>
+
+          <h3>5. Widerruf der Einwilligung</h3>
+          <p>Sie können Ihre Einwilligung jederzeit ohne Angabe von Gründen per E-Mail an <a href="mailto:hello@dentai.me">hello@dentai.me</a> widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bereits erfolgten Verarbeitung.</p>
+
+          <h3>6. Datenschutzbeauftragter (DSB)</h3>
+          <p>[Name]<br>E-Mail: [dpo@dentai.me]</p>
+
+          <h3>7. Beschwerde</h3>
+          <p>NAIH (Ungarische Datenschutzbehörde)<br>1055 Budapest, Falk Miksa u. 9-11.<br>Tel.: +36 (1) 391-1400 · <a href="https://naih.hu" target="_blank" rel="noopener">naih.hu</a></p>
+
+          <p class="text-xs text-slate-400 mt-6"><em>Dies ist eine Mustererklärung. Vor dem Live-Einsatz von einem auf Gesundheitsdatenschutz spezialisierten Anwalt prüfen lassen.</em></p>
+        `
       }
     };
     let currentLang = 'hu';
@@ -774,10 +1809,25 @@
           b.classList.add('ring-2','ring-dental-400','ring-offset-1');
         }
       });
+      // Re-render fake calendar with new locale
+      if (typeof window.fcalRender === 'function') window.fcalRender();
+      // If a legal modal is currently open, refresh its content
+      if (legalModal && legalModal.classList.contains('show')){
+        const currentTitle = legalTitle.textContent;
+        const types = ['privacy','terms','imprint','data'];
+        for (const tp of types){
+          if (translations.hu['legal-'+tp+'-title'] === currentTitle ||
+              translations.en['legal-'+tp+'-title'] === currentTitle ||
+              translations.de['legal-'+tp+'-title'] === currentTitle){
+            openLegalModal(tp);
+            break;
+          }
+        }
+      }
     }
     document.querySelectorAll('.lang-badge[data-lang]').forEach(b => {
       b.style.cursor = 'pointer';
-      b.addEventListener('click', () => switchLang(b.getAttribute('data-lang')));
+      b.addEventListener('click', () => { switchLang(b.getAttribute('data-lang')); closeMenu(); });
     });
 
     document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel</div><div>State: '+currentCallState+'</div><div>Widget: '+!!getWidget()+'</div><div>ShadowRoot: '+!!(getWidget()?.shadowRoot)+'</div><div>startConversation: '+(typeof getWidget()?.startConversation)+'</div><div>endConversation: '+(typeof getWidget()?.endConversation)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Log:</div>'+debugLog.map(l=>'<div>'+l+'</div>').join('');document.body.appendChild(panel)}});
