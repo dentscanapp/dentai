@@ -520,7 +520,8 @@
             <div class="relative flex items-start mt-0.5 flex-shrink-0">
               <input type="checkbox" id="consent-checkbox" class="peer sr-only">
               <div class="w-6 h-6 rounded border-2 border-slate-300 bg-white peer-checked:bg-dental-600 peer-checked:border-dental-600 transition-colors flex items-center justify-center shadow-sm">
-                <svg class="w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                <!-- Hozzáadtam egy id-t (consent-check-icon), hogy JS-ből megbízhatóan lehessen vezérelni -->
+                <svg id="consent-check-icon" class="w-4 h-4 text-white opacity-0 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
               </div>
             </div>
             <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors leading-snug" data-i18n="modal-agree">Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.</span>
@@ -597,25 +598,39 @@
     // Step animation on scroll
     const stepCards=document.querySelectorAll('.step-animate');if(stepCards.length){const stepObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.animationPlayState='running';stepObserver.unobserve(entry.target)}})},{threshold:0.2});stepCards.forEach(card=>{card.style.animationPlayState='paused';stepObserver.observe(card)})}
 
-    // --- GDPR/Legal Consent Logic ---
-    let hasConsented = false;
+    // --- GDPR/Legal Consent Logic (FEJLESZTVE: LocalStorage + Pipa ikon vezérlés) ---
+    // Betöltjük, hogy el lett-e már fogadva
+    let hasConsented = localStorage.getItem('dentalAiConsent') === 'true';
     const consentModal = document.getElementById('consent-modal');
     const consentModalContent = document.getElementById('consent-modal-content');
     const consentCheckbox = document.getElementById('consent-checkbox');
     const consentAcceptBtn = document.getElementById('consent-accept-btn');
     const consentCancelBtn = document.getElementById('consent-cancel-btn');
+    const consentCheckIcon = document.getElementById('consent-check-icon');
 
+    // JS-ből vezéreljük a pipa SVG láthatóságát az opacity-100 / opacity-0 osztályokkal
     consentCheckbox.addEventListener('change', (e) => {
       if (e.target.checked) {
         consentAcceptBtn.classList.remove('bg-slate-300', 'pointer-events-none');
         consentAcceptBtn.classList.add('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+        consentCheckIcon.classList.remove('opacity-0');
+        consentCheckIcon.classList.add('opacity-100');
       } else {
         consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
         consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+        consentCheckIcon.classList.remove('opacity-100');
+        consentCheckIcon.classList.add('opacity-0');
       }
     });
 
     function showConsentModal() {
+      // Amikor felugrik a modal, biztosítjuk, hogy tiszta állapotból induljon
+      consentCheckbox.checked = false;
+      consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
+      consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+      consentCheckIcon.classList.remove('opacity-100');
+      consentCheckIcon.classList.add('opacity-0');
+
       consentModal.classList.remove('opacity-0', 'pointer-events-none');
       consentModalContent.classList.remove('scale-95', 'translate-y-4');
     }
@@ -626,9 +641,12 @@
     }
 
     consentCancelBtn.addEventListener('click', hideConsentModal);
+    
     consentAcceptBtn.addEventListener('click', () => {
       if (consentCheckbox.checked) {
         hasConsented = true;
+        // Elmentjük a választást a böngésző helyi tárhelyébe
+        localStorage.setItem('dentalAiConsent', 'true');
         hideConsentModal();
         executeCall(); // Indítás, miután a beleegyezés megtörtént
       }
@@ -642,6 +660,7 @@
     // --- Módosított híváskezelés az adatvédelmi modalhoz ---
     function startCall(){
       if(currentCallState!==CALL_STATE.IDLE) return;
+      // Itt nézi meg a hasConsented változót, amit már a localStorage-ből olvas ki betöltéskor
       if(!hasConsented) {
         showConsentModal();
       } else {
