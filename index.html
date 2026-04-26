@@ -509,7 +509,7 @@
             <p data-i18n="modal-p1">Mielőtt elindítaná a hívást, kérem, vegye figyelembe, hogy ez egy technológiai demonstráció.</p>
             <ul class="list-disc pl-5 space-y-2 text-slate-500">
               <li data-i18n="modal-li1" data-i18n-html="true"><strong>Kizárólag demo célok:</strong> Ez az oldal egy portfolió bemutató. Nem nyújtok valós egészségügyi szolgáltatást, és nem rögzítek valós időpontokat.</li>
-              <li data-i18n="modal-li2" data-i18n-html="true"><strong>Nincs valós adatkezelés:</strong> Kérjük, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.</li>
+              <li data-i18n="modal-li2" data-i18n-html="true"><strong>Nincs valós adatkezelés:</strong> Kérem, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.</li>
               <li data-i18n="modal-li3" data-i18n-html="true"><strong>AI adatfeldolgozás:</strong> A hangalapú interakciót harmadik fél (ElevenLabs) technológiája biztosítja. A hangadatok ideiglenesen feldolgozásra kerülnek a válaszgenerálás érdekében.</li>
               <li data-i18n="modal-li4" data-i18n-html="true"><strong>Felelősségkizárás:</strong> Semmilyen felelősséget nem vállalok a megadott adatokért vagy a mesterséges intelligencia által adott válaszokért. A tesztelést mindenki saját felelősségére végzi.</li>
             </ul>
@@ -651,7 +651,7 @@
 
     function executeCall(){
       const w=getWidget();
-      if(!w){alert('A hívás indítása sikertelen – Anna beszélgetési widgetje még nem töltődött be.\n\nKérjük, frissítse az oldalt (Ctrl+R) és próbálja újra!');return}
+      if(!w){alert('A hívás indítása sikertelen – Anna beszélgetési widgetje még nem töltődött be.\n\nKérem, frissítse az oldalt (Ctrl+R) és próbálja újra!');return}
       setCallState(CALL_STATE.CONNECTING);
       logDebug('Hívás indítása Annához...');
       const clicked=clickWidgetFab();
@@ -778,7 +778,7 @@
         'modal-title': 'Adatkezelési és Jogi Nyilatkozat (Demo verzió)',
         'modal-p1': 'Mielőtt elindítaná a hívást, kérem, vegye figyelembe, hogy ez egy technológiai demonstráció.',
         'modal-li1': '<strong>Kizárólag demo célok:</strong> Ez az oldal egy portfolió bemutató. Nem nyújtok valós egészségügyi szolgáltatást, és nem rögzítek valós időpontokat.',
-        'modal-li2': '<strong>Nincs valós adatkezelés:</strong> Kérjük, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.',
+        'modal-li2': '<strong>Nincs valós adatkezelés:</strong> Kérem, <strong>ne osszon meg valós személyes vagy egészségügyi adatokat</strong> a beszélgetés során! Használjon kitalált adatokat a teszteléshez.',
         'modal-li3': '<strong>AI adatfeldolgozás:</strong> A hangalapú interakciót harmadik fél (ElevenLabs) technológiája biztosítja. A hangadatok ideiglenesen feldolgozásra kerülnek a válaszgenerálás érdekében.',
         'modal-li4': '<strong>Felelősségkizárás:</strong> Semmilyen felelősséget nem vállalok a megadott adatokért vagy a mesterséges intelligencia által adott válaszokért. A tesztelést mindenki saját felelősségére végzi.',
         'modal-agree': 'Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.',
