@@ -26,6 +26,14 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- DNS/TLS elő-kapcsolódás: API proxy és ElevenLabs szerverek -->
+  <link rel="preconnect" href="https://api.dentai.me" />
+  <link rel="preconnect" href="https://api.elevenlabs.io" />
+  <link rel="dns-prefetch" href="https://api.dentai.me" />
+  <link rel="dns-prefetch" href="https://api.elevenlabs.io" />
+  <!-- esm.sh SDK CDN elő-kapcsolódás -->
+  <link rel="preconnect" href="https://esm.sh" />
+  <link rel="dns-prefetch" href="https://esm.sh" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *{box-sizing:border-box}body{font-family:'Inter',system-ui,-apple-system,sans-serif}html{scroll-behavior:smooth}
@@ -768,12 +776,17 @@
     const PROXY_URL = 'https://api.dentai.me';
 
     // ========================================
-    // MOBIL AUDIO OPTIMALIZÁCIÓ
+    // MOBIL AUDIO OPTIMALIZÁCIÓ v2
     // ========================================
-    // AudioContext elő-melegítés: a böngésző hangmotorját FELÉBRESZTJÜK
-    // a hívás előtt, így nincs "cold start" lag az első másodpercben.
+    // A lag 3 fő forrása:
+    // 1. AudioContext "cold start" → AudioContext + silent audio warmup
+    // 2. SDK dinamikus import → SDK elő-betöltés
+    // 3. Signed URL hálózati kérés → Signed URL elő-lekérés + párhuzamosítás
     let audioCtx = null;
     let sdkModule = null; // SDK elő-betöltött modul
+    let cachedSignedUrl = null; // Előre lekért signed URL
+    let signedUrlTimestamp = 0; // Mikor kérjük le (TTL ellenőrzés)
+    const SIGNED_URL_TTL = 4 * 60 * 1000; // 4 perc TTL (ElevenLabs 5 percig érvényes)
 
     function warmUpAudioContext() {
       try {
@@ -786,6 +799,25 @@
         logDebug('AudioContext felélesztve (state: ' + audioCtx.state + ')');
       } catch (e) {
         logDebug('AudioContext warm-up figyelmeztetés: ' + e.message);
+      }
+    }
+
+    // SILENT AUDIO LEJÁTSZÁS — ez a "titkos fegyver"!
+    // A mobil böngésző audio pipeline-ját csak egy valódi hang lejátszása
+    // ébreszti fel teljesen. Egy 0.01 másodperces csendes hang elegendő.
+    function playSilentWarmup() {
+      try {
+        if (!audioCtx || audioCtx.state !== 'running') return;
+        // Hozzuk létre a legrövidebb lehetséges silent audio buffert
+        const bufferSize = Math.floor(audioCtx.sampleRate * 0.01); // 10ms csend
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
+        logDebug('Silent audio warmup lejátszva (' + bufferSize + ' sample)');
+      } catch (e) {
+        logDebug('Silent warmup figyelmeztetés: ' + e.message);
       }
     }
 
@@ -803,14 +835,42 @@
       }
     }
 
-    // Első felhasználói interakciókor: AudioContext + SDK előkészítés
+    // Signed URL elő-lekérés: amint a felhasználó interakcióba lép az oldallal,
+    // háttérben lekérjük a signed URL-t, hogy a hívás gombnyomásakor már meglegyen.
+    async function preFetchSignedUrl() {
+      if (cachedSignedUrl && (Date.now() - signedUrlTimestamp) < SIGNED_URL_TTL) {
+        logDebug('Signed URL még érvényes a cache-ben');
+        return cachedSignedUrl;
+      }
+      try {
+        const response = await fetch(`${PROXY_URL}?agent_id=${AGENT_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+          throw new Error('Proxy: ' + response.status);
+        }
+        const data = await response.json();
+        cachedSignedUrl = data.signed_url || data.signedUrl;
+        signedUrlTimestamp = Date.now();
+        logDebug('Signed URL elő-lekérés sikeres (cache-elve)');
+        return cachedSignedUrl;
+      } catch (e) {
+        logDebug('Signed URL elő-lekérés sikertelen: ' + e.message);
+        return null;
+      }
+    }
+
+    // Első felhasználói interakciókor: teljes pre-warm
     let hasPreWarmed = false;
     function preWarmOnInteraction() {
       if (hasPreWarmed) return;
       hasPreWarmed = true;
       warmUpAudioContext();
-      preLoadSDK(); // nem await-elünk, háttérben fut
-      logDebug('Pre-warm indítva (AudioContext + SDK)');
+      playSilentWarmup(); // Audio pipeline teljes ébresztés
+      preLoadSDK();       // SDK betöltés háttérben
+      preFetchSignedUrl();// Signed URL lekérés háttérben
+      logDebug('Teljes pre-warm indítva (AudioCtx + SilentAudio + SDK + SignedURL)');
     }
 
     // Bármilyen kattintás, érintés vagy gombnyomás aktiválja a pre-warm-ot
@@ -888,9 +948,30 @@
 
       // === 1. AudioContext felélesztése (mobil cold-start elkerülés) ===
       warmUpAudioContext();
+      playSilentWarmup(); // Teljes audio pipeline ébresztés
 
-      // === 2. Mikrofon engedély kérése optimalizált constraints-szel ===
-      const hasMic = await requestMicrophonePermission();
+      // === 2. PÁRHUZAMOSÍTÁS: Mikrofon + Signed URL EGYSZERRE ===
+      // Ez a legnagyobb nyereség: korábban szekvenciális volt (mic → url = ~1.5s),
+      // most párhuzamos (~0.8s a lassabbik alapján)
+      let signedUrl = cachedSignedUrl; // Használjuk a cache-t ha elérhető
+      let needsFetchUrl = !signedUrl || (Date.now() - signedUrlTimestamp) >= SIGNED_URL_TTL;
+
+      logDebug(needsFetchUrl ? 'Signed URL nincs cache-ben, párhuzamos lekérés...' : 'Signed URL a cache-ből, csak mikrofon kérés...');
+
+      let hasMic;
+      if (needsFetchUrl) {
+        // PÁRHUZAMOS: mikrofon + signed URL egyszerre indul
+        const [micResult, urlResult] = await Promise.all([
+          requestMicrophonePermission(),
+          fetchSignedUrl()
+        ]);
+        hasMic = micResult;
+        signedUrl = urlResult;
+      } else {
+        // Csak mikrofon kell, URL már megvan
+        hasMic = await requestMicrophonePermission();
+      }
+
       if (!hasMic) {
         alert('A mikrofon engedélyezése szükséges a hívás indításához.\n\nKérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.');
         setCallState(CALL_STATE.IDLE);
@@ -898,13 +979,16 @@
       }
 
       try {
-        // === 3. Signed URL lekérése a backend proxytól ===
-        const signedUrl = await fetchSignedUrl();
         if (!signedUrl) {
-          throw new Error('Nem sikerült lekérni a signed URL-t');
+          // Ha a cache-ből nem jött és a párhuzamos lekérés is sikertelen volt
+          // Próbáljuk meg újra (biztos, ami biztos)
+          signedUrl = await fetchSignedUrl();
+          if (!signedUrl) {
+            throw new Error('Nem sikerült lekérni a signed URL-t');
+          }
         }
 
-        // === 4. SDK betöltése — elő-betöltött modul használata ha elérhető ===
+        // === 3. SDK betöltése — elő-betöltött modul használata ha elérhető ===
         let Conversation;
         if (sdkModule) {
           Conversation = sdkModule.Conversation;
@@ -915,13 +999,16 @@
           Conversation = mod.Conversation;
         }
 
-        // === 5. AudioContext biztosan aktív a session indítása előtt ===
+        // === 4. AudioContext biztosan aktív a session indítása előtt ===
         if (audioCtx && audioCtx.state === 'suspended') {
           await audioCtx.resume();
           logDebug('AudioContext újraaktiválva a session előtt');
         }
 
-        // === 6. Session indítása ===
+        // Cache törlése (felhasználtuk a signed URL-t)
+        cachedSignedUrl = null;
+
+        // === 5. Session indítása ===
         conversation = await Conversation.startSession({
           signedUrl: signedUrl,
           onConnect: () => {
@@ -1507,7 +1594,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><div>AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK v2)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><div>AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>SignedURL cache: '+urlAge+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
