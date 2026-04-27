@@ -776,17 +776,88 @@
     const PROXY_URL = 'https://api.dentai.me';
 
     // ========================================
-    // MOBIL AUDIO OPTIMALIZÁCIÓ v2
+    // MOBIL AUDIO OPTIMALIZÁCIÓ v3
     // ========================================
-    // A lag 3 fő forrása:
-    // 1. AudioContext "cold start" → AudioContext + silent audio warmup
-    // 2. SDK dinamikus import → SDK elő-betöltés
-    // 3. Signed URL hálózati kérés → Signed URL elő-lekérés + párhuzamosítás
+    // A "3-4 másodperc akadozás + drift" probléma 3 mélyebb oka:
+    //
+    // 1. AZ SDK SAJÁT AudioContext-et hoz létre! A mi pre-warm-unk külön van.
+    //    → Megoldás: AudioContext monkey-patch — elfogjuk az SDK AudioContext-jét
+    //
+    // 2. Az első audio chunk-ok felhalmozódnak a bufferben mielőtt a lejátszás elindul.
+    //    → Megoldás: Drift correction — ha a buffer túl nagy, playbackRate = 1.1x
+    //
+    // 3. A SDK nem kap nyelv tippet, így időt tölt a nyelvfelismeréssel.
+    //    → Megoldás: overrides.language = "hu" a startSession-ben
+
     let audioCtx = null;
-    let sdkModule = null; // SDK elő-betöltött modul
-    let cachedSignedUrl = null; // Előre lekért signed URL
-    let signedUrlTimestamp = 0; // Mikor kérjük le (TTL ellenőrzés)
-    const SIGNED_URL_TTL = 4 * 60 * 1000; // 4 perc TTL (ElevenLabs 5 percig érvényes)
+    let sdkModule = null;
+    let cachedSignedUrl = null;
+    let signedUrlTimestamp = 0;
+    const SIGNED_URL_TTL = 4 * 60 * 1000;
+
+    // ================================================
+    // 1. AUDIOCONTEXT MONKEY-PATCH — a legfontosabb!
+    // ================================================
+    // Az ElevenLabs SDK új AudioContext-et hoz létre amikor startSession()-t hívunk.
+    // Ez mobil Chrome-ban "suspended" állapotban indul, és csak user gesture-re éled.
+    // Ha nem vagyunk elég gyorsak, az audio chunk-ok felhalmozódnak = AKADÁS + DRIFT.
+    //
+    // A monkey-patch ELFOGJA az SDK AudioContext-jét, és AZONNAL resume-olja.
+    let sdkAudioCtx = null;
+    let audioCtxPatched = false;
+
+    function patchAudioContext() {
+      if (audioCtxPatched) return;
+      audioCtxPatched = true;
+
+      const OrigAudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!OrigAudioCtx) return;
+
+      const PatchedAudioCtx = function(...args) {
+        const ctx = new OrigAudioCtx(...args);
+        logDebug('AudioContext létrehozás ELFOGVA: sampleRate=' + ctx.sampleRate + ' state=' + ctx.state);
+
+        if (!sdkAudioCtx) {
+          sdkAudioCtx = ctx;
+          // AZONNAL resume — nem várunk a SDK-ra!
+          if (ctx.state === 'suspended') {
+            ctx.resume().then(() => {
+              logDebug('SDK AudioContext AZONNAL resume-olva!');
+              // Silent warmup az SDK AudioContext-jén is
+              playSilentOnContext(ctx);
+            });
+          }
+        }
+        return ctx;
+      };
+
+      // Preserve prototype chain
+      PatchedAudioCtx.prototype = OrigAudioCtx.prototype;
+      Object.defineProperty(PatchedAudioCtx, 'name', { value: 'AudioContext' });
+
+      window.AudioContext = PatchedAudioCtx;
+      if (window.webkitAudioContext) {
+        window.webkitAudioContext = PatchedAudioCtx;
+      }
+
+      logDebug('AudioContext monkey-patch telepítve');
+    }
+
+    // Silent audio lejátszás egy ADOTT AudioContext-en
+    function playSilentOnContext(ctx) {
+      try {
+        if (!ctx || ctx.state !== 'running') return;
+        const bufferSize = Math.floor(ctx.sampleRate * 0.02); // 20ms csend
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start(0);
+        logDebug('Silent audio lejátszva a megadott AudioContext-en');
+      } catch (e) {
+        logDebug('Silent warmup hiba: ' + e.message);
+      }
+    }
 
     function warmUpAudioContext() {
       try {
@@ -796,33 +867,89 @@
         if (audioCtx.state === 'suspended') {
           audioCtx.resume();
         }
-        logDebug('AudioContext felélesztve (state: ' + audioCtx.state + ')');
+        logDebug('Saját AudioContext felélesztve (state: ' + audioCtx.state + ')');
       } catch (e) {
         logDebug('AudioContext warm-up figyelmeztetés: ' + e.message);
       }
     }
 
-    // SILENT AUDIO LEJÁTSZÁS — ez a "titkos fegyver"!
-    // A mobil böngésző audio pipeline-ját csak egy valódi hang lejátszása
-    // ébreszti fel teljesen. Egy 0.01 másodperces csendes hang elegendő.
     function playSilentWarmup() {
-      try {
-        if (!audioCtx || audioCtx.state !== 'running') return;
-        // Hozzuk létre a legrövidebb lehetséges silent audio buffert
-        const bufferSize = Math.floor(audioCtx.sampleRate * 0.01); // 10ms csend
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const source = audioCtx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(audioCtx.destination);
-        source.start(0);
-        logDebug('Silent audio warmup lejátszva (' + bufferSize + ' sample)');
-      } catch (e) {
-        logDebug('Silent warmup figyelmeztetés: ' + e.message);
+      playSilentOnContext(audioCtx);
+    }
+
+    // ================================================
+    // 2. DRIFT CORRECTION — audio buffer túlcsordulás javítása
+    // ================================================
+    // A drift oka: az első 3-4 másodpercben az audio chunk-ok gyorsabban
+    // érkeznek, mint ahogy a böngésző le tudja játszani. A buffer megtelik,
+    // a hang akadozik, majd a felesleges adat "csúszást" (drift) okoz.
+    //
+    // Megoldás: az onConnect után figyeljük az <audio> elemeket és a
+    // playbackRate-et 1.08-1.12x-re állítjuk amíg a buffer ki nem ürül,
+    // majd vissza 1.0x-re. Ez a "catch-up" mechanizmus.
+    let driftCorrectionTimer = null;
+
+    function startDriftCorrection() {
+      if (driftCorrectionTimer) return; // már fut
+      let corrections = 0;
+      const maxCorrections = 3;
+      const startTime = Date.now();
+      logDebug('Drift correction monitoring elindítva');
+
+      driftCorrectionTimer = setInterval(() => {
+        let driftFixed = false;
+
+        // Megközelítés 1: <audio> elemek (ha a SDK ezt használja)
+        document.querySelectorAll('audio').forEach(audio => {
+          if (audio.paused || audio.readyState < 2) return;
+          try {
+            const buffered = audio.buffered;
+            if (buffered.length > 0) {
+              const bufferAhead = buffered.end(buffered.length - 1) - audio.currentTime;
+              if (bufferAhead > 1.5 && corrections < maxCorrections) {
+                logDebug('AUDIO DRIFT: ' + bufferAhead.toFixed(1) + 's buffer ahead → catch-up 1.12x');
+                audio.playbackRate = 1.12;
+                const catchUpMs = Math.min(bufferAhead * 700, 3000);
+                setTimeout(() => {
+                  audio.playbackRate = 1.0;
+                  logDebug('Audio catch-up befejezve, vissza 1.0x');
+                }, catchUpMs);
+                corrections++;
+                driftFixed = true;
+              }
+            }
+          } catch (e) { /* ignore */ }
+        });
+
+        // Megközelítés 2: SDK AudioContext monitorozás
+        if (sdkAudioCtx && sdkAudioCtx.state === 'running' && !driftFixed && corrections < maxCorrections) {
+          // Ha az AudioContext currentTime gyorsabban fut mint a valós idő,
+          // az azt jelzi, hogy a playback pipeline túl sok adatot dolgoz fel.
+          // Nem tudjuk közvetlenül módosítani a playbackRate-et,
+          // de az AudioContext.currentTime-t ellenőrizhetjük.
+          // (Ez egy passzív monitor — a tényleges javítás az <audio> úton történik.)
+        }
+
+        // 15 másodperc után leállítjuk (a drift addigra biztosan korrigálva van)
+        if (Date.now() - startTime > 15000 || corrections >= maxCorrections) {
+          clearInterval(driftCorrectionTimer);
+          driftCorrectionTimer = null;
+          logDebug('Drift correction befejezve (' + corrections + ' korrekció)');
+        }
+      }, 600);
+    }
+
+    function stopDriftCorrection() {
+      if (driftCorrectionTimer) {
+        clearInterval(driftCorrectionTimer);
+        driftCorrectionTimer = null;
+        // Biztosítjuk, hogy minden audio elem 1.0x-en legyen
+        document.querySelectorAll('audio').forEach(a => { a.playbackRate = 1.0; });
+        logDebug('Drift correction leállítva');
       }
     }
 
-    // SDK elő-betöltés: ne a hívás gombnyomásakor töltsük be,
-    // hanem amint a felhasználó bármilyen interakciót kezdeményez.
+    // SDK elő-betöltés
     async function preLoadSDK() {
       if (sdkModule) return sdkModule;
       try {
@@ -835,8 +962,7 @@
       }
     }
 
-    // Signed URL elő-lekérés: amint a felhasználó interakcióba lép az oldallal,
-    // háttérben lekérjük a signed URL-t, hogy a hívás gombnyomásakor már meglegyen.
+    // Signed URL elő-lekérés
     async function preFetchSignedUrl() {
       if (cachedSignedUrl && (Date.now() - signedUrlTimestamp) < SIGNED_URL_TTL) {
         logDebug('Signed URL még érvényes a cache-ben');
@@ -866,11 +992,12 @@
     function preWarmOnInteraction() {
       if (hasPreWarmed) return;
       hasPreWarmed = true;
+      patchAudioContext(); // SDK AudioContext elfogás TELEPÍTÉSE
       warmUpAudioContext();
-      playSilentWarmup(); // Audio pipeline teljes ébresztés
-      preLoadSDK();       // SDK betöltés háttérben
-      preFetchSignedUrl();// Signed URL lekérés háttérben
-      logDebug('Teljes pre-warm indítva (AudioCtx + SilentAudio + SDK + SignedURL)');
+      playSilentWarmup();
+      preLoadSDK();
+      preFetchSignedUrl();
+      logDebug('Teljes pre-warm v3 indítva (Patch + AudioCtx + SilentAudio + SDK + SignedURL)');
     }
 
     // Bármilyen kattintás, érintés vagy gombnyomás aktiválja a pre-warm-ot
@@ -1011,9 +1138,21 @@
         // === 5. Session indítása ===
         conversation = await Conversation.startSession({
           signedUrl: signedUrl,
+          // ================================================
+          // 3. NYELV TIPP — gyorsabb első válasz
+          // ================================================
+          // Ha nem adunk nyelvet, az SDK időt tölt a nyelvfelismeréssel.
+          // A "hu" tipp kihagyja ezt a lépést → gyorsabb első válasz.
+          overrides: {
+            agent: {
+              language: "hu"
+            }
+          },
           onConnect: () => {
             logDebug('Kapcsolódás sikeres — Anna figyel');
             setCallState(CALL_STATE.LISTENING);
+            // Drift correction elindítása a kapcsolat felépülése után
+            startDriftCorrection();
           },
           onDisconnect: () => {
             logDebug('Kapcsolat megszakadt');
@@ -1053,6 +1192,7 @@
 
     async function endCall(){
       logDebug('Hívás megszakítása...');
+      stopDriftCorrection(); // Drift correction leállítása
       if (conversation) {
         try {
           await conversation.endSession();
@@ -1065,6 +1205,9 @@
       // AudioContext suspendálása ha aktív (mobil akku spórolás)
       if (audioCtx && audioCtx.state === 'running') {
         try { audioCtx.suspend(); logDebug('AudioContext felfüggesztve'); } catch(e) {}
+      }
+      if (sdkAudioCtx && sdkAudioCtx.state === 'running') {
+        try { sdkAudioCtx.suspend(); logDebug('SDK AudioContext felfüggesztve'); } catch(e) {}
       }
       setCallState(CALL_STATE.IDLE);
       logDebug('Hívás befejezve');
@@ -1594,7 +1737,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK v2)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><div>AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>SignedURL cache: '+urlAge+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';const audioEls=document.querySelectorAll('audio').length;panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug v3</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>My AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK AudioCtx: '+(sdkAudioCtx?sdkAudioCtx.state:'not captured')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>ACtx Patched: '+audioCtxPatched+'</div><div>SignedURL: '+urlAge+'</div><div>Audio elements: '+audioEls+'</div><div>Drift correction: '+(!!driftCorrectionTimer)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
