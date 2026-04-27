@@ -25,9 +25,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *{box-sizing:border-box}body{font-family:'Inter',system-ui,-apple-system,sans-serif}html{scroll-behavior:smooth}
-    elevenlabs-convai{position:fixed!important;bottom:-9999px!important;right:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important;z-index:-1!important}
-    elevenlabs-convai::part(fab){display:none!important}
-    elevenlabs-convai::part(popup){display:none!important}
+    /* ElevenLabs widget eltávolítva — SDK alapú megoldás */
     @keyframes pulse-ring{0%{transform:scale(.8);opacity:1}100%{transform:scale(2.4);opacity:0}}
     .pulse-dot{position:relative;width:10px;height:10px}.pulse-dot::before{content:'';position:absolute;inset:0;border-radius:50%;background:#10b981;animation:pulse-ring 1.4s cubic-bezier(.215,.61,.355,1) infinite}.pulse-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:#10b981}
     @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
@@ -661,8 +659,14 @@
     </div>
   </footer>
 
-  <elevenlabs-convai agent-id="agent_2301kq22b6v9f04sr88gmbtksw04"></elevenlabs-convai>
-  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+  <!-- ElevenLabs Conversational AI SDK -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@elevenlabs/client": "https://esm.sh/@elevenlabs/client@1.0.6"
+    }
+  }
+  </script>
 
   <script>
     // Itt módosult az időközt 30-ra
@@ -750,13 +754,42 @@
 
     const CALL_STATE={IDLE:'idle',CONNECTING:'connecting',LISTENING:'listening',SPEAKING:'speaking'};let currentCallState=CALL_STATE.IDLE;
     const heroCallBtn=document.getElementById('hero-call-btn'),heroHangupBtn=document.getElementById('hero-hangup-btn'),heroCallText=document.getElementById('hero-call-text'),callRings=document.getElementById('call-rings'),iconMic=document.getElementById('icon-mic'),iconSpinner=document.getElementById('icon-spinner'),iconWave=document.getElementById('icon-wave'),statusDot=document.getElementById('status-dot'),statusText=document.getElementById('status-text'),headerStatus=document.getElementById('header-status'),headerStatusText=document.getElementById('header-status-text'),headerCallBtn=document.getElementById('header-call-btn'),mobileCallBtn=document.getElementById('mobile-call-btn'),mobileStatusText=document.getElementById('mobile-status-text'),demoCallBtn=document.getElementById('demo-call-btn'),demoHangupBtn=document.getElementById('demo-hangup-btn'),demoCallText=document.getElementById('demo-call-text'),demoStatusDot=document.getElementById('demo-status-dot'),demoStatusText=document.getElementById('demo-status-text');
-    let widget=null,widgetReady=false,pollTimer=null,debugLog=[];function logDebug(msg){const ts=new Date().toLocaleTimeString();debugLog.push(`[${ts}] ${msg}`);if(debugLog.length>50)debugLog.shift();console.log(`[Anna] ${msg}`)}function getWidget(){if(!widget)widget=document.querySelector('elevenlabs-convai');return widget}function waitForWidget(cb,attempts=0){const w=getWidget();if(w){widgetReady=true;logDebug('Widget DOM elem megtalálva (attempt #'+attempts+')');logDebug('shadowRoot: '+!!w.shadowRoot);logDebug('startConversation: '+(typeof w.startConversation));logDebug('endConversation: '+(typeof w.endConversation));cb(w);return}if(attempts<40){setTimeout(()=>waitForWidget(cb,attempts+1),500)}else{logDebug('HIBA: Widget nem töltődött be 20 másodperc után!')}}
-    function clickWidgetFab(){const w=getWidget();if(!w){logDebug('Nincs widget elem!');return false}if(typeof w.startConversation==='function'){try{w.startConversation();logDebug('startConversation() sikeresen meghívva');return true}catch(e){logDebug('startConversation() hiba: '+e.message)}}try{const shadow=w.shadowRoot;if(shadow){const selectors=['button','[role="button"]','[data-testid="fab"]','[class*="fab"]','[class*="Fab"]','[class*="trigger"]','[class*="Trigger"]','[class*="circle"]','[class*="Circle"]'];for(const sel of selectors){const btns=shadow.querySelectorAll(sel);for(const btn of btns){if(btn.offsetParent!==null||btn.offsetWidth>0){btn.click();logDebug('Shadow DOM gomb kattintva: '+sel+' ('+btn.textContent?.trim()?.substring(0,30)+')');return true}}}const firstBtn=shadow.querySelector('button');if(firstBtn){firstBtn.click();logDebug('Első shadow DOM gomb kattintva');return true}}}catch(e){logDebug('Shadow DOM hiba: '+e.message)}try{w.click();logDebug('Közvetlen kattintás a widget elemen');return true}catch(e){logDebug('Közvetlen kattintás hiba: '+e.message)}return false}
-    
-    // --- Módosított híváskezelés az adatvédelmi modalhoz ---
+
+    // --- ElevenLabs Conversational AI SDK integráció ---
+    let conversation = null;
+    const AGENT_ID = 'agent_2301kq22b6v9f04sr88gmbtksw04';
+    const PROXY_URL = 'https://api.dentai.me';
+
+    function logDebug(msg){console.log(`[Anna] ${msg}`)}
+
+    async function fetchSignedUrl() {
+      try {
+        const response = await fetch(`${PROXY_URL}?agent_id=${AGENT_ID}`);
+        if (!response.ok) throw new Error(`Proxy válasz: ${response.status}`);
+        const data = await response.json();
+        logDebug('Signed URL sikeresen lekérve');
+        return data.signed_url || data.signedUrl;
+      } catch (err) {
+        logDebug('Hiba a signed URL lekérdezésekor: ' + err.message);
+        throw err;
+      }
+    }
+
+    async function requestMicrophonePermission() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(t => t.stop());
+        logDebug('Mikrofon engedély megadva');
+        return true;
+      } catch (err) {
+        logDebug('Mikrofon engedély megtagadva: ' + err.message);
+        return false;
+      }
+    }
+
+    // --- Híváskezelés az adatvédelmi modalhoz ---
     function startCall(){
-      if(currentCallState!==CALL_STATE.IDLE) return;
-      // Itt nézi meg a hasConsented változót, amit már a localStorage-ből olvas ki betöltéskor
+      if(currentCallState !== CALL_STATE.IDLE) return;
       if(!hasConsented) {
         showConsentModal();
       } else {
@@ -764,32 +797,95 @@
       }
     }
 
-    function executeCall(){
-      const w=getWidget();
-      if(!w){alert('A hívás indítása sikertelen – Anna beszélgetési widgetje még nem töltődött be.\n\nKérem, frissítse az oldalt (Ctrl+R) és próbálja újra!');return}
+    async function executeCall(){
       setCallState(CALL_STATE.CONNECTING);
       logDebug('Hívás indítása Annához...');
-      const clicked=clickWidgetFab();
-      if(!clicked){logDebug('Nem sikerült automatikusan indítani — widget popup megjelenítése')}
-      startPolling();
-      setTimeout(()=>{if(currentCallState===CALL_STATE.CONNECTING){logDebug('Timeout — connecting → listening');setCallState(CALL_STATE.LISTENING)}},8000)
+
+      // Mikrofon engedély kérése
+      const hasMic = await requestMicrophonePermission();
+      if (!hasMic) {
+        alert('A mikrofon engedélyezése szükséges a hívás indításához.\n\nKérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.');
+        setCallState(CALL_STATE.IDLE);
+        return;
+      }
+
+      try {
+        // Signed URL lekérése a backend proxytól
+        const signedUrl = await fetchSignedUrl();
+        if (!signedUrl) {
+          throw new Error('Nem sikerült lekérni a signed URL-t');
+        }
+
+        // SDK betöltése és munkamenet indítása
+        const { Conversation } = await import('@elevenlabs/client');
+
+        conversation = await Conversation.startSession({
+          signedUrl: signedUrl,
+          onConnect: () => {
+            logDebug('Kapcsolódás sikeres — Anna figyel');
+            setCallState(CALL_STATE.LISTENING);
+          },
+          onDisconnect: () => {
+            logDebug('Kapcsolat megszakadt');
+            if (currentCallState !== CALL_STATE.IDLE) {
+              setCallState(CALL_STATE.IDLE);
+            }
+          },
+          onMessage: (message) => {
+            logDebug('Üzenet: ' + JSON.stringify(message).substring(0, 100));
+          },
+          onError: (error) => {
+            logDebug('SDK hiba: ' + (error.message || error));
+            console.error('[Anna] SDK hiba:', error);
+            setCallState(CALL_STATE.IDLE);
+          },
+          onModeChange: (mode) => {
+            logDebug('Mód változás: ' + mode);
+            if (mode === 'speaking') {
+              setCallState(CALL_STATE.SPEAKING);
+            } else if (mode === 'listening') {
+              setCallState(CALL_STATE.LISTENING);
+            }
+          },
+        });
+
+        logDebug('Beszélgetés munkamenet elindítva');
+
+      } catch (err) {
+        logDebug('Hiba a hívás indításakor: ' + err.message);
+        console.error('[Anna] Hívás indítási hiba:', err);
+        alert('Nem sikerült kapcsolódni Annához.\n\nKérem, ellenőrizze az internetkapcsolatát és próbálja újra!\n\nHiba: ' + err.message);
+        setCallState(CALL_STATE.IDLE);
+      }
     }
 
-    function endCall(){const w=getWidget();logDebug('Hívás megszakítása...');if(w&&typeof w.endConversation==='function'){try{w.endConversation();logDebug('endConversation() meghívva')}catch(e){logDebug('endConversation() hiba: '+e.message)}}if(w&&w.shadowRoot){try{const shadow=w.shadowRoot;const allBtns=shadow.querySelectorAll('button');for(const b of allBtns){const txt=(b.textContent||'').toLowerCase();const label=(b.getAttribute('aria-label')||'').toLowerCase();const cls=(b.className||'').toString().toLowerCase();if(txt.includes('end')||txt.includes('close')||txt.includes('stop')||label.includes('end')||label.includes('close')||label.includes('stop')||cls.includes('end')||cls.includes('close')||cls.includes('hang')){b.click();logDebug('Shadow close gomb kattintva: '+(txt||label||cls).substring(0,30));break}}}catch(e){}}stopPolling();setCallState(CALL_STATE.IDLE);logDebug('Hívás befejezve')}
+    async function endCall(){
+      logDebug('Hívás megszakítása...');
+      if (conversation) {
+        try {
+          await conversation.endSession();
+          logDebug('SDK munkamenet leállítva');
+        } catch (err) {
+          logDebug('Hiba a munkamenet leállításakor: ' + err.message);
+        }
+        conversation = null;
+      }
+      setCallState(CALL_STATE.IDLE);
+      logDebug('Hívás befejezve');
+    }
+
     function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-base font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent='Anna válaszol Önnek';headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-base font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
-    function detectWidgetState(){const w=getWidget();if(!w||!w.shadowRoot)return;try{const shadow=w.shadowRoot;const allElements=shadow.querySelectorAll('*');let foundListening=false,foundSpeaking=false,foundConnecting=false,foundIdle=false;for(const el of allElements){const text=(el.textContent||'').toLowerCase().trim();const cls=(el.className||'').toString().toLowerCase();if(text.includes('listening')||cls.includes('listening'))foundListening=true;if(text.includes('speaking')||cls.includes('speaking'))foundSpeaking=true;if(text.includes('connecting')||cls.includes('connecting'))foundConnecting=true;if(text.includes('idle')||text.includes('ready')||text.includes('click to start'))foundIdle=true}if(foundSpeaking&&currentCallState!==CALL_STATE.SPEAKING){setCallState(CALL_STATE.SPEAKING)}else if(foundListening&&currentCallState!==CALL_STATE.LISTENING){setCallState(CALL_STATE.LISTENING)}else if(foundConnecting&&currentCallState!==CALL_STATE.CONNECTING){setCallState(CALL_STATE.CONNECTING)}}catch(e){}}
-    function startPolling(){stopPolling();pollTimer=setInterval(detectWidgetState,1000);detectWidgetState()}function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null}}
-    function setupWidgetListeners(){const w=getWidget();if(!w)return;const events=['elevenlabs-convai:callStarted','elevenlabs-convai:callEnded','elevenlabs-convai:listening','elevenlabs-convai:speaking','elevenlabs-convai:connected','callStarted','callEnded','listening','speaking'];events.forEach(eventName=>{w.addEventListener(eventName,(e)=>{logDebug('Widget event: '+eventName);switch(eventName){case'elevenlabs-convai:callStarted':case'elevenlabs-convai:connected':case'callStarted':setCallState(CALL_STATE.LISTENING);break;case'elevenlabs-convai:callEnded':case'callEnded':endCall();break;case'elevenlabs-convai:listening':case'listening':setCallState(CALL_STATE.LISTENING);break;case'elevenlabs-convai:speaking':case'speaking':setCallState(CALL_STATE.SPEAKING);break}})})}
-    
-    // Call Button Events (now bound to startCall which triggers modal first)
+
+    // Call Button Events
     heroCallBtn.addEventListener('click',startCall);
     heroHangupBtn.addEventListener('click',endCall);
     headerCallBtn.addEventListener('click',startCall);
     mobileCallBtn.addEventListener('click',() => { closeMenu(); startCall(); });
     demoCallBtn.addEventListener('click',startCall);
     demoHangupBtn.addEventListener('click',endCall);
-    
-    waitForWidget((w)=>{logDebug('Widget betöltődött és inicializálva');setupWidgetListeners();setTimeout(()=>{logDebug('Widget shadowRoot: '+!!w.shadowRoot);if(w.shadowRoot){const btns=w.shadowRoot.querySelectorAll('button');logDebug('Shadow DOM gombok száma: '+btns.length);btns.forEach((b,i)=>{logDebug('  Button['+i+']: text="'+(b.textContent||'').trim().substring(0,40)+'" class="'+(b.className||'').toString().substring(0,40)+'"')})}},2000)});updateCountdownUI();
+
+    logDebug('ElevenLabs Conversational AI SDK mód inicializálva');
+    updateCountdownUI();
     
     // --- i18n Language Switching ---
     const translations = {
@@ -1302,7 +1398,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel</div><div>State: '+currentCallState+'</div><div>Widget: '+!!getWidget()+'</div><div>ShadowRoot: '+!!(getWidget()?.shadowRoot)+'</div><div>startConversation: '+(typeof getWidget()?.startConversation)+'</div><div>endConversation: '+(typeof getWidget()?.endConversation)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Log:</div>'+debugLog.map(l=>'<div>'+l+'</div>').join('');document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
