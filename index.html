@@ -895,90 +895,68 @@
     }
 
     // ================================================
-    // 2. DRIFT CORRECTION v5 — HANGŐRZÉSSEL
+    // 2. DRIFT CORRECTION v5 — PITCH-MEGŐRZŐ catch-up
     // ================================================
-    // v4 probléma: a 1.3x playbackRate MEGVÁLTOZTATJA Anna hangját!
-    // A felhasználó ezt zavarónak találja.
-    //
-    // v5 megoldás:
-    //   - FŐ eszköz: currentTime jump (előreugrik a bufferben,
-    //     NEM változtatja a hangot, csak kihagyja a felesleges részt)
-    //   - HA kell playbackRate: preservesPitch=true + max 1.08x
-    //     (a preservesPitch megőrzi az eredeti hangmagasságot,
-    //      a 1.08x szinte észrevehetetlen)
-    //   - Gyakoribb ellenőrzés (300ms) = kisebb drift = kisebb korrekció
+    // v4-ben a playbackRate=1.3x miatt Anna hangja magasabbnak hangzott
+    // a catch-up alatt ("megváltozik a csaj hangja").
+    // v5: NINCS playbackRate változtatás. Csak currentTime ugrás —
+    // ez egy alig hallható "skip"-et okoz (mintha kihagyna egy szótagot),
+    // de a hangmagasság VÉGIG változatlan marad.
+    // Több, kisebb ugrással finomítva, hogy ne legyen feltűnő.
     let driftCorrectionTimer = null;
-
-    function ensurePreservesPitch(audio) {
-      // preservesPitch: ha true, a playbackRate változás NEM módosítja a hangmagasságot
-      // webkit előtag is kell Safari/ régi Chrome miatt
-      if ('preservesPitch' in audio) audio.preservesPitch = true;
-      if ('webkitPreservesPitch' in audio) audio.webkitPreservesPitch = true;
-    }
 
     function startDriftCorrection() {
       if (driftCorrectionTimer) return;
       let corrections = 0;
-      const maxCorrections = 6;
+      const maxCorrections = 8;
       const startTime = Date.now();
-      logDebug('Drift correction v5 elindítva (preservesPitch)');
+      logDebug('Drift correction v5 elindítva (pitch-preserving)');
 
       driftCorrectionTimer = setInterval(() => {
         document.querySelectorAll('audio').forEach(audio => {
           if (audio.paused || audio.readyState < 2) return;
           try {
-            // Biztosítjuk a preservesPitch-et minden audio elemen
-            ensurePreservesPitch(audio);
+            // Biztonság: bárhol is állítaná más kód, mi tartjuk 1.0-n
+            if (audio.playbackRate !== 1.0) audio.playbackRate = 1.0;
 
             const buffered = audio.buffered;
             if (buffered.length > 0) {
               const bufferAhead = buffered.end(buffered.length - 1) - audio.currentTime;
 
-              if (bufferAhead > 2.0 && corrections < maxCorrections) {
-                // v5 ELSŐDLEGES: currentTime jump — hangminőség VÁLTOZATLAN
-                // Előreugrunk a bufferben, kihagyjuk a felgyülemlett adatot
-                const jumpTo = buffered.end(buffered.length - 1) - 0.3;
-                logDebug('DRIFT JUMP: ' + bufferAhead.toFixed(1) + 's ahead → jump -' + (bufferAhead - 0.3).toFixed(1) + 's');
-                audio.currentTime = jumpTo;
-                // Nincs playbackRate változás! Anna hangja érintetlen marad.
+              if (bufferAhead > 3.5 && corrections < maxCorrections) {
+                // NAGY drift: kemény skip — szólag/szótag elveszhet, de gyors
+                // 0.8s tartalékot hagyunk, hogy ne fusson ki azonnal a bufferből
+                const target = buffered.end(buffered.length - 1) - 0.8;
+                logDebug('DRIFT v5 NAGY: ' + bufferAhead.toFixed(1) + 's → skip ' + (target - audio.currentTime).toFixed(1) + 's');
+                audio.currentTime = target;
                 corrections++;
-              } else if (bufferAhead > 1.0 && corrections < maxCorrections) {
-                // v5 FINOM: 1.08x + preservesPitch = észrevehetetlen gyorsítás
-                // A preservesPitch miatt Anna hangja NEM változik, csak a tempó
-                logDebug('DRIFT NUDGE: ' + bufferAhead.toFixed(1) + 's → 1.08x (preservesPitch)');
-                audio.playbackRate = 1.08;
-                const catchUpMs = Math.min(bufferAhead * 600, 3000);
-                setTimeout(() => {
-                  audio.playbackRate = 1.0;
-                }, catchUpMs);
+              } else if (bufferAhead > 2.0 && corrections < maxCorrections) {
+                // KÖZEPES drift: kis skip — ~0.4s lemarad, alig hallható
+                const skipAmount = Math.min(bufferAhead - 1.2, 0.6);
+                logDebug('DRIFT v5 KÖZEPES: ' + bufferAhead.toFixed(1) + 's → skip ' + skipAmount.toFixed(2) + 's');
+                audio.currentTime = audio.currentTime + skipAmount;
                 corrections++;
               }
+              // bufferAhead < 2.0 esetén nem nyúlunk hozzá — természetes lejátszás
             }
           } catch (e) { /* ignore */ }
         });
 
-        // 15 másodperc után leállítjuk
+        // 15 másodperc után leállítjuk (a kezdeti drift addigra elsimul)
         if (Date.now() - startTime > 15000 || corrections >= maxCorrections) {
           clearInterval(driftCorrectionTimer);
           driftCorrectionTimer = null;
-          // Biztosítjuk, hogy minden audio elem 1.0x-en van és preservesPitch=true
-          document.querySelectorAll('audio').forEach(a => {
-            a.playbackRate = 1.0;
-            ensurePreservesPitch(a);
-          });
           logDebug('Drift correction v5 befejezve (' + corrections + ' korrekció)');
         }
-      }, 300); // v5: 300ms — gyakoribb ellenőrzés = kisebb korrekciók kellenek
+      }, 600); // 600ms intervallum — elég gyors a reakció, de nem agresszív
     }
 
     function stopDriftCorrection() {
       if (driftCorrectionTimer) {
         clearInterval(driftCorrectionTimer);
         driftCorrectionTimer = null;
-        document.querySelectorAll('audio').forEach(a => {
-          a.playbackRate = 1.0;
-          ensurePreservesPitch(a);
-        });
+        // Biztosítjuk hogy minden audio 1.0x sebességen marad
+        document.querySelectorAll('audio').forEach(a => { a.playbackRate = 1.0; });
         logDebug('Drift correction leállítva');
       }
     }
@@ -999,8 +977,6 @@
         preCreatedAudio.setAttribute('playsinline', '');
         preCreatedAudio.setAttribute('webkit-playsinline', '');
         preCreatedAudio.preload = 'auto';
-        // v5: preservesPitch — soha ne változtassa meg Anna hangját
-        ensurePreservesPitch(preCreatedAudio);
         // v4: MediaSession API aktiválás
         if ('mediaSession' in navigator) {
           navigator.mediaSession.metadata = new MediaMetadata({
@@ -1265,18 +1241,16 @@
     function activateSDKAudioElements() {
       setTimeout(() => {
         document.querySelectorAll('audio').forEach(audio => {
-          // v5: preservesPitch beállítása AZONNAL a SDK audio elemeken
-          ensurePreservesPitch(audio);
           if (!audio.paused) return;
           try {
             audio.play().then(() => {
-              logDebug('v5: SDK <audio> aktiválva (preservesPitch=true)');
+              logDebug('v4: SDK <audio> elem aktiválva (play)');
             }).catch(e => {
-              logDebug('v5: SDK audio play auto-blocked (normal): ' + e.name);
+              logDebug('v4: SDK audio play auto-blocked (normal): ' + e.name);
             });
           } catch (e) { /* ignore */ }
         });
-      }, 100);
+      }, 100); // Kis késleltetés, hogy az SDK befejezze a setup-et
     }
 
     async function endCall(){
@@ -1826,7 +1800,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:460px;max-height:350px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';const audioEls=document.querySelectorAll('audio');const audioInfo=Array.from(audioEls).map(a=>{try{const buf=a.buffered;const ahead=buf.length>0?(buf.end(buf.length-1)-a.currentTime).toFixed(1)+'s':'N/A';return a.paused?'paused':'playing('+ahead+')@'+a.playbackRate+'x'}catch(e){return 'err'}}).join(', ')||'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug v5</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>My AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK AudioCtx: '+(sdkAudioCtx?sdkAudioCtx.state:'not captured')+'</div><div>Resume promise: '+(audioCtxResumePromise?'pending':'done/none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>ACtx Patched: '+audioCtxPatched+'</div><div>Pre-created Audio: '+(!!preCreatedAudio)+'</div><div>SignedURL: '+urlAge+'</div><div>Audio elements ('+audioEls.length+'): '+audioInfo+'</div><div>Drift correction: '+(!!driftCorrectionTimer)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Info:</div><div>Consent: '+hasConsented+'</div><div>UA: '+(navigator.userAgent||'').substring(0,60)+'</div>';document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:460px;max-height:350px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';const audioEls=document.querySelectorAll('audio');const audioInfo=Array.from(audioEls).map(a=>{try{const buf=a.buffered;const ahead=buf.length>0?(buf.end(buf.length-1)-a.currentTime).toFixed(1)+'s':'N/A';return a.paused?'paused':'playing('+ahead+')@'+a.playbackRate+'x'}catch(e){return 'err'}}).join(', ')||'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug v4</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>My AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK AudioCtx: '+(sdkAudioCtx?sdkAudioCtx.state:'not captured')+'</div><div>Resume promise: '+(audioCtxResumePromise?'pending':'done/none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>ACtx Patched: '+audioCtxPatched+'</div><div>Pre-created Audio: '+(!!preCreatedAudio)+'</div><div>SignedURL: '+urlAge+'</div><div>Audio elements ('+audioEls.length+'): '+audioInfo+'</div><div>Drift correction: '+(!!driftCorrectionTimer)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Info:</div><div>Consent: '+hasConsented+'</div><div>UA: '+(navigator.userAgent||'').substring(0,60)+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
