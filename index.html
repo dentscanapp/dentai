@@ -776,57 +776,217 @@
     const PROXY_URL = 'https://api.dentai.me';
 
     // ========================================
-    // MOBIL AUDIO OPTIMALIZÁCIÓ v2
+    // MOBIL AUDIO OPTIMALIZÁCIÓ v4
     // ========================================
-    // A lag 3 fő forrása:
-    // 1. AudioContext "cold start" → AudioContext + silent audio warmup
-    // 2. SDK dinamikus import → SDK elő-betöltés
-    // 3. Signed URL hálózati kérés → Signed URL elő-lekérés + párhuzamosítás
-    let audioCtx = null;
-    let sdkModule = null; // SDK elő-betöltött modul
-    let cachedSignedUrl = null; // Előre lekért signed URL
-    let signedUrlTimestamp = 0; // Mikor kérjük le (TTL ellenőrzés)
-    const SIGNED_URL_TTL = 4 * 60 * 1000; // 4 perc TTL (ElevenLabs 5 percig érvényes)
-    // === ÚJ: "meleg" mikrofon stream — nem zárjuk be a permission check után, ===
-    // hogy az AGC/echoCancel/noiseSuppression már kalibrált legyen mire az SDK
-    // saját mikrofon-megnyitása megtörténik. Csak az onConnect-ben stop-oljuk.
-    let warmMicStream = null;
+    // A "3-4 másodperc akadozás + drift" probléma VÉGSŐ oka:
+    //
+    // A debug panel ELÁRULTA: AudioCtx = SUSPENDED a hívás pillanatában!
+    // Ez azt jelenti, hogy a pre-warm AudioContext.resume() NEM működött
+    // mert fire-and-forget volt (.then() callback), és mire az SDK
+    // elküldi az első audio chunk-ot, a pipeline még "suspended" állapotban van.
+    //
+    // v4 MEGOLDÁSOK:
+    // 1. AudioContext.resume() AWAIT a click handler-ben (szinkron biztosítás)
+    // 2. Pre-created <audio> element a DOM-ban (pipeline azonnal készen)
+    // 3. Aggressive drift correction: currentTime jump + 1.3x catch-up
+    // 4. MediaSession API activation (mobil Chrome audio route felébresztés)
 
-    function warmUpAudioContext() {
+    let audioCtx = null;
+    let sdkModule = null;
+    let cachedSignedUrl = null;
+    let signedUrlTimestamp = 0;
+    const SIGNED_URL_TTL = 4 * 60 * 1000;
+
+    // ================================================
+    // 1. AUDIOCONTEXT MONKEY-PATCH v4 — AWAIT-es resume
+    // ================================================
+    let sdkAudioCtx = null;
+    let audioCtxPatched = false;
+    let audioCtxResumePromise = null; // v4: megvárjuk a resume-t!
+
+    function patchAudioContext() {
+      if (audioCtxPatched) return;
+      audioCtxPatched = true;
+
+      const OrigAudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!OrigAudioCtx) return;
+
+      const PatchedAudioCtx = function(...args) {
+        const ctx = new OrigAudioCtx(...args);
+        logDebug('AudioContext létrehozás ELFOGVA: sampleRate=' + ctx.sampleRate + ' state=' + ctx.state);
+
+        if (!sdkAudioCtx) {
+          sdkAudioCtx = ctx;
+          // v4: AZONNAL resume és STORE promise — a startCall megvárja!
+          if (ctx.state === 'suspended') {
+            audioCtxResumePromise = ctx.resume().then(() => {
+              logDebug('SDK AudioContext resume-olva! state=' + ctx.state);
+              playSilentOnContext(ctx);
+              return true;
+            }).catch(e => {
+              logDebug('SDK AudioContext resume hiba: ' + e.message);
+              return false;
+            });
+          } else {
+            // Már running — azonnal silent warmup
+            playSilentOnContext(ctx);
+          }
+        }
+        return ctx;
+      };
+
+      // Preserve prototype chain
+      PatchedAudioCtx.prototype = OrigAudioCtx.prototype;
+      Object.defineProperty(PatchedAudioCtx, 'name', { value: 'AudioContext' });
+
+      window.AudioContext = PatchedAudioCtx;
+      if (window.webkitAudioContext) {
+        window.webkitAudioContext = PatchedAudioCtx;
+      }
+
+      logDebug('AudioContext monkey-patch v4 telepítve (await-es resume)');
+    }
+
+    // Silent audio lejátszás egy ADOTT AudioContext-en
+    function playSilentOnContext(ctx) {
+      try {
+        if (!ctx || ctx.state !== 'running') return;
+        // v4: Hosszabb silent buffer (50ms) — teljesen felébreszti a pipeline-t
+        const bufferSize = Math.floor(ctx.sampleRate * 0.05);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        // v4: GainNode is hozzáadva — biztosítja a teljes audio graph felébredését
+        const gain = ctx.createGain();
+        gain.gain.value = 0.001; // majdnem csend, de nem 0 (a 0 optimalizálva lehet)
+        source.connect(gain);
+        gain.connect(ctx.destination);
+        source.start(0);
+        logDebug('Silent audio v4 lejátszva (50ms + GainNode)');
+      } catch (e) {
+        logDebug('Silent warmup hiba: ' + e.message);
+      }
+    }
+
+    // v4: AWAIT-es AudioContext warmup — SZINKRON a user gesture-ben
+    async function warmUpAudioContextAsync() {
       try {
         if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
         if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
+          await audioCtx.resume(); // v4: AWAIT — nem fire-and-forget!
+          logDebug('Saját AudioContext AWAIT-elve, state=' + audioCtx.state);
         }
-        logDebug('AudioContext felélesztve (state: ' + audioCtx.state + ')');
+        // Azonnal silent warmup is
+        playSilentOnContext(audioCtx);
       } catch (e) {
-        logDebug('AudioContext warm-up figyelmeztetés: ' + e.message);
+        logDebug('AudioContext warm-up hiba: ' + e.message);
       }
     }
 
-    // SILENT AUDIO LEJÁTSZÁS — ez a "titkos fegyver"!
-    // A mobil böngésző audio pipeline-ját csak egy valódi hang lejátszása
-    // ébreszti fel teljesen. Egy 0.01 másodperces csendes hang elegendő.
+    // Régi szinkron verzió megtartva kompatibilitás miatt
+    function warmUpAudioContext() {
+      warmUpAudioContextAsync();
+    }
+
     function playSilentWarmup() {
-      try {
-        if (!audioCtx || audioCtx.state !== 'running') return;
-        // Hozzuk létre a legrövidebb lehetséges silent audio buffert
-        const bufferSize = Math.floor(audioCtx.sampleRate * 0.01); // 10ms csend
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const source = audioCtx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(audioCtx.destination);
-        source.start(0);
-        logDebug('Silent audio warmup lejátszva (' + bufferSize + ' sample)');
-      } catch (e) {
-        logDebug('Silent warmup figyelmeztetés: ' + e.message);
+      playSilentOnContext(audioCtx);
+    }
+
+    // ================================================
+    // 2. DRIFT CORRECTION v4 — agresszív catch-up
+    // ================================================
+    // v3-ban a 1.12x playbackRate túl lassú volt.
+    // v4: Ha a buffer >2s, AZONNAL currentTime-ot ugratjuk előre,
+    // és 1.3x playbackRate-t használunk a maradék korrekcióra.
+    let driftCorrectionTimer = null;
+
+    function startDriftCorrection() {
+      if (driftCorrectionTimer) return;
+      let corrections = 0;
+      const maxCorrections = 5;
+      const startTime = Date.now();
+      logDebug('Drift correction v4 elindítva');
+
+      driftCorrectionTimer = setInterval(() => {
+        document.querySelectorAll('audio').forEach(audio => {
+          if (audio.paused || audio.readyState < 2) return;
+          try {
+            const buffered = audio.buffered;
+            if (buffered.length > 0) {
+              const bufferAhead = buffered.end(buffered.length - 1) - audio.currentTime;
+
+              if (bufferAhead > 3.0 && corrections < maxCorrections) {
+                // v4 AGGRESSZÍV: currentTime ugrás — azonnali catch-up
+                logDebug('DRIFT AGGRESSZÍV: ' + bufferAhead.toFixed(1) + 's → currentTime jump');
+                audio.currentTime = buffered.end(buffered.length - 1) - 0.5;
+                audio.playbackRate = 1.3;
+                setTimeout(() => { audio.playbackRate = 1.0; }, 800);
+                corrections++;
+              } else if (bufferAhead > 1.5 && corrections < maxCorrections) {
+                // v4 KÖZEPES: 1.3x catch-up (nem 1.12x)
+                logDebug('DRIFT: ' + bufferAhead.toFixed(1) + 's → catch-up 1.3x');
+                audio.playbackRate = 1.3;
+                const catchUpMs = Math.min(bufferAhead * 400, 2500);
+                setTimeout(() => { audio.playbackRate = 1.0; }, catchUpMs);
+                corrections++;
+              }
+            }
+          } catch (e) { /* ignore */ }
+        });
+
+        // 12 másodperc után leállítjuk
+        if (Date.now() - startTime > 12000 || corrections >= maxCorrections) {
+          clearInterval(driftCorrectionTimer);
+          driftCorrectionTimer = null;
+          logDebug('Drift correction v4 befejezve (' + corrections + ' korrekció)');
+        }
+      }, 400); // v4: 400ms intervallum (gyorsabb reakció, nem 600ms)
+    }
+
+    function stopDriftCorrection() {
+      if (driftCorrectionTimer) {
+        clearInterval(driftCorrectionTimer);
+        driftCorrectionTimer = null;
+        document.querySelectorAll('audio').forEach(a => { a.playbackRate = 1.0; });
+        logDebug('Drift correction leállítva');
       }
     }
 
-    // SDK elő-betöltés: ne a hívás gombnyomásakor töltsük be,
-    // hanem amint a felhasználó bármilyen interakciót kezdeményez.
+    // ================================================
+    // 3. PRE-CREATED AUDIO ELEMENT — pipeline készenlét
+    // ================================================
+    // A SDK <audio> elemet hoz létre a lejátszáshoz.
+    // Ha már létezik egy a DOM-ban, a böngésző audio dekodoló pipeline-je
+    // korábban aktiválódik = gyorsabb első hang.
+    let preCreatedAudio = null;
+
+    function ensurePreCreatedAudio() {
+      if (preCreatedAudio) return preCreatedAudio;
+      try {
+        preCreatedAudio = document.createElement('audio');
+        preCreatedAudio.id = 'anna-audio-pre';
+        preCreatedAudio.setAttribute('playsinline', '');
+        preCreatedAudio.setAttribute('webkit-playsinline', '');
+        preCreatedAudio.preload = 'auto';
+        // v4: MediaSession API aktiválás
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: 'Anna - Dental AI',
+            artist: 'Dental-AI Asszisztens'
+          });
+        }
+        document.body.appendChild(preCreatedAudio);
+        logDebug('Pre-created <audio> element hozzáadva a DOM-hoz');
+        return preCreatedAudio;
+      } catch (e) {
+        logDebug('Pre-created audio hiba: ' + e.message);
+        return null;
+      }
+    }
+
+    // SDK elő-betöltés
     async function preLoadSDK() {
       if (sdkModule) return sdkModule;
       try {
@@ -839,8 +999,7 @@
       }
     }
 
-    // Signed URL elő-lekérés: amint a felhasználó interakcióba lép az oldallal,
-    // háttérben lekérjük a signed URL-t, hogy a hívás gombnyomásakor már meglegyen.
+    // Signed URL elő-lekérés
     async function preFetchSignedUrl() {
       if (cachedSignedUrl && (Date.now() - signedUrlTimestamp) < SIGNED_URL_TTL) {
         logDebug('Signed URL még érvényes a cache-ben');
@@ -865,16 +1024,17 @@
       }
     }
 
-    // Első felhasználói interakciókor: teljes pre-warm
+    // Első felhasználói interakciókor: teljes pre-warm v4
     let hasPreWarmed = false;
     function preWarmOnInteraction() {
       if (hasPreWarmed) return;
       hasPreWarmed = true;
-      warmUpAudioContext();
-      playSilentWarmup(); // Audio pipeline teljes ébresztés
-      preLoadSDK();       // SDK betöltés háttérben
-      preFetchSignedUrl();// Signed URL lekérés háttérben
-      logDebug('Teljes pre-warm indítva (AudioCtx + SilentAudio + SDK + SignedURL)');
+      patchAudioContext();           // SDK AudioContext elfogás TELEPÍTÉSE
+      warmUpAudioContextAsync();     // v4: AWAIT-es AudioContext resume
+      preLoadSDK();
+      preFetchSignedUrl();
+      ensurePreCreatedAudio();       // v4: Pre-created <audio> elem
+      logDebug('Teljes pre-warm v4 indítva (Patch + AwaitAudioCtx + SDK + SignedURL + PreAudio)');
     }
 
     // Bármilyen kattintás, érintés vagy gombnyomás aktiválja a pre-warm-ot
@@ -904,54 +1064,35 @@
     }
 
     async function requestMicrophonePermission() {
-      // Ha már van élő warm stream, ne kérjünk újat
-      if (warmMicStream && warmMicStream.getTracks().some(t => t.readyState === 'live')) {
-        logDebug('Warm mikrofon stream már aktív, újrahasználat');
-        return true;
-      }
       try {
         // Mobil-optimalizált constraints:
         // - echoCancellation: visszhang szűrés (telefon hangszóró)
         // - noiseSuppression: háttérzaj csökkentés
         // - autoGainControl: automatikus hangerő szabályozás
-        // - sampleRate-et NEM állítjuk! A natív 48kHz gyorsabban stabilizálódik;
-        //   az ElevenLabs szerveroldalon downsampling-ol.
-        warmMicStream = await navigator.mediaDevices.getUserMedia({
+        // - sampleRate 16kHz: beszédfelismerés optimális frekvenciája
+        const stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: true,
             noiseSuppression: true,
             autoGainControl: true,
+            sampleRate: 16000,
             channelCount: 1
           }
         });
-        // FONTOS: NEM stop-oljuk a tracks-et! Hagyjuk élve, hogy az AGC/EC/NS
-        // kalibrációja végbemenjen, mire az SDK saját stream-jét megnyitja.
-        // A stop az onConnect callback-ben történik, vagy endCall-ban.
-        logDebug('Mikrofon engedély megadva (warm stream életben tartva)');
+        stream.getTracks().forEach(t => t.stop());
+        logDebug('Mikrofon engedély megadva (optimalizált constraints)');
         return true;
       } catch (err) {
         // Ha a specifikus constraints nem támogatott, fallback egyszerű audio=true-ra
         try {
-          warmMicStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          logDebug('Mikrofon engedély megadva (fallback warm stream életben tartva)');
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(t => t.stop());
+          logDebug('Mikrofon engedély megadva (fallback egyszerű constraints)');
           return true;
         } catch (fallbackErr) {
           logDebug('Mikrofon engedély megtagadva: ' + fallbackErr.message);
           return false;
         }
-      }
-    }
-
-    // Warm mic stream felszabadítása (az SDK már a sajátját használja)
-    function releaseWarmMicStream() {
-      if (warmMicStream) {
-        try {
-          warmMicStream.getTracks().forEach(t => t.stop());
-          logDebug('Warm mikrofon stream felszabadítva');
-        } catch (e) {
-          logDebug('Warm stream stop figyelmeztetés: ' + e.message);
-        }
-        warmMicStream = null;
       }
     }
 
@@ -967,23 +1108,24 @@
 
     async function executeCall(){
       setCallState(CALL_STATE.CONNECTING);
-      logDebug('Hívás indítása Annához...');
+      logDebug('Hívás indítása Annához... (v4)');
 
-      // === 1. AudioContext felélesztése (mobil cold-start elkerülés) ===
-      warmUpAudioContext();
-      playSilentWarmup(); // Teljes audio pipeline ébresztés
+      // === 1. KRITIKUS: AudioContext AWAIT-es felélesztése ===
+      // v4: EZ A LEGFONTOSABB VÁLTOZÁS! A korábbi verzióban fire-and-forget
+      // volt a resume(), és a debug panel ELÁRULTA, hogy AudioCtx = SUSPENDED
+      // maradt a hívás pillanatában. Most AWAIT-eljük = biztosan running lesz!
+      await warmUpAudioContextAsync();
+      ensurePreCreatedAudio();
+      logDebug('v4: AudioCtx state=' + (audioCtx?.state || 'none') + ', SDK AudioCtx=' + (sdkAudioCtx?.state || 'none'));
 
       // === 2. PÁRHUZAMOSÍTÁS: Mikrofon + Signed URL EGYSZERRE ===
-      // Ez a legnagyobb nyereség: korábban szekvenciális volt (mic → url = ~1.5s),
-      // most párhuzamos (~0.8s a lassabbik alapján)
-      let signedUrl = cachedSignedUrl; // Használjuk a cache-t ha elérhető
+      let signedUrl = cachedSignedUrl;
       let needsFetchUrl = !signedUrl || (Date.now() - signedUrlTimestamp) >= SIGNED_URL_TTL;
 
       logDebug(needsFetchUrl ? 'Signed URL nincs cache-ben, párhuzamos lekérés...' : 'Signed URL a cache-ből, csak mikrofon kérés...');
 
       let hasMic;
       if (needsFetchUrl) {
-        // PÁRHUZAMOS: mikrofon + signed URL egyszerre indul
         const [micResult, urlResult] = await Promise.all([
           requestMicrophonePermission(),
           fetchSignedUrl()
@@ -991,7 +1133,6 @@
         hasMic = micResult;
         signedUrl = urlResult;
       } else {
-        // Csak mikrofon kell, URL már megvan
         hasMic = await requestMicrophonePermission();
       }
 
@@ -1003,15 +1144,13 @@
 
       try {
         if (!signedUrl) {
-          // Ha a cache-ből nem jött és a párhuzamos lekérés is sikertelen volt
-          // Próbáljuk meg újra (biztos, ami biztos)
           signedUrl = await fetchSignedUrl();
           if (!signedUrl) {
             throw new Error('Nem sikerült lekérni a signed URL-t');
           }
         }
 
-        // === 3. SDK betöltése — elő-betöltött modul használata ha elérhető ===
+        // === 3. SDK betöltése ===
         let Conversation;
         if (sdkModule) {
           Conversation = sdkModule.Conversation;
@@ -1022,31 +1161,41 @@
           Conversation = mod.Conversation;
         }
 
-        // === 4. AudioContext biztosan aktív a session indítása előtt ===
+        // === 4. v4: AudioContext BIZTOSAN aktív + SDK AudioCtx megvárása ===
         if (audioCtx && audioCtx.state === 'suspended') {
           await audioCtx.resume();
-          logDebug('AudioContext újraaktiválva a session előtt');
+          logDebug('Saját AudioContext újraaktiválva');
+        }
+        // v4: HA a SDK már létrehozta az AudioContext-et (monkey-patch elfogta),
+        // MEGVÁRJUK a resume promise-ot! Ez a kritikus pont!
+        if (audioCtxResumePromise) {
+          logDebug('v4: SDK AudioContext resume megvárása...');
+          await audioCtxResumePromise;
+          audioCtxResumePromise = null;
+          logDebug('v4: SDK AudioContext resume kész, state=' + (sdkAudioCtx?.state || 'unknown'));
         }
 
-        // Cache törlése (felhasználtuk a signed URL-t)
+        // Cache törlése
         cachedSignedUrl = null;
 
         // === 5. Session indítása ===
-        // connectionType: 'webrtc' — gyorsabb audio pipeline ramp-up mint websocket;
-        // ha az SDK ezt nem támogatja, a try/catch fallback-el visszavált.
-        const sessionConfig = {
+        conversation = await Conversation.startSession({
           signedUrl: signedUrl,
-          connectionType: 'webrtc',
+          overrides: {
+            agent: {
+              language: "hu"
+            }
+          },
           onConnect: () => {
             logDebug('Kapcsolódás sikeres — Anna figyel');
-            // Az SDK most már a saját mikrofon stream-jét használja,
-            // a warm stream felszabadítható.
-            releaseWarmMicStream();
             setCallState(CALL_STATE.LISTENING);
+            // v4: Drift correction indítása — agresszívebb paraméterekkel
+            startDriftCorrection();
+            // v4: Az SDK által létrehozott <audio> elemek azonnali aktiválása
+            activateSDKAudioElements();
           },
           onDisconnect: () => {
             logDebug('Kapcsolat megszakadt');
-            releaseWarmMicStream();
             if (currentCallState !== CALL_STATE.IDLE) {
               setCallState(CALL_STATE.IDLE);
             }
@@ -1058,7 +1207,6 @@
             const errMsg = typeof error === 'string' ? error : (error?.message || String(error));
             logDebug('SDK hiba: ' + errMsg);
             console.error('[Anna] SDK hiba:', error, details);
-            releaseWarmMicStream();
             setCallState(CALL_STATE.IDLE);
           },
           onModeChange: (data) => {
@@ -1070,30 +1218,37 @@
               setCallState(CALL_STATE.LISTENING);
             }
           },
-        };
+        });
 
-        try {
-          conversation = await Conversation.startSession(sessionConfig);
-          logDebug('Beszélgetés munkamenet elindítva (WebRTC mód)');
-        } catch (webrtcErr) {
-          // Fallback: ha a WebRTC nem támogatott / sikertelen, próbáljuk WebSocket-tel
-          logDebug('WebRTC sikertelen, WebSocket fallback: ' + webrtcErr.message);
-          delete sessionConfig.connectionType;
-          conversation = await Conversation.startSession(sessionConfig);
-          logDebug('Beszélgetés munkamenet elindítva (WebSocket fallback)');
-        }
+        logDebug('Beszélgetés munkamenet elindítva (v4)');
 
       } catch (err) {
         logDebug('Hiba a hívás indításakor: ' + err.message);
         console.error('[Anna] Hívás indítási hiba:', err);
-        releaseWarmMicStream();
         alert('Nem sikerült kapcsolódni Annához.\n\nKérem, ellenőrizze az internetkapcsolatát és próbálja újra!\n\nHiba: ' + err.message);
         setCallState(CALL_STATE.IDLE);
       }
     }
 
+    // v4: SDK audio elemek azonnali aktiválása
+    function activateSDKAudioElements() {
+      setTimeout(() => {
+        document.querySelectorAll('audio').forEach(audio => {
+          if (!audio.paused) return;
+          try {
+            audio.play().then(() => {
+              logDebug('v4: SDK <audio> elem aktiválva (play)');
+            }).catch(e => {
+              logDebug('v4: SDK audio play auto-blocked (normal): ' + e.name);
+            });
+          } catch (e) { /* ignore */ }
+        });
+      }, 100); // Kis késleltetés, hogy az SDK befejezze a setup-et
+    }
+
     async function endCall(){
       logDebug('Hívás megszakítása...');
+      stopDriftCorrection(); // Drift correction leállítása
       if (conversation) {
         try {
           await conversation.endSession();
@@ -1103,11 +1258,12 @@
         }
         conversation = null;
       }
-      // Warm stream tisztítás (ha valamiért még él)
-      releaseWarmMicStream();
       // AudioContext suspendálása ha aktív (mobil akku spórolás)
       if (audioCtx && audioCtx.state === 'running') {
         try { audioCtx.suspend(); logDebug('AudioContext felfüggesztve'); } catch(e) {}
+      }
+      if (sdkAudioCtx && sdkAudioCtx.state === 'running') {
+        try { sdkAudioCtx.suspend(); logDebug('SDK AudioContext felfüggesztve'); } catch(e) {}
       }
       setCallState(CALL_STATE.IDLE);
       logDebug('Hívás befejezve');
@@ -1637,7 +1793,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK v2)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><div>AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>SignedURL cache: '+urlAge+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:460px;max-height:350px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';const audioEls=document.querySelectorAll('audio');const audioInfo=Array.from(audioEls).map(a=>{try{const buf=a.buffered;const ahead=buf.length>0?(buf.end(buf.length-1)-a.currentTime).toFixed(1)+'s':'N/A';return a.paused?'paused':'playing('+ahead+')@'+a.playbackRate+'x'}catch(e){return 'err'}}).join(', ')||'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug v4</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>My AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK AudioCtx: '+(sdkAudioCtx?sdkAudioCtx.state:'not captured')+'</div><div>Resume promise: '+(audioCtxResumePromise?'pending':'done/none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>ACtx Patched: '+audioCtxPatched+'</div><div>Pre-created Audio: '+(!!preCreatedAudio)+'</div><div>SignedURL: '+urlAge+'</div><div>Audio elements ('+audioEls.length+'): '+audioInfo+'</div><div>Drift correction: '+(!!driftCorrectionTimer)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Info:</div><div>Consent: '+hasConsented+'</div><div>UA: '+(navigator.userAgent||'').substring(0,60)+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
