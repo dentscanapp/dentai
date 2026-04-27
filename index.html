@@ -764,8 +764,14 @@
 
     async function fetchSignedUrl() {
       try {
-        const response = await fetch(`${PROXY_URL}?agent_id=${AGENT_ID}`);
-        if (!response.ok) throw new Error(`Proxy válasz: ${response.status}`);
+        const response = await fetch(`${PROXY_URL}?agent_id=${AGENT_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => '');
+          throw new Error(`Proxy válasz: ${response.status} — ${errorText}`);
+        }
         const data = await response.json();
         logDebug('Signed URL sikeresen lekérve');
         return data.signed_url || data.signedUrl;
