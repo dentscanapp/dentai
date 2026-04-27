@@ -1,7 +1,11 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <!-- Mobil audio optimalizáció: hardware gyorsítás kikényszerítése -->
+  <meta name="format-detection" content="telephone=no" />
+  <!-- iOS Safari: hang lejátszás engedélyezése csendben is -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Anna — Dental-AI Senior Asszisztens | 0-24 híváskezelés & foglalás</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M32 12c-5.2 0-9 3.2-10.4 7.2-1.4 4-.2 8.4.8 12.6 1 4.2 2.4 9.8 3.4 14 .6 2.2 1.8 4.2 3.6 4.2s2.6-2 3-4.2l1.4-7c.2-1 .6-1.4 1.4-1.4s1.2.4 1.4 1.4l1.4 7c.4 2.2 1.2 4.2 3 4.2s3-2 3.6-4.2c1-4.2 2.4-9.8 3.4-14 1-4.2 2.2-8.6.8-12.6C41 15.2 37.2 12 32 12z' fill='white'/%3E%3Ccircle cx='42' cy='18' r='6' fill='%2310b981'/%3E%3Cpath d='M40 17l1.5 2 3-3.5' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -88,6 +92,9 @@
     @keyframes step-fade-in{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}.step-animate{animation:step-fade-in .6s ease forwards;opacity:0}.step-animate:nth-child(1){animation-delay:.1s}.step-animate:nth-child(2){animation-delay:.25s}.step-animate:nth-child(3){animation-delay:.4s}.step-animate:nth-child(4){animation-delay:.55s}
     .lang-badge{transition:all .2s ease}.lang-badge:hover{transform:scale(1.05)}
     
+    /* Mobil audio pre-warm jelző */
+    @keyframes warmup-pulse{0%,100%{opacity:.6}50%{opacity:1}}.warmup-pulse{animation:warmup-pulse 1.2s ease-in-out infinite}
+
     /* Gördítősáv a modálhoz */
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -760,6 +767,57 @@
     const AGENT_ID = 'agent_2301kq22b6v9f04sr88gmbtksw04';
     const PROXY_URL = 'https://api.dentai.me';
 
+    // ========================================
+    // MOBIL AUDIO OPTIMALIZÁCIÓ
+    // ========================================
+    // AudioContext elő-melegítés: a böngésző hangmotorját FELÉBRESZTJÜK
+    // a hívás előtt, így nincs "cold start" lag az első másodpercben.
+    let audioCtx = null;
+    let sdkModule = null; // SDK elő-betöltött modul
+
+    function warmUpAudioContext() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        logDebug('AudioContext felélesztve (state: ' + audioCtx.state + ')');
+      } catch (e) {
+        logDebug('AudioContext warm-up figyelmeztetés: ' + e.message);
+      }
+    }
+
+    // SDK elő-betöltés: ne a hívás gombnyomásakor töltsük be,
+    // hanem amint a felhasználó bármilyen interakciót kezdeményez.
+    async function preLoadSDK() {
+      if (sdkModule) return sdkModule;
+      try {
+        sdkModule = await import('@elevenlabs/client');
+        logDebug('SDK elő-betöltés sikeres');
+        return sdkModule;
+      } catch (e) {
+        logDebug('SDK elő-betöltés sikertelen (majd újrapróbáljuk): ' + e.message);
+        return null;
+      }
+    }
+
+    // Első felhasználói interakciókor: AudioContext + SDK előkészítés
+    let hasPreWarmed = false;
+    function preWarmOnInteraction() {
+      if (hasPreWarmed) return;
+      hasPreWarmed = true;
+      warmUpAudioContext();
+      preLoadSDK(); // nem await-elünk, háttérben fut
+      logDebug('Pre-warm indítva (AudioContext + SDK)');
+    }
+
+    // Bármilyen kattintás, érintés vagy gombnyomás aktiválja a pre-warm-ot
+    ['click', 'touchstart', 'keydown'].forEach(evt => {
+      document.addEventListener(evt, preWarmOnInteraction, { once: false, passive: true });
+    });
+
     function logDebug(msg){console.log(`[Anna] ${msg}`)}
 
     async function fetchSignedUrl() {
@@ -783,13 +841,34 @@
 
     async function requestMicrophonePermission() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Mobil-optimalizált constraints:
+        // - echoCancellation: visszhang szűrés (telefon hangszóró)
+        // - noiseSuppression: háttérzaj csökkentés
+        // - autoGainControl: automatikus hangerő szabályozás
+        // - sampleRate 16kHz: beszédfelismerés optimális frekvenciája
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 16000,
+            channelCount: 1
+          }
+        });
         stream.getTracks().forEach(t => t.stop());
-        logDebug('Mikrofon engedély megadva');
+        logDebug('Mikrofon engedély megadva (optimalizált constraints)');
         return true;
       } catch (err) {
-        logDebug('Mikrofon engedély megtagadva: ' + err.message);
-        return false;
+        // Ha a specifikus constraints nem támogatott, fallback egyszerű audio=true-ra
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(t => t.stop());
+          logDebug('Mikrofon engedély megadva (fallback egyszerű constraints)');
+          return true;
+        } catch (fallbackErr) {
+          logDebug('Mikrofon engedély megtagadva: ' + fallbackErr.message);
+          return false;
+        }
       }
     }
 
@@ -807,7 +886,10 @@
       setCallState(CALL_STATE.CONNECTING);
       logDebug('Hívás indítása Annához...');
 
-      // Mikrofon engedély kérése
+      // === 1. AudioContext felélesztése (mobil cold-start elkerülés) ===
+      warmUpAudioContext();
+
+      // === 2. Mikrofon engedély kérése optimalizált constraints-szel ===
       const hasMic = await requestMicrophonePermission();
       if (!hasMic) {
         alert('A mikrofon engedélyezése szükséges a hívás indításához.\n\nKérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.');
@@ -816,15 +898,30 @@
       }
 
       try {
-        // Signed URL lekérése a backend proxytól
+        // === 3. Signed URL lekérése a backend proxytól ===
         const signedUrl = await fetchSignedUrl();
         if (!signedUrl) {
           throw new Error('Nem sikerült lekérni a signed URL-t');
         }
 
-        // SDK betöltése és munkamenet indítása
-        const { Conversation } = await import('@elevenlabs/client');
+        // === 4. SDK betöltése — elő-betöltött modul használata ha elérhető ===
+        let Conversation;
+        if (sdkModule) {
+          Conversation = sdkModule.Conversation;
+          logDebug('SDK használata az elő-betöltött modulból');
+        } else {
+          logDebug('SDK elő-betöltés nem történt meg, dinamikus betöltés...');
+          const mod = await import('@elevenlabs/client');
+          Conversation = mod.Conversation;
+        }
 
+        // === 5. AudioContext biztosan aktív a session indítása előtt ===
+        if (audioCtx && audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+          logDebug('AudioContext újraaktiválva a session előtt');
+        }
+
+        // === 6. Session indítása ===
         conversation = await Conversation.startSession({
           signedUrl: signedUrl,
           onConnect: () => {
@@ -877,6 +974,10 @@
           logDebug('Hiba a munkamenet leállításakor: ' + err.message);
         }
         conversation = null;
+      }
+      // AudioContext suspendálása ha aktív (mobil akku spórolás)
+      if (audioCtx && audioCtx.state === 'running') {
+        try { audioCtx.suspend(); logDebug('AudioContext felfüggesztve'); } catch(e) {}
       }
       setCallState(CALL_STATE.IDLE);
       logDebug('Hívás befejezve');
@@ -1406,7 +1507,7 @@
       });
     })();
 
-    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:420px;max-height:300px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug Panel (SDK)</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>Proxy: '+PROXY_URL+'</div><div>AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">SDK Info:</div><div>Consent: '+hasConsented+'</div>';document.body.appendChild(panel)}});
   </script>
 </body>
 </html>
