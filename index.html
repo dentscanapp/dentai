@@ -801,6 +801,28 @@
             </div>
             <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors leading-snug" data-i18n="modal-agree">Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.</span>
           </label>
+
+          <!-- Egészségügyi értesítések hozzájárulás -->
+          <label class="flex items-start gap-3 cursor-pointer group pb-2 mt-4 pt-4 border-t border-slate-100">
+            <div class="relative flex items-start mt-0.5 flex-shrink-0">
+              <input type="checkbox" id="contact-consent-checkbox" class="peer sr-only" checked>
+              <div class="w-6 h-6 rounded border-2 border-emerald-400 bg-white peer-checked:bg-emerald-500 peer-checked:border-emerald-500 transition-colors flex items-center justify-center shadow-sm">
+                <svg id="contact-consent-icon" class="w-4 h-4 text-white opacity-100 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              </div>
+            </div>
+            <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors leading-snug" data-i18n="modal-contact-consent">Hozzájárulok, hogy a rendelő egészségügyi kontrollra emlékeztessen (emlékeztető SMS, utókövetés). Bármikor leiratkozhatok.</span>
+          </label>
+
+          <!-- Marketing hozzájárulás -->
+          <label class="flex items-start gap-3 cursor-pointer group pb-2">
+            <div class="relative flex items-start mt-0.5 flex-shrink-0">
+              <input type="checkbox" id="marketing-consent-checkbox" class="peer sr-only">
+              <div class="w-6 h-6 rounded border-2 border-slate-300 bg-white peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-colors flex items-center justify-center shadow-sm">
+                <svg id="marketing-consent-icon" class="w-4 h-4 text-white opacity-0 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              </div>
+            </div>
+            <span class="text-sm font-medium text-slate-500 group-hover:text-slate-700 transition-colors leading-snug" data-i18n="modal-marketing-consent">Szeretnék értesülni akciókról és kedvezményekről is. (Opcionális, bármikor lemondható.)</span>
+          </label>
         </div>
 
         <!-- Footer Actions: Mobilon függőlegesen egymás alatt -->
@@ -1100,6 +1122,32 @@
     const consentAcceptBtn = document.getElementById('consent-accept-btn');
     const consentCancelBtn = document.getElementById('consent-cancel-btn');
     const consentCheckIcon = document.getElementById('consent-check-icon');
+    const contactConsentCheckbox = document.getElementById('contact-consent-checkbox');
+    const contactConsentIcon = document.getElementById('contact-consent-icon');
+    const marketingConsentCheckbox = document.getElementById('marketing-consent-checkbox');
+    const marketingConsentIcon = document.getElementById('marketing-consent-icon');
+
+    // Contact consent checkbox toggle
+    contactConsentCheckbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        contactConsentIcon.classList.remove('opacity-0');
+        contactConsentIcon.classList.add('opacity-100');
+      } else {
+        contactConsentIcon.classList.remove('opacity-100');
+        contactConsentIcon.classList.add('opacity-0');
+      }
+    });
+
+    // Marketing consent checkbox toggle
+    marketingConsentCheckbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        marketingConsentIcon.classList.remove('opacity-0');
+        marketingConsentIcon.classList.add('opacity-100');
+      } else {
+        marketingConsentIcon.classList.remove('opacity-100');
+        marketingConsentIcon.classList.add('opacity-0');
+      }
+    });
 
     // JS-ből vezéreljük a pipa SVG láthatóságát az opacity-100 / opacity-0 osztályokkal
     consentCheckbox.addEventListener('change', (e) => {
@@ -1140,6 +1188,9 @@
         hasConsented = true;
         // Elmentjük a választást a böngésző helyi tárhelyébe
         localStorage.setItem('dentalAiConsent', 'true');
+        // Hozzájárulások mentése
+        localStorage.setItem('dentalAiContactConsent', contactConsentCheckbox.checked ? 'yes' : 'no');
+        localStorage.setItem('dentalAiMarketingConsent', marketingConsentCheckbox.checked ? 'yes' : 'no');
         hideConsentModal();
         executeCall(); // Indítás, miután a beleegyezés megtörtént
       }
@@ -1826,6 +1877,13 @@
         'footer-privacy': 'Adatkezelési Tájékoztató',
         'footer-gdpr': 'Jogi nyilatkozat: Ez egy portfolió demo. Kérem, ne adjon meg valós adatokat! Az AI válaszaiért felelősséget nem vállalok.',
         'footer-copy': '© 2026 Dental-AI Asszisztens. Minden jog fenntartva. Anna AI által működtetve.',
+        'time-past': 'A kért időpont már elmúlt. Kérem válasszon egy jövőbeli időpontot.',
+        'time-too-close': 'Túl közeli időpont — minimum 2 órával előre lehet foglalni.',
+        'time-too-late': 'A kért időpont túl késői — a kezelés nem fér bele a nyitvatartásba (08:00–17:00).',
+        'time-closed': 'A rendelő ilyenkor zárva van. Nyitvatartás: H–P 08:00–17:00.',
+        'time-invalid': 'Érvénytelen időpont. Kérem válasszon másikat.',
+        'time-suggest-prefix': 'Elérhető időpontok:',
+        'time-booking-sent': 'Foglalás elküldve — visszaigazolás hamarosan!',
         'legal-title': 'Jogi információk',
         'legal-tab-impressum': 'Impresszum',
         'legal-tab-privacy': 'Adatkezelési Tájékoztató',
@@ -1868,7 +1926,9 @@
         'modal-li4': '<strong>Felelősségkizárás:</strong> Semmilyen felelősséget nem vállalok a megadott adatokért vagy a mesterséges intelligencia által adott válaszokért. A tesztelést mindenki saját felelősségére végzi.',
         'modal-agree': 'Megértettem, hogy ez egy tesztkörnyezet, valós adataimat nem adom meg, és a hívás indítását saját felelősségemre teszem.',
         'modal-cancel': 'Mégse',
-        'modal-start': 'Hívás indítása'
+        'modal-start': 'Hívás indítása',
+        'modal-contact-consent': 'Hozzájárulok, hogy a rendelő egészségügyi kontrollra emlékeztessen (emlékeztető SMS, utókövetés). Bármikor leiratkozhatok.',
+        'modal-marketing-consent': 'Szeretnék értesülni akciókról és kedvezményekről is. (Opcionális, bármikor lemondható.)'
       },
       en: {
         'page-title': 'Anna — Dental-AI Senior Assistant | 24/7 Call Handling & Booking',
@@ -2002,6 +2062,13 @@
         'footer-privacy': 'Privacy Policy',
         'footer-gdpr': 'Disclaimer: This is a portfolio demo. Please do not provide real data! I assume no liability for AI responses.',
         'footer-copy': '© 2026 Dental-AI Assistant. All rights reserved. Powered by Anna AI.',
+        'time-past': 'The requested time has already passed. Please choose a future time slot.',
+        'time-too-close': 'Too soon — bookings must be at least 2 hours in advance.',
+        'time-too-late': 'The requested time is too late — the treatment won\'t fit within business hours (08:00–17:00).',
+        'time-closed': 'The clinic is closed at this time. Open: Mon–Fri 08:00–17:00.',
+        'time-invalid': 'Invalid time slot. Please choose a different one.',
+        'time-suggest-prefix': 'Available time slots:',
+        'time-booking-sent': 'Booking sent — confirmation coming soon!',
         'legal-title': 'Legal information',
         'legal-tab-impressum': 'Imprint',
         'legal-tab-privacy': 'Privacy Policy',
@@ -2044,7 +2111,9 @@
         'modal-li4': '<strong>Disclaimer of Liability:</strong> I assume no liability for the data provided or the responses generated by the AI. Testing is done at your own risk.',
         'modal-agree': 'I understand that this is a test environment, I will not provide real personal data, and I initiate the call at my own risk.',
         'modal-cancel': 'Cancel',
-        'modal-start': 'Start Call'
+        'modal-start': 'Start Call',
+        'modal-contact-consent': 'I consent to health check-up reminders from the practice (reminder SMS, follow-up). I can unsubscribe at any time.',
+        'modal-marketing-consent': 'I would also like to receive information about promotions and discounts. (Optional, can be cancelled at any time.)'
       },
       de: {
         'page-title': 'Anna — Dental-AI Senior Assistentin | 24/7 Anrufbearbeitung & Terminbuchung',
@@ -2178,6 +2247,13 @@
         'footer-privacy': 'Datenschutzerklärung',
         'footer-gdpr': 'Haftungsausschluss: Dies ist eine Portfolio-Demo. Bitte geben Sie keine echten Daten an! Ich übernehme keine Haftung für KI-Antworten.',
         'footer-copy': '© 2026 Dental-AI Assistent. Alle Rechte vorbehalten. Betrieben von Anna AI.',
+        'time-past': 'Der gewünschte Zeitpunkt liegt in der Vergangenheit. Bitte wählen Sie einen zukünftigen Termin.',
+        'time-too-close': 'Zu kurzfristig — Buchungen müssen mindestens 2 Stunden im Voraus erfolgen.',
+        'time-too-late': 'Der gewünschte Zeitpunkt ist zu spät — die Behandlung passt nicht in die Öffnungszeiten (08:00–17:00).',
+        'time-closed': 'Die Praxis ist zu dieser Zeit geschlossen. Geöffnet: Mo–Fr 08:00–17:00.',
+        'time-invalid': 'Ungültiger Termin. Bitte wählen Sie einen anderen.',
+        'time-suggest-prefix': 'Verfügbare Termine:',
+        'time-booking-sent': 'Buchung gesendet — Bestätigung folgt!',
         'legal-title': 'Rechtliche Informationen',
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Datenschutzerklärung',
@@ -2220,7 +2296,9 @@
         'modal-li4': '<strong>Haftungsausschluss:</strong> Ich übernehme keine Haftung für die bereitgestellten Daten oder die von der KI generierten Antworten. Das Testen erfolgt auf Ihre eigene Gefahr.',
         'modal-agree': 'Ich verstehe, dass dies eine Testumgebung ist, ich keine echten Daten angebe und den Anruf auf eigene Gefahr starte.',
         'modal-cancel': 'Abbrechen',
-        'modal-start': 'Anruf starten'
+        'modal-start': 'Anruf starten',
+        'modal-contact-consent': 'Ich stimme zu, dass die Praxis mich an Gesundheitskontrollen erinnert (Erinnerungs-SMS, Nachbetreuung). Ich kann mich jederzeit abmelden.',
+        'modal-marketing-consent': 'Ich möchte auch über Aktionen und Rabatte informiert werden. (Optional, jederzeit widerruflich.)'
       }
     };
     // Init: localStorage-ból betöltjük az utoljára választott nyelvet (alapértelmezett: 'hu')
@@ -2325,6 +2403,141 @@
     })();
 
     document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='D'){const existing=document.getElementById('anna-debug');if(existing){existing.remove();return}const panel=document.createElement('div');panel.id='anna-debug';panel.style.cssText='position:fixed;bottom:20px;left:20px;z-index:99999;background:#1e293b;color:#e2e8f0;padding:16px;border-radius:12px;font-size:11px;font-family:monospace;max-width:460px;max-height:350px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);';const urlAge=cachedSignedUrl?Math.round((Date.now()-signedUrlTimestamp)/1000)+'s ago':'none';const audioEls=document.querySelectorAll('audio');const audioInfo=Array.from(audioEls).map(a=>{try{const buf=a.buffered;const ahead=buf.length>0?(buf.end(buf.length-1)-a.currentTime).toFixed(1)+'s':'N/A';return a.paused?'paused':'playing('+ahead+')@'+a.playbackRate+'x'}catch(e){return 'err'}}).join(', ')||'none';panel.innerHTML='<div style="font-weight:bold;margin-bottom:8px;color:#60a5fa">Anna Debug v4</div><div>State: '+currentCallState+'</div><div>Conversation: '+(!!conversation)+'</div><div>Agent: '+AGENT_ID+'</div><div>My AudioCtx: '+(audioCtx?audioCtx.state:'none')+'</div><div>SDK AudioCtx: '+(sdkAudioCtx?sdkAudioCtx.state:'not captured')+'</div><div>Resume promise: '+(audioCtxResumePromise?'pending':'done/none')+'</div><div>SDK Pre-loaded: '+(!!sdkModule)+'</div><div>Pre-warmed: '+hasPreWarmed+'</div><div>ACtx Patched: '+audioCtxPatched+'</div><div>Pre-created Audio: '+(!!preCreatedAudio)+'</div><div>SignedURL: '+urlAge+'</div><div>Audio elements ('+audioEls.length+'): '+audioInfo+'</div><div>Drift correction: '+(!!driftCorrectionTimer)+'</div><hr style="border-color:#334155;margin:8px 0"><div style="font-weight:bold;margin-bottom:4px;color:#60a5fa">Info:</div><div>Consent: '+hasConsented+'</div><div>UA: '+(navigator.userAgent||'').substring(0,60)+'</div>';document.body.appendChild(panel)}});
-  </script>
+  
+
+    // ========================================
+    // SMART TIME VALIDATOR v1
+    // Okos idő-logika: Anna nem foglal múltbeli, túl közeli vagy túl késői időpontra
+    // ========================================
+    
+    const BUSINESS_OPEN = 8;
+    const BUSINESS_CLOSE = 17;
+    const MIN_ADVANCE_HOURS = 2;
+    const TREATMENT_DURATION = 60;
+
+    function validateAppointmentTime(idopont) {
+      const lang = currentLang || 'hu';
+      const t = translations[lang] || translations['hu'];
+      
+      if (!idopont) {
+        return { valid: false, reason: 'missing', message: t['time-invalid'] || 'Invalid time' };
+      }
+
+      const now = new Date();
+      const appointment = new Date(idopont);
+      
+      if (isNaN(appointment.getTime())) {
+        return { valid: false, reason: 'invalid_date', message: t['time-invalid'] };
+      }
+
+      // 1. Múltbeli időpont?
+      if (appointment <= now) {
+        return { valid: false, reason: 'past_time', message: t['time-past'] };
+      }
+
+      // 2. Túl közeli (minimum 2 óra előre)?
+      const minAdvance = new Date(now.getTime() + MIN_ADVANCE_HOURS * 60 * 60 * 1000);
+      if (appointment <= minAdvance) {
+        return { valid: false, reason: 'too_close', message: t['time-too-close'] };
+      }
+
+      // 3. Hétvége?
+      const day = appointment.getDay();
+      if (day === 0 || day === 6) {
+        return { valid: false, reason: 'closed', message: t['time-closed'] };
+      }
+
+      // 4. Nyitvatartáson kívül?
+      const hour = appointment.getHours();
+      if (hour < BUSINESS_OPEN || hour >= BUSINESS_CLOSE) {
+        return { valid: false, reason: 'closed', message: t['time-closed'] };
+      }
+
+      // 5. Kezelés belefér a nyitvatartásba?
+      const treatmentEnd = new Date(appointment.getTime() + TREATMENT_DURATION * 60 * 1000);
+      if (treatmentEnd.getHours() > BUSINESS_CLOSE || 
+          (treatmentEnd.getHours() === BUSINESS_CLOSE && treatmentEnd.getMinutes() > 0)) {
+        return { valid: false, reason: 'too_close_to_closing', message: t['time-too-late'] };
+      }
+
+      return { valid: true, reason: null, message: null };
+    }
+
+    function getNextAvailableSlots(count) {
+      count = count || 5;
+      const now = new Date();
+      const minAdvance = new Date(now.getTime() + MIN_ADVANCE_HOURS * 60 * 60 * 1000);
+      const slots = [];
+      
+      let checkDate = new Date(minAdvance);
+      if (checkDate.getMinutes() > 0) {
+        checkDate.setHours(checkDate.getHours() + 1, 0, 0, 0);
+      }
+
+      let attempts = 0;
+      while (slots.length < count && attempts < 100) {
+        attempts++;
+        const day = checkDate.getDay();
+        const hour = checkDate.getHours();
+
+        if (day >= 1 && day <= 5 && hour >= BUSINESS_OPEN && hour < BUSINESS_CLOSE - 1) {
+          const treatmentEnd = new Date(checkDate.getTime() + TREATMENT_DURATION * 60 * 1000);
+          if (treatmentEnd.getHours() <= BUSINESS_CLOSE) {
+            slots.push(checkDate.toLocaleDateString('hu-HU', {
+              weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            }));
+          }
+        }
+
+        checkDate = new Date(checkDate.getTime() + 60 * 60 * 1000);
+        if (checkDate.getHours() >= BUSINESS_CLOSE - 1) {
+          checkDate.setDate(checkDate.getDate() + 1);
+          checkDate.setHours(BUSINESS_OPEN, 0, 0, 0);
+        }
+        if (checkDate.getDay() === 0) checkDate.setDate(checkDate.getDate() + 1);
+        if (checkDate.getDay() === 6) checkDate.setDate(checkDate.getDate() + 2);
+      }
+
+      return slots;
+    }
+
+    function handleTimeValidation(data) {
+      const lang = currentLang || 'hu';
+      const t = translations[lang] || translations['hu'];
+
+      if (data.status === 'time_invalid' || data.reason === 'past_time' || 
+          data.reason === 'too_close' || data.reason === 'too_close_to_closing') {
+        
+        let message = '';
+        switch (data.reason) {
+          case 'past_time': message = t['time-past']; break;
+          case 'too_close': message = t['time-too-close']; break;
+          case 'too_close_to_closing': message = t['time-too-late']; break;
+          default: message = data['message_' + lang] || data.message_hu || t['time-invalid'];
+        }
+
+        const suggestions = getNextAvailableSlots(3);
+        if (suggestions.length > 0) {
+          message += '\n\n' + (t['time-suggest-prefix'] || 'Available:') + '\n' + suggestions.join('\n');
+        }
+
+        if (typeof showToast === 'function') {
+          showToast(message, 'warn');
+        } else {
+          alert(message);
+        }
+        return false;
+      }
+
+      if (data.status === 'closed') {
+        if (typeof showToast === 'function') showToast(t['time-closed'], 'warn');
+        else alert(t['time-closed']);
+        return false;
+      }
+
+      return true;
+    }
+
+</script>
 </body>
 </html>
