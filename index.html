@@ -991,7 +991,7 @@
               <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap" data-i18n="cal-sync">Szinkron: <strong id="countdown-text" class="text-dental-600">30s</strong></span></div>
             </div>
             <div class="relative" style="padding-top:75%;">
-              <iframe id="calendar-iframe" class="absolute inset-0 w-full h-full border-0" src="https://calendar.google.com/calendar/embed?src=dental.ai.naptar%40gmail.com&ctz=Europe%2FBudapest&showTitle=0&showPrint=0&showCalendars=0&mode=WEEK" frameborder="0" scrolling="no" loading="lazy" title="Anna naptár — Dental-AI asszisztens" allowfullscreen></iframe>
+              <iframe id="calendar-iframe" class="absolute inset-0 w-full h-full border-0" src="https://calendar.google.com/calendar/embed?src=dental.ai.naptar%40gmail.com&ctz=Europe%2FBudapest&showTitle=0&showPrint=0&showCalendars=0&mode=WEEK" frameborder="0" scrolling="no" title="Anna naptár — Dental-AI asszisztens" allowfullscreen></iframe>
               <div id="calendar-placeholder" class="absolute inset-0 bg-white flex items-center justify-center"><div class="text-center"><div class="shimmer-placeholder w-64 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-48 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-56 h-3 rounded mx-auto mb-5"></div><svg class="w-8 h-8 mx-auto text-slate-300 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg><p class="text-xs text-slate-400 mt-2" data-i18n="cal-loading">Anna naptárának betöltése...</p></div></div>
             </div>
             <div class="bg-slate-50/60 border-t border-slate-200/60 px-6 py-3 flex items-center justify-between">
@@ -1238,7 +1238,12 @@
     const countdownCircle = document.getElementById('countdown-circle');
     const placeholder = document.getElementById('calendar-placeholder');
 
-    calendarIframe.addEventListener('load', () => { if (placeholder) placeholder.style.display = 'none'; });
+    function hideCalendarPlaceholder() { if (placeholder) placeholder.style.display = 'none'; }
+    calendarIframe.addEventListener('load', hideCalendarPlaceholder);
+    // Fallback: már betöltött iframe esetén (script után) — láthatóság ellenőrzése
+    try { if (calendarIframe.contentWindow && calendarIframe.contentWindow.location) hideCalendarPlaceholder(); } catch(e) { /* cross-origin = betöltött */ hideCalendarPlaceholder(); }
+    // Fallback timer: 4s után mindenképp eltüntetjük (ha valamiért nem jön a load esemény)
+    setTimeout(hideCalendarPlaceholder, 4000);
 
     function refreshCalendar() {
       const src = calendarIframe.src.split('&_t=')[0];
@@ -1776,19 +1781,32 @@
       logDebug(needsFetchUrl ? 'Signed URL nincs cache-ben, párhuzamos lekérés...' : 'Signed URL a cache-ből, csak mikrofon kérés...');
 
       let hasMic;
-      if (needsFetchUrl) {
-        const [micResult, urlResult] = await Promise.all([
-          requestMicrophonePermission(),
-          fetchSignedUrl()
-        ]);
-        hasMic = micResult;
-        signedUrl = urlResult;
-      } else {
-        hasMic = await requestMicrophonePermission();
+      try {
+        if (needsFetchUrl) {
+          const [micResult, urlResult] = await Promise.all([
+            requestMicrophonePermission(),
+            fetchSignedUrl()
+          ]);
+          hasMic = micResult;
+          signedUrl = urlResult;
+        } else {
+          hasMic = await requestMicrophonePermission();
+        }
+      } catch (err) {
+        logDebug('Hívás-előkészítés hiba: ' + err.message);
+        showToast('Nem sikerült a hívás indítása. A szerver nem elérhető. (' + err.message + ')', 'error', 7000);
+        setCallState(CALL_STATE.IDLE);
+        return;
       }
 
       if (!hasMic) {
         showToast('A mikrofon engedélyezése szükséges a hívás indításához. Kérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.', 'warn', 7000);
+        setCallState(CALL_STATE.IDLE);
+        return;
+      }
+
+      if (!signedUrl) {
+        showToast('Nem sikerült kapcsolódni Annához (signed URL hiányzik). Próbálja újra később!', 'error', 7000);
         setCallState(CALL_STATE.IDLE);
         return;
       }
