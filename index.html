@@ -1795,19 +1795,19 @@
         }
       } catch (err) {
         logDebug('Hívás-előkészítés hiba: ' + err.message);
-        showToast('Nem sikerült a hívás indítása. A szerver nem elérhető. (' + err.message + ')', 'error', 7000);
+        showToast(translations[currentLang || 'en']['error-server'] + ' (' + err.message + ')', 'error', 7000);
         setCallState(CALL_STATE.IDLE);
         return;
       }
 
       if (!hasMic) {
-        showToast('A mikrofon engedélyezése szükséges a hívás indításához. Kérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.', 'warn', 7000);
+        showToast(translations[currentLang || 'en']['error-mic'], 'warn', 7000);
         setCallState(CALL_STATE.IDLE);
         return;
       }
 
       if (!signedUrl) {
-        showToast('Nem sikerült kapcsolódni Annához (signed URL hiányzik). Próbálja újra később!', 'error', 7000);
+        showToast(translations[currentLang || 'en']['error-no-url'], 'error', 7000);
         setCallState(CALL_STATE.IDLE);
         return;
       }
@@ -1853,7 +1853,7 @@
           signedUrl: signedUrl,
           overrides: {
             agent: {
-              language: currentLang || "hu"
+              language: currentLang || "en"
             }
           },
           onConnect: () => {
@@ -1895,7 +1895,7 @@
       } catch (err) {
         logDebug('Hiba a hívás indításakor: ' + err.message);
         console.error('[Anna] Hívás indítási hiba:', err);
-        showToast('Nem sikerült kapcsolódni Annához. Kérem, ellenőrizze az internetkapcsolatát és próbálja újra! (' + err.message + ')', 'error', 7000);
+        showToast(translations[currentLang || 'en']['error-connection'] + ' (' + err.message + ')', 'error', 7000);
         setCallState(CALL_STATE.IDLE);
       }
     }
@@ -1939,7 +1939,7 @@
       logDebug('Hívás befejezve');
     }
 
-    function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-base font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent='Anna válaszol Önnek';headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-base font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
+    function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-base font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-speaking'];headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-base font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
 
     // Call Button Events
     heroCallBtn.addEventListener('click',startCall);
@@ -1971,6 +1971,10 @@
         'status-connecting': 'Kapcsolódás Annához...',
         'status-listening': 'Anna figyel — mondja el, miben segíthet',
         'status-speaking': 'Anna válaszol Önnek',
+        'error-server': 'Nem sikerült a hívás indítása. A szerver nem elérhető.',
+        'error-mic': 'A mikrofon engedélyezése szükséges a hívás indításához. Kérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.',
+        'error-no-url': 'Nem sikerült kapcsolódni Annához (signed URL hiányzik). Próbálja újra később!',
+        'error-connection': 'Nem sikerült kapcsolódni Annához. Kérem, ellenőrizze az internetkapcsolatát és próbálja újra!',
         'header-available': 'Anna elérhető',
         'header-connecting': 'Kapcsolódás...',
         'header-listening': 'Anna figyel...',
@@ -2187,6 +2191,10 @@
         'status-connecting': 'Connecting to Anna...',
         'status-listening': 'Anna is listening — tell her how she can help',
         'status-speaking': 'Anna is responding',
+        'error-server': 'Failed to start the call. The server is unavailable.',
+        'error-mic': 'Microphone permission is required to start a call. Please enable microphone access in your browser settings and try again.',
+        'error-no-url': 'Failed to connect to Anna (signed URL missing). Please try again later!',
+        'error-connection': 'Failed to connect to Anna. Please check your internet connection and try again!',
         'header-available': 'Anna available',
         'header-connecting': 'Connecting...',
         'header-listening': 'Anna is listening...',
@@ -2403,6 +2411,10 @@
         'status-connecting': 'Verbindung zu Anna...',
         'status-listening': 'Anna hört zu — sagen Sie ihr, wie sie helfen kann',
         'status-speaking': 'Anna antwortet Ihnen',
+        'error-server': 'Anruf konnte nicht gestartet werden. Der Server ist nicht erreichbar.',
+        'error-mic': 'Mikrofonberechtigung ist erforderlich, um einen Anruf zu starten. Bitte aktivieren Sie den Mikrofonzugriff in Ihren Browsereinstellungen und versuchen Sie es erneut.',
+        'error-no-url': 'Verbindung zu Anna fehlgeschlagen (signed URL fehlt). Bitte versuchen Sie es später erneut!',
+        'error-connection': 'Verbindung zu Anna fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut!',
         'header-available': 'Anna verfügbar',
         'header-connecting': 'Verbindung...',
         'header-listening': 'Anna hört zu...',
@@ -2619,6 +2631,10 @@ nl: {
         'status-connecting': 'Verbinding maken met Anna...',
         'status-listening': 'Anna luistert — vertel haar wat u nodig hebt',
         'status-speaking': 'Anna beantwoordt u',
+        'error-server': 'Kan het gesprek niet starten. De server is niet beschikbaar.',
+        'error-mic': 'Microfoontoestemming is vereist om te bellen. Schakel microfoontoegang in uw browserinstellingen in en probeer het opnieuw.',
+        'error-no-url': 'Kan geen verbinding maken met Anna (signed URL ontbreekt). Probeer het later opnieuw!',
+        'error-connection': 'Kan geen verbinding maken met Anna. Controleer uw internetverbinding en probeer het opnieuw!',
         'header-available': 'Anna beschikbaar',
         'header-connecting': 'Verbinding...',
         'header-listening': 'Anna luistert...',
@@ -2835,6 +2851,10 @@ nl: {
         'status-connecting': 'Connexion à Anna...',
         'status-listening': 'Anna écoute — dites-lui comment elle peut vous aider',
         'status-speaking': 'Anna vous répond',
+        'error-server': 'Impossible de démarrer l\'appel. Le serveur est indisponible.',
+        'error-mic': 'L\'autorisation du microphone est requise pour passer un appel. Veuillez activer l\'accès au microphone dans les paramètres de votre navigateur et réessayer.',
+        'error-no-url': 'Impossible de se connecter à Anna (signed URL manquante). Veuillez réessayer plus tard !',
+        'error-connection': 'Impossible de se connecter à Anna. Veuillez vérifier votre connexion Internet et réessayer !',
         'header-available': 'Anna disponible',
         'header-connecting': 'Connexion...',
         'header-listening': 'Anna écoute...',
@@ -3051,6 +3071,10 @@ nl: {
         'status-connecting': 'Connessione ad Anna...',
         'status-listening': 'Anna sta ascoltando — dica come può aiutarLa',
         'status-speaking': 'Anna Le risponde',
+        'error-server': 'Impossibile avviare la chiamata. Il server non è disponibile.',
+        'error-mic': 'L\'autorizzazione del microfono è necessaria per avviare una chiamata. Abilita l\'accesso al microfono nelle impostazioni del browser e riprova.',
+        'error-no-url': 'Impossibile connettersi ad Anna (signed URL mancante). Riprova più tardi!',
+        'error-connection': 'Impossibile connettersi ad Anna. Controlla la tua connessione Internet e riprova!',
         'header-available': 'Anna disponibile',
         'header-connecting': 'Connessione...',
         'header-listening': 'Anna ascolta...',
@@ -3267,6 +3291,10 @@ da: {
         'status-connecting': 'Forbinder til Anna...',
         'status-listening': 'Anna lytter — fortæl hende hvad du har brug for',
         'status-speaking': 'Anna svarer dig',
+        'error-server': 'Kunne ikke starte opkaldet. Serveren er ikke tilgængelig.',
+        'error-mic': 'Mikrofontilladelse er påkrævet for at starte et opkald. Aktivér mikrofonadgang i dine browserindstillinger, og prøv igen.',
+        'error-no-url': 'Kunne ikke oprette forbindelse til Anna (signed URL mangler). Prøv igen senere!',
+        'error-connection': 'Kunne ikke oprette forbindelse til Anna. Kontroller din internetforbindelse, og prøv igen!',
         'header-available': 'Anna tilgængelig',
         'header-connecting': 'Forbinder...',
         'header-listening': 'Anna lytter...',
@@ -3483,6 +3511,10 @@ da: {
         'status-connecting': 'Kobler til Anna...',
         'status-listening': 'Anna lytter — fortell henne hva du trenger',
         'status-speaking': 'Anna svarer deg',
+        'error-server': 'Kunne ikke starte anropet. Serveren er ikke tilgjengelig.',
+        'error-mic': 'Mikrofontillatelse kreves for å starte en samtale. Aktiver mikrofontilgang i nettleserinnstillingene dine, og prøv igjen.',
+        'error-no-url': 'Kunne ikke koble til Anna (signed URL mangler). Prøv igjen senere!',
+        'error-connection': 'Kunne ikke koble til Anna. Kontroller internettilkoblingen din, og prøv igjen!',
         'header-available': 'Anna tilgjengelig',
         'header-connecting': 'Kobler til...',
         'header-listening': 'Anna lytter...',
@@ -3699,6 +3731,10 @@ sv: {
         'status-connecting': 'Ansluter till Anna...',
         'status-listening': 'Anna lyssnar — berätta vad du behöver',
         'status-speaking': 'Anna svarar dig',
+        'error-server': 'Kunde inte starta samtalet. Servern är inte tillgänglig.',
+        'error-mic': 'Mikrofontillstånd krävs för att starta ett samtal. Aktivera mikrofonåtkomst i dina webbläsarinställningar och försök igen.',
+        'error-no-url': 'Kunde inte ansluta till Anna (signed URL saknas). Försök igen senare!',
+        'error-connection': 'Kunde inte ansluta till Anna. Kontrollera din internetanslutning och försök igen!',
         'header-available': 'Anna är online',
         'header-connecting': 'Ansluter...',
         'header-listening': 'Anna lyssnar...',
@@ -3914,6 +3950,10 @@ fi: {
         'status-connecting': 'Yhdistetään Annaan...',
         'status-listening': 'Anna kuuntelee — kerro mitä tarvitset',
         'status-speaking': 'Anna vastaa sinulle',
+        'error-server': 'Puhelun aloittaminen epäonnistui. Palvelin ei ole tavoitettavissa.',
+        'error-mic': 'Mikrofonin käyttöoikeus vaaditaan puhelun aloittamiseksi. Ota mikrofonin käyttö käyttöön selaimen asetuksissa ja yritä uudelleen.',
+        'error-no-url': 'Yhdistäminen Annaan epäonnistui (signed URL puuttuu). Yritä myöhemmin uudelleen!',
+        'error-connection': 'Yhdistäminen Annaan epäonnistui. Tarkista internet-yhteytesi ja yritä uudelleen!',
         'header-available': 'Anna tavoitettavissa',
         'header-connecting': 'Yhdistetään...',
         'header-listening': 'Anna kuuntelee...',
@@ -4130,6 +4170,10 @@ fi: {
         'status-connecting': 'Pripájam sa k Anne...',
         'status-listening': 'Anna počúva — povedzte jej, čo potrebujete',
         'status-speaking': 'Anna vám odpovedá',
+        'error-server': 'Nepodarilo sa začať hovor. Server nie je dostupný.',
+        'error-mic': 'Povolenie na prístup k mikrofónu je potrebné na začatie hovoru. Povoľte prístup k mikrofónu v nastaveniach prehliadača a skúste to znova.',
+        'error-no-url': 'Nepodarilo sa pripojiť k Anne (signed URL chýba). Skúste to znova neskôr!',
+        'error-connection': 'Nepodarilo sa pripojiť k Anne. Skontrolujte pripojenie k internetu a skúste to znova!',
         'header-available': 'Anna dostupná',
         'header-connecting': 'Pripájam sa...',
         'header-listening': 'Anna počúva...',
@@ -4528,7 +4572,7 @@ fi: {
     const TREATMENT_DURATION = 60;
 
     function validateAppointmentTime(idopont) {
-      const lang = currentLang || 'hu';
+      const lang = currentLang || 'en';
       const t = translations[lang] || translations['hu'];
       
       if (!idopont) {
@@ -4614,7 +4658,7 @@ fi: {
     }
 
     function handleTimeValidation(data) {
-      const lang = currentLang || 'hu';
+      const lang = currentLang || 'en';
       const t = translations[lang] || translations['hu'];
 
       if (data.status === 'time_invalid' || data.reason === 'past_time' || 
