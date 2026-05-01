@@ -1678,71 +1678,140 @@
     }
 
     // ================================================
-    // 2. DRIFT CORRECTION v5 — PITCH-MEGŐRZŐ catch-up
+    // 2. AUDIO HEALTH MONITOR v6 — FOLYAMATOS audio egészség-ellenőrzés
     // ================================================
-    // v4-ben a playbackRate=1.3x miatt Anna hangja magasabbnak hangzott
-    // a catch-up alatt ("megváltozik a csaj hangja").
-    // v5: NINCS playbackRate változtatás. Csak currentTime ugrás —
-    // ez egy alig hallható "skip"-et okoz (mintha kihagyna egy szótagot),
-    // de a hangmagasság VÉGIG változatlan marad.
-    // Több, kisebb ugrással finomítva, hogy ne legyen feltűnő.
-    let driftCorrectionTimer = null;
+    // v5 drift correction helyett: a korábbi verzió csak 15 mp-ig futott,
+    // és NEM ellenőrizte az AudioContext állapotát. Ez azt okozta, hogy
+    // a beszélgetés közben a böngésző felfüggesztette az AudioContext-et
+    // (pl. tab váltás, power saving, hosszabb csendes fázis), és a
+    // felhasználó nem hallotta a TTS válaszokat annak ellenére, hogy
+    // az AI "beszélt" (onModeChange = speaking).
+    //
+    // v6 MEGOLDÁS:
+    // - FOLYAMOS monitorozás a hívás teljes ideje alatt
+    // - AudioContext állapot ellenőrzés és automatikus resume
+    // - SDK audio elemek újraaktiválása ha leálltak
+    // - Drift correction beépítve (pitch-megőrző, csak currentTime ugrás)
+    // - playbackRate biztosan 1.0-on tartva
+    let audioHealthTimer = null;
 
-    function startDriftCorrection() {
-      if (driftCorrectionTimer) return;
-      let corrections = 0;
-      const maxCorrections = 8;
-      const startTime = Date.now();
-      logDebug('Drift correction v5 elindítva (pitch-preserving)');
+    function startAudioHealthMonitor() {
+      if (audioHealthTimer) return;
+      let driftCorrections = 0;
+      const maxDriftCorrections = 20; // v6: több korrekció megengedett
+      logDebug('Audio Health Monitor v6 elindítva');
 
-      driftCorrectionTimer = setInterval(() => {
+      audioHealthTimer = setInterval(async () => {
+        // === 1. AudioContext állapot ellenőrzés ===
+        // A leggyakoribb oka a "nem hallok semmit" hibának:
+        // a böngésző felfüggeszti az AudioContext-et
+        try {
+          if (audioCtx && audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+            logDebug('Audio Health: saját AudioContext újraaktiválva (suspended → running)');
+            playSilentOnContext(audioCtx);
+          }
+          if (sdkAudioCtx && sdkAudioCtx.state === 'suspended') {
+            await sdkAudioCtx.resume();
+            logDebug('Audio Health: SDK AudioContext újraaktiválva (suspended → running)');
+            playSilentOnContext(sdkAudioCtx);
+          }
+        } catch (e) {
+          logDebug('Audio Health: AudioContext resume hiba: ' + e.message);
+        }
+
+        // === 2. SDK audio elemek ellenőrzése és újraaktiválás ===
         document.querySelectorAll('audio').forEach(audio => {
-          if (audio.paused || audio.readyState < 2) return;
           try {
-            // Biztonság: bárhol is állítaná más kód, mi tartjuk 1.0-n
+            // Biztonság: playbackRate mindig 1.0
             if (audio.playbackRate !== 1.0) audio.playbackRate = 1.0;
 
-            const buffered = audio.buffered;
-            if (buffered.length > 0) {
-              const bufferAhead = buffered.end(buffered.length - 1) - audio.currentTime;
-
-              if (bufferAhead > 3.5 && corrections < maxCorrections) {
-                // NAGY drift: kemény skip — szólag/szótag elveszhet, de gyors
-                // 0.8s tartalékot hagyunk, hogy ne fusson ki azonnal a bufferből
-                const target = buffered.end(buffered.length - 1) - 0.8;
-                logDebug('DRIFT v5 NAGY: ' + bufferAhead.toFixed(1) + 's → skip ' + (target - audio.currentTime).toFixed(1) + 's');
-                audio.currentTime = target;
-                corrections++;
-              } else if (bufferAhead > 2.0 && corrections < maxCorrections) {
-                // KÖZEPES drift: kis skip — ~0.4s lemarad, alig hallható
-                const skipAmount = Math.min(bufferAhead - 1.2, 0.6);
-                logDebug('DRIFT v5 KÖZEPES: ' + bufferAhead.toFixed(1) + 's → skip ' + skipAmount.toFixed(2) + 's');
-                audio.currentTime = audio.currentTime + skipAmount;
-                corrections++;
-              }
-              // bufferAhead < 2.0 esetén nem nyúlunk hozzá — természetes lejátszás
+            // Ha az audio elem megállt de van buffer → újra play
+            if (audio.paused && audio.readyState >= 2 && audio.src) {
+              audio.play().then(() => {
+                logDebug('Audio Health: leállt <audio> elem újraaktiválva');
+              }).catch(e => {
+                // Nem kritikus hiba — a böngésző blockolhatja autoplay miatt
+                logDebug('Audio Health: audio play blocked: ' + e.name);
+              });
             }
-          } catch (e) { /* ignore */ }
-        });
 
-        // 15 másodperc után leállítjuk (a kezdeti drift addigra elsimul)
-        if (Date.now() - startTime > 15000 || corrections >= maxCorrections) {
-          clearInterval(driftCorrectionTimer);
-          driftCorrectionTimer = null;
-          logDebug('Drift correction v5 befejezve (' + corrections + ' korrekció)');
-        }
-      }, 600); // 600ms intervallum — elég gyors a reakció, de nem agresszív
+            // === 3. Drift correction (pitch-megőrző) ===
+            if (!audio.paused && audio.readyState >= 2) {
+              const buffered = audio.buffered;
+              if (buffered.length > 0) {
+                const bufferAhead = buffered.end(buffered.length - 1) - audio.currentTime;
+
+                if (bufferAhead > 3.5 && driftCorrections < maxDriftCorrections) {
+                  const target = buffered.end(buffered.length - 1) - 0.8;
+                  logDebug('DRIFT v6 NAGY: ' + bufferAhead.toFixed(1) + 's → skip ' + (target - audio.currentTime).toFixed(1) + 's');
+                  audio.currentTime = target;
+                  driftCorrections++;
+                } else if (bufferAhead > 2.0 && driftCorrections < maxDriftCorrections) {
+                  const skipAmount = Math.min(bufferAhead - 1.2, 0.6);
+                  logDebug('DRIFT v6 KÖZEPES: ' + bufferAhead.toFixed(1) + 's → skip ' + skipAmount.toFixed(2) + 's');
+                  audio.currentTime = audio.currentTime + skipAmount;
+                  driftCorrections++;
+                }
+              }
+            }
+          } catch (e) { /* ignore single element errors */ }
+        });
+      }, 2000); // 2 másodpercenként — elég gyakori a problémák észlelésére, de nem terheli a CPU-t
     }
 
-    function stopDriftCorrection() {
-      if (driftCorrectionTimer) {
-        clearInterval(driftCorrectionTimer);
-        driftCorrectionTimer = null;
+    function stopAudioHealthMonitor() {
+      if (audioHealthTimer) {
+        clearInterval(audioHealthTimer);
+        audioHealthTimer = null;
         // Biztosítjuk hogy minden audio 1.0x sebességen marad
         document.querySelectorAll('audio').forEach(a => { a.playbackRate = 1.0; });
-        logDebug('Drift correction leállítva');
+        logDebug('Audio Health Monitor v6 leállítva');
       }
     }
+
+    // Compat: keep old function names as aliases
+    function startDriftCorrection() { startAudioHealthMonitor(); }
+    function stopDriftCorrection() { stopAudioHealthMonitor(); }
+
+    // ================================================
+    // 2b. VISIBILITYCHANGE HANDLER v6 — Tab váltás AudioContext recovery
+    // ================================================
+    // KRITIKUS FIX: Amikor a felhasználó másik tabra vált és vissza,
+    // a böngésző felfüggesztheti az AudioContext-et. Ha épp hívás
+    // folyik, ez azt okozza, hogy a TTS audio leáll — a felhasználó
+    // nem hallja amit az AI mond, annak ellenére, hogy a vizuális
+    // UI mutatja, hogy "Anna beszél...".
+    document.addEventListener('visibilitychange', async () => {
+      // Csak ha van aktív hívás
+      if (document.hidden || currentCallState === CALL_STATE.IDLE) return;
+
+      // Tab újra láthatóvá vált → AudioContext-eket resume-oljuk
+      if (!document.hidden) {
+        logDebug('Visibility change: tab aktív — AudioContext-ek ellenőrzése');
+        try {
+          if (audioCtx && audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+            playSilentOnContext(audioCtx);
+            logDebug('Visibility: saját AudioContext resume-olva');
+          }
+          if (sdkAudioCtx && sdkAudioCtx.state === 'suspended') {
+            await sdkAudioCtx.resume();
+            playSilentOnContext(sdkAudioCtx);
+            logDebug('Visibility: SDK AudioContext resume-olva');
+          }
+          // SDK audio elemek újraaktiválása
+          document.querySelectorAll('audio').forEach(audio => {
+            if (audio.paused && audio.readyState >= 2 && audio.src) {
+              audio.play().catch(() => {});
+            }
+            if (audio.playbackRate !== 1.0) audio.playbackRate = 1.0;
+          });
+        } catch (e) {
+          logDebug('Visibility: AudioContext recovery hiba: ' + e.message);
+        }
+      }
+    });
 
     // ================================================
     // 3. PRE-CREATED AUDIO ELEMENT — pipeline készenlét
@@ -1992,14 +2061,19 @@
           onConnect: () => {
             logDebug('Kapcsolódás sikeres — Anna figyel');
             setCallState(CALL_STATE.LISTENING);
-            // v4: Drift correction indítása — agresszívebb paraméterekkel
-            startDriftCorrection();
+            // v6: Audio Health Monitor indítása (folyamatos, nem csak 15 mp)
+            startAudioHealthMonitor();
             // v4: Az SDK által létrehozott <audio> elemek azonnali aktiválása
             activateSDKAudioElements();
           },
           onDisconnect: () => {
             logDebug('Kapcsolat megszakadt');
+            stopAudioHealthMonitor();
             if (currentCallState !== CALL_STATE.IDLE) {
+              // v6: Toast értesítés a felhasználónak a kapcsolat megszakadásáról
+              const lang = currentLang || 'en';
+              const disconnectMsg = translations[lang]['error-connection'] || 'A kapcsolat megszakadt. Kérem, próbálja újra!';
+              showToast(disconnectMsg, 'warn', 5000);
               setCallState(CALL_STATE.IDLE);
             }
           },
@@ -2012,10 +2086,26 @@
             console.error('[Anna] SDK hiba:', error, details);
             setCallState(CALL_STATE.IDLE);
           },
-          onModeChange: (data) => {
+          onModeChange: async (data) => {
             const mode = data.mode || data;
             logDebug('Mód változás: ' + mode);
             if (mode === 'speaking') {
+              // v6: KRITIKUS FIX — AudioContext resume beszéd előtt
+              // A leggyakoribb oka a "nem hallok semmit" hibának:
+              // a böngésző felfüggeszti az AudioContext-et, és mire
+              // a TTS hang generálódik, a pipeline suspended állapotban van.
+              try {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                  await audioCtx.resume();
+                  logDebug('onModeChange: AudioContext resume-olva (speaking)');
+                }
+                if (sdkAudioCtx && sdkAudioCtx.state === 'suspended') {
+                  await sdkAudioCtx.resume();
+                  logDebug('onModeChange: SDK AudioContext resume-olva (speaking)');
+                }
+              } catch (e) {
+                logDebug('onModeChange: AudioContext resume hiba: ' + e.message);
+              }
               setCallState(CALL_STATE.SPEAKING);
             } else if (mode === 'listening') {
               setCallState(CALL_STATE.LISTENING);
@@ -2051,7 +2141,7 @@
 
     async function endCall(){
       logDebug('Hívás megszakítása...');
-      stopDriftCorrection(); // Drift correction leállítása
+      stopAudioHealthMonitor();
       if (conversation) {
         try {
           await conversation.endSession();
@@ -2061,13 +2151,19 @@
         }
         conversation = null;
       }
-      // AudioContext suspendálása ha aktív (mobil akku spórolás)
-      if (audioCtx && audioCtx.state === 'running') {
-        try { audioCtx.suspend(); logDebug('AudioContext felfüggesztve'); } catch(e) {}
-      }
-      if (sdkAudioCtx && sdkAudioCtx.state === 'running') {
-        try { sdkAudioCtx.suspend(); logDebug('SDK AudioContext felfüggesztve'); } catch(e) {}
-      }
+      // v6: AudioContext-eket csak KÉSLELTETVE suspendáljuk
+      // A korábbi verzió azonnal suspendálta, ami miatt az utolsó TTS
+      // hangok leállhattak. Most 1 másodpercet várunk, hogy az utolsó
+      // audio chunk-ek befejezhessék a lejátszást.
+      setTimeout(() => {
+        if (audioCtx && audioCtx.state === 'running') {
+          try { audioCtx.suspend(); logDebug('AudioContext felfüggesztve (késleltetve)'); } catch(e) {}
+        }
+        if (sdkAudioCtx && sdkAudioCtx.state === 'running') {
+          try { sdkAudioCtx.suspend(); logDebug('SDK AudioContext felfüggesztve (késleltetve)'); } catch(e) {}
+        }
+      }, 1000);
+      // Azonnal felszabadítjuk a hívás UI-t
       setCallState(CALL_STATE.IDLE);
       logDebug('Hívás befejezve');
     }
