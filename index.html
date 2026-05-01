@@ -1678,7 +1678,6 @@
             // Ha 60 másodperce speaking → kapcsolat megszakítása
             if (speakingDuration > 60000) {
               logDebug('WATCHDOG: speaking state 60mp+ — kapcsolat megszakítása');
-              showToast(translations[currentLang || 'en']['error-connection'] || 'A kapcsolat megszakadt. Kérem, próbálja újra!', 'warn', 5000);
               endCall();
             }
           }
@@ -1942,9 +1941,6 @@
             stopAudioHealthMonitor();
             stopConversationWatchdog();
             if (currentCallState !== CALL_STATE.IDLE) {
-              const lang = currentLang || 'en';
-              const disconnectMsg = translations[lang]['error-connection'] || 'A kapcsolat megszakadt. Kérem, próbálja újra!';
-              showToast(disconnectMsg, 'warn', 5000);
               setCallState(CALL_STATE.IDLE);
             }
           },
@@ -1954,7 +1950,6 @@
             stopAudioHealthMonitor();
             stopConversationWatchdog();
             if (currentCallState !== CALL_STATE.IDLE) {
-              showToast(translations[currentLang || 'en']['error-connection'] || 'Anna lekapcsolódott. Kérem, hívja újra!', 'warn', 5000);
               setCallState(CALL_STATE.IDLE);
             }
           },
@@ -1987,7 +1982,6 @@
       } catch (err) {
         logDebug('Hiba a hívás indításakor: ' + err.message);
         console.error('[Anna] Hívás indítási hiba:', err);
-        showToast(translations[currentLang || 'en']['error-connection'] + ' (' + err.message + ')', 'error', 7000);
         setCallState(CALL_STATE.IDLE);
       }
     }
@@ -2066,7 +2060,7 @@
         'error-server': 'Nem sikerült a hívás indítása. A szerver nem elérhető.',
         'error-mic': 'A mikrofon engedélyezése szükséges a hívás indításához. Kérem, engedélyezze a mikrofon hozzáférést a böngésző beállításaiban, majd próbálja újra.',
         'error-no-url': 'Nem sikerült kapcsolódni Annához (signed URL hiányzik). Próbálja újra később!',
-        'error-connection': 'Nem sikerült kapcsolódni Annához. Kérem, ellenőrizze az internetkapcsolatát és próbálja újra!',
+
         'header-available': 'Anna elérhető',
         'header-connecting': 'Kapcsolódás...',
         'header-listening': 'Anna figyel...',
@@ -2306,7 +2300,7 @@
         'error-server': 'Failed to start the call. The server is unavailable.',
         'error-mic': 'Microphone permission is required to start a call. Please enable microphone access in your browser settings and try again.',
         'error-no-url': 'Failed to connect to Anna (signed URL missing). Please try again later!',
-        'error-connection': 'Failed to connect to Anna. Please check your internet connection and try again!',
+
         'header-available': 'Anna available',
         'header-connecting': 'Connecting...',
         'header-listening': 'Anna is listening...',
@@ -2546,7 +2540,7 @@
         'error-server': 'Anruf konnte nicht gestartet werden. Der Server ist nicht erreichbar.',
         'error-mic': 'Mikrofonberechtigung ist erforderlich, um einen Anruf zu starten. Bitte aktivieren Sie den Mikrofonzugriff in Ihren Browsereinstellungen und versuchen Sie es erneut.',
         'error-no-url': 'Verbindung zu Anna fehlgeschlagen (signed URL fehlt). Bitte versuchen Sie es später erneut!',
-        'error-connection': 'Verbindung zu Anna fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut!',
+
         'header-available': 'Anna verfügbar',
         'header-connecting': 'Verbindung...',
         'header-listening': 'Anna hört zu...',
@@ -2786,7 +2780,7 @@ nl: {
         'error-server': 'Kan het gesprek niet starten. De server is niet beschikbaar.',
         'error-mic': 'Microfoontoestemming is vereist om te bellen. Schakel microfoontoegang in uw browserinstellingen in en probeer het opnieuw.',
         'error-no-url': 'Kan geen verbinding maken met Anna (signed URL ontbreekt). Probeer het later opnieuw!',
-        'error-connection': 'Kan geen verbinding maken met Anna. Controleer uw internetverbinding en probeer het opnieuw!',
+
         'header-available': 'Anna beschikbaar',
         'header-connecting': 'Verbinding...',
         'header-listening': 'Anna luistert...',
@@ -3026,7 +3020,7 @@ nl: {
         'error-server': 'Impossible de démarrer l\'appel. Le serveur est indisponible.',
         'error-mic': 'L\'autorisation du microphone est requise pour passer un appel. Veuillez activer l\'accès au microphone dans les paramètres de votre navigateur et réessayer.',
         'error-no-url': 'Impossible de se connecter à Anna (signed URL manquante). Veuillez réessayer plus tard !',
-        'error-connection': 'Impossible de se connecter à Anna. Veuillez vérifier votre connexion Internet et réessayer !',
+
         'header-available': 'Anna disponible',
         'header-connecting': 'Connexion...',
         'header-listening': 'Anna écoute...',
@@ -3266,7 +3260,7 @@ nl: {
         'error-server': 'Impossibile avviare la chiamata. Il server non è disponibile.',
         'error-mic': 'L\'autorizzazione del microfono è necessaria per avviare una chiamata. Abilita l\'accesso al microfono nelle impostazioni del browser e riprova.',
         'error-no-url': 'Impossibile connettersi ad Anna (signed URL mancante). Riprova più tardi!',
-        'error-connection': 'Impossibile connettersi ad Anna. Controlla la tua connessione Internet e riprova!',
+
         'header-available': 'Anna disponibile',
         'header-connecting': 'Connessione...',
         'header-listening': 'Anna ascolta...',
@@ -3506,7 +3500,7 @@ da: {
         'error-server': 'Kunne ikke starte opkaldet. Serveren er ikke tilgængelig.',
         'error-mic': 'Mikrofontilladelse er påkrævet for at starte et opkald. Aktivér mikrofonadgang i dine browserindstillinger, og prøv igen.',
         'error-no-url': 'Kunne ikke oprette forbindelse til Anna (signed URL mangler). Prøv igen senere!',
-        'error-connection': 'Kunne ikke oprette forbindelse til Anna. Kontroller din internetforbindelse, og prøv igen!',
+
         'header-available': 'Anna tilgængelig',
         'header-connecting': 'Forbinder...',
         'header-listening': 'Anna lytter...',
@@ -3746,7 +3740,7 @@ da: {
         'error-server': 'Kunne ikke starte anropet. Serveren er ikke tilgjengelig.',
         'error-mic': 'Mikrofontillatelse kreves for å starte en samtale. Aktiver mikrofontilgang i nettleserinnstillingene dine, og prøv igjen.',
         'error-no-url': 'Kunne ikke koble til Anna (signed URL mangler). Prøv igjen senere!',
-        'error-connection': 'Kunne ikke koble til Anna. Kontroller internettilkoblingen din, og prøv igjen!',
+
         'header-available': 'Anna tilgjengelig',
         'header-connecting': 'Kobler til...',
         'header-listening': 'Anna lytter...',
@@ -3986,7 +3980,7 @@ sv: {
         'error-server': 'Kunde inte starta samtalet. Servern är inte tillgänglig.',
         'error-mic': 'Mikrofontillstånd krävs för att starta ett samtal. Aktivera mikrofonåtkomst i dina webbläsarinställningar och försök igen.',
         'error-no-url': 'Kunde inte ansluta till Anna (signed URL saknas). Försök igen senare!',
-        'error-connection': 'Kunde inte ansluta till Anna. Kontrollera din internetanslutning och försök igen!',
+
         'header-available': 'Anna är online',
         'header-connecting': 'Ansluter...',
         'header-listening': 'Anna lyssnar...',
@@ -4225,7 +4219,7 @@ fi: {
         'error-server': 'Puhelun aloittaminen epäonnistui. Palvelin ei ole tavoitettavissa.',
         'error-mic': 'Mikrofonin käyttöoikeus vaaditaan puhelun aloittamiseksi. Ota mikrofonin käyttö käyttöön selaimen asetuksissa ja yritä uudelleen.',
         'error-no-url': 'Yhdistäminen Annaan epäonnistui (signed URL puuttuu). Yritä myöhemmin uudelleen!',
-        'error-connection': 'Yhdistäminen Annaan epäonnistui. Tarkista internet-yhteytesi ja yritä uudelleen!',
+
         'header-available': 'Anna tavoitettavissa',
         'header-connecting': 'Yhdistetään...',
         'header-listening': 'Anna kuuntelee...',
@@ -4465,7 +4459,7 @@ fi: {
         'error-server': 'Nepodarilo sa začať hovor. Server nie je dostupný.',
         'error-mic': 'Povolenie na prístup k mikrofónu je potrebné na začatie hovoru. Povoľte prístup k mikrofónu v nastaveniach prehliadača a skúste to znova.',
         'error-no-url': 'Nepodarilo sa pripojiť k Anne (signed URL chýba). Skúste to znova neskôr!',
-        'error-connection': 'Nepodarilo sa pripojiť k Anne. Skontrolujte pripojenie k internetu a skúste to znova!',
+
         'header-available': 'Anna dostupná',
         'header-connecting': 'Pripájam sa...',
         'header-listening': 'Anna počúva...',
