@@ -96,6 +96,13 @@
     @keyframes ring-pulse-2{0%{transform:scale(1);opacity:.3}100%{transform:scale(2.2);opacity:0}}.call-ring-2{animation:ring-pulse-2 2s ease-out infinite .5s}
     @keyframes wave-bar{0%,100%{height:4px}50%{height:18px}}.voice-wave-bar{width:3px;border-radius:2px;background:currentColor;animation:wave-bar .6s ease-in-out infinite}.voice-wave-bar:nth-child(1){animation-delay:0s}.voice-wave-bar:nth-child(2){animation-delay:.1s}.voice-wave-bar:nth-child(3){animation-delay:.2s}.voice-wave-bar:nth-child(4){animation-delay:.3s}.voice-wave-bar:nth-child(5){animation-delay:.15s}
     @keyframes glow-breathe{0%,100%{box-shadow:0 0 20px rgba(59,130,246,.3),0 0 60px rgba(59,130,246,.1)}50%{box-shadow:0 0 30px rgba(59,130,246,.5),0 0 80px rgba(59,130,246,.2)}}.call-active-glow{animation:glow-breathe 1.5s ease-in-out infinite}
+    /* === Language badge styles === */
+    .lang-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .85rem;border-radius:.75rem;background:#fff;border:1px solid rgba(226,232,240,.7);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all .25s ease;font-size:.8125rem;font-weight:600;color:#334155;white-space:nowrap}
+    .lang-badge:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.12);border-color:rgba(191,219,254,.7)}
+    .lang-badge .lang-flag{font-size:1.25rem;line-height:1}
+    .lang-badge .lang-code{font-size:.625rem;font-weight:700;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase}
+    /* Capabilities section glow decoration */
+    .cap-glow{position:absolute;border-radius:50%;filter:blur(64px);pointer-events:none;opacity:.5}
     .status-idle{color:#64748b}.status-connecting{color:#f59e0b}.status-listening{color:#10b981}.status-speaking{color:#3b82f6}
     .process-step{position:relative}.process-step:not(:last-child)::after{content:'';position:absolute;top:50%;right:-1.25rem;width:1.25rem;height:2px;background:linear-gradient(90deg,#93c5fd,#60a5fa)}@media(min-width:768px){.process-step:not(:last-child)::after{top:3.25rem;right:auto;bottom:-1.5rem;left:50%;transform:translateX(-50%);width:2px;height:1.5rem;background:linear-gradient(180deg,#93c5fd,#60a5fa)}}
     .process-connector{display:none}@media(min-width:768px){.process-connector{display:block}}
@@ -133,48 +140,34 @@
           <svg class="tooth-icon text-dental-600 group-hover:text-dental-700 transition-colors" viewBox="0 0 64 64" fill="currentColor"><path d="M32 4C24.5 4 19 8 17 14c-2 6-.5 12 1 18s3.5 14 5 20c.8 3.2 2.5 6 5 6s3.5-3 4-6l2-10c.3-1.5.8-2 2-2s1.7.5 2 2l2 10c.5 3 1.5 6 4 6s4.2-2.8 5-6c1.5-6 3.5-14 5-20s3-12 1-18C45 8 39.5 4 32 4zm0 4c6.2 0 10.3 3 11.8 7.8 1.3 4.2.2 9-1.3 14.5-1.4 5.2-3.2 11.5-4.7 17.4-.3 1.2-.7 2.3-1 2.3s-.7-1-1-2.3l-2-10c-.5-2.5-1.8-4.7-4.8-4.7s-4.3 2.2-4.8 4.7l-2 10c-.3 1.3-.7 2.3-1 2.3s-.7-1.1-1-2.3c-1.5-5.9-3.3-12.2-4.7-17.4-1.5-5.5-2.6-10.3-1.3-14.5C21.7 11 25.8 8 32 8z"/></svg>
           <span class="text-xl font-bold tracking-tight text-slate-900">Dent<span class="text-dental-600">Ai</span></span>
         </a>
-        <div class="hidden md:flex items-center gap-4">
-          <!-- Language badges -->
-          <div class="flex items-center gap-1.5 mr-2">
-            <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" title="Magyar" data-lang="hu">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>
-              HU
-            </span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-blue-700" title="English" data-lang="en">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>
-              EN
-            </span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-amber-700" title="Deutsch" data-lang="de">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>
-              DE
-            </span>
-
-            <span class="lang-badge inline-flex items-center gap-1 bg-orange-50 border border-orange-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-orange-700" title="Nederlands" data-lang="nl"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg>NL</span>            <span class="lang-badge inline-flex items-center gap-1 bg-violet-50 border border-violet-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-violet-700" title="Français" data-lang="fr">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg>
-              FR
-            </span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-emerald-700" title="Italiano" data-lang="it">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg>
-              IT
-            </span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-red-700" title="Dansk" data-lang="da"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg>DA</span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-blue-700" title="Norsk" data-lang="no">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg>
-              NO
-            </span>
-
-            <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-blue-700" title="Svenska" data-lang="sv"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg>SV</span>
-            <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-blue-700" title="Suomi" data-lang="fi"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg>FI</span>            <span class="lang-badge inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 rounded-full px-2.5 py-1 text-[11px] font-bold text-slate-700" title="Slovenčina" data-lang="sk">
-              <svg class="w-3 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg>
-              SK
-            </span>
+        <div class="hidden md:flex items-center gap-3 flex-shrink-0">
+          <!-- Language dropdown -->
+          <div class="relative" id="lang-dropdown-container">
+            <button id="lang-dropdown-btn" class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200/60 rounded-full px-3 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer" type="button">
+              <span id="lang-dropdown-flag"><svg class="w-4 h-3" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg></span>
+              <span id="lang-dropdown-label">Magyar</span>
+              <svg class="w-3 h-3 text-slate-400 transition-transform duration-200" id="lang-dropdown-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="lang-dropdown-menu" class="absolute right-0 top-full mt-2 bg-white rounded-xl border border-slate-200/80 shadow-xl py-1.5 min-w-[160px] z-50 opacity-0 invisible transform -translate-y-1 transition-all duration-200" style="pointer-events:none">
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="hu"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>Magyar</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="en"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>English</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="de"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>Deutsch</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="nl"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg>Nederlands</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="fr"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg>Français</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="it"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg>Italiano</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="da"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg>Dansk</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="no"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg>Norsk</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="sv"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg>Svenska</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="fi"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg>Suomi</div>
+              <div class="lang-option flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer rounded-lg mx-1" data-lang="sk"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg>Slovenčina</div>
+            </div>
           </div>
-          <div id="header-status" class="flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300">
+          <div id="header-status" class="flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 whitespace-nowrap flex-shrink-0 transition-all duration-300">
             <div class="pulse-dot flex-shrink-0"></div>
             <span id="header-status-text" class="text-xs font-semibold text-emerald-700" data-i18n="header-available">Anna elérhető</span>
           </div>
-          <button id="header-call-btn" class="inline-flex items-center gap-1.5 bg-dental-600 hover:bg-dental-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm shadow-dental-600/20 transition-all hover:shadow-lg hover:shadow-dental-600/25 hover:-translate-y-0.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          <button id="header-call-btn" class="inline-flex items-center gap-1.5 bg-dental-600 hover:bg-dental-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm shadow-dental-600/20 whitespace-nowrap flex-shrink-0 transition-all hover:shadow-lg hover:shadow-dental-600/25 hover:-translate-y-0.5">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
             <span data-i18n="hero-call">Beszéljen Annával</span>
           </button>
         </div>
@@ -197,41 +190,29 @@
         
         <!-- Mobile language badges -->
         <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-50 w-full py-3 px-3 rounded-2xl border border-slate-100">
-          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" data-lang="hu">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>HU
+          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" data-lang="hu">🇭🇺 Magyar
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="en">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>EN
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="en">🇬🇧 English
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="de">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>DE
+          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="de">🇩🇪 Deutsch
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-orange-50 border border-orange-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-orange-700" data-lang="nl">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg>NL
+          <span class="lang-badge inline-flex items-center gap-1 bg-orange-50 border border-orange-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-orange-700" data-lang="nl">🇳🇱 Nederlands
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-violet-50 border border-violet-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-violet-700" data-lang="fr">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg>FR
+          <span class="lang-badge inline-flex items-center gap-1 bg-violet-50 border border-violet-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-violet-700" data-lang="fr">🇫🇷 Français
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-emerald-700" data-lang="it">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg>IT
+          <span class="lang-badge inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-emerald-700" data-lang="it">🇮🇹 Italiano
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700" data-lang="da">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg>DA
+          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700" data-lang="da">🇩🇰 Dansk
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="no">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg>NO
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="no">🇳🇴 Norsk
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="sv">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg>SV
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="sv">🇸🇪 Svenska
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="fi">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg>FI
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="fi">🇫🇮 Suomi
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-slate-700" data-lang="sk">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg>SK
+          <span class="lang-badge inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-slate-700" data-lang="sk">🇸🇰 Slovenčina
           </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="es">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#AA151B"/><rect y="3.5" width="20" height="7" fill="#F1BF00"/></svg>ES
+          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="es">🇪🇸 Español
           </span>
         </div>
 
@@ -518,8 +499,335 @@
     </div>
   </section>
 
+  <!-- Capabilities Section: What Anna Can Do -->
+  <section id="capabilities" class="py-16 lg:py-24 bg-slate-50 relative overflow-hidden">
+    <!-- Decorative glow elements -->
+    <div class="cap-glow w-72 h-72 bg-dental-200/20 -top-10 -left-36" style="position:absolute"></div>
+    <div class="cap-glow w-56 h-56 bg-emerald-200/20 -bottom-10 -right-28" style="position:absolute"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase text-dental-500" data-i18n="cap-sub">Anna képességei</span>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight" data-i18n="cap-title">Mindent tud, amit egy recepciósnak tudnia kell</h2>
+        <p class="mt-4 text-base text-slate-500 leading-relaxed" data-i18n="cap-desc">A foglalástól a lemondáson át a várólistáig — Anna önállóan, valós időben kezeli a teljes pácienskommunikációt telefonon. Minden funkció az összes támogatott nyelven elérhető.</p>
+      </div>
+
+      <!-- 8 Capability Cards — 4×2 grid matching How-it-works style -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+
+        <!-- Cap 1: Szabad időpontok keresése -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-dental-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-dental-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-dental-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-dental-100 text-dental-700 text-xs font-bold">1</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap1-title">Szabad időpontok</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap1-desc">Anna valós időben keresi a szabad helyeket a Google Naptárban — megadott napra, napszakra vagy orvosra szűrve. A páciens azonnal választ kaphat.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+                  <span>Google Calendar</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span data-i18n="cap1-tag2">Valós idejű</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 2: Időpont foglalás -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-emerald-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">2</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap2-title">Időpontfoglalás</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap2-desc">A páciens nevének, e-mail-címének és a kívánt időpont megadásával Anna rögzíti a foglalást a naptárban, és azonnal küld egy visszaigazoló SMS-t és e-mailt.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span data-i18n="cap2-tag1">Visszaigazolás</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                  <span>SMS + e-mail</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 3: Időpont módosítás -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-violet-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-violet-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-violet-100 text-violet-700 text-xs font-bold">3</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap3-title">Időpontmódosítás</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap3-desc">Ha a páciens másik időpontot kér, Anna törli a régit és lefoglalja az újat — ellenőrzi a naptárban az új időpont elérhetőségét is, hogy ne ütközzön semmivel.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-violet-50 text-violet-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg>
+                  <span data-i18n="cap3-tag1">Régi → Új</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span data-i18n="cap3-tag2">Ellenőrzött</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 4: Időpont lemondás -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-red-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-lg shadow-amber-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">4</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap4-title">Időpontlemondás</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap4-desc">A páciens megerősítheti a lemondást — Anna eltávolítja az eseményt a naptárból, és lemondást visszaigazoló SMS-t és e-mailt küld a megfelelő nyelven.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+                  <span data-i18n="cap4-tag1">Értesítés</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+                  <span data-i18n="cap4-tag2">Naptárfrissítés</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 5: Meglévő időpontok lekérdezése -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-dental-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-dental-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-dental-100 text-dental-700 text-xs font-bold">5</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap5-title">Időpontok lekérdezése</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap5-desc">Ha a páciens nem emlékszik a foglalására, Anna telefon vagy e-mail alapján lekéri a jövőbeli időpontokat, és felolvassa őket a módosítás vagy lemondás megkönnyítéséhez.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                  <span data-i18n="cap5-tag1">Keresés</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.75 0-1.5.75-1.5 1.5v14.25c0 .75.75 1.5 1.5 1.5h12.75c.75 0 1.5-.75 1.5-1.5V11.25c0-1.5-1-3-3-3h-3.231"/></svg>
+                  <span data-i18n="cap5-tag2">Páciensazonosítás</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 6: Várólista -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-emerald-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">6</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap6-title">Várólista</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap6-desc">Ha nincs szabad időpont, Anna felírja a pácienst az elsőbbségi várólistára — a preferált időszakkal együtt. Amikor felszabadul egy hely, a rendszer automatikusan értesíti őt.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                  <span data-i18n="cap6-tag1">Elsőbbségi</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+                  <span data-i18n="cap6-tag2">Automatikus értesítés</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 7: Páciens adatmódosítás -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-dental-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-dental-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-dental-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM16.862 4.487L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-dental-100 text-dental-700 text-xs font-bold">7</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap7-title">Adatmódosítás</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap7-desc">Ha a páciens új telefonszámot vagy e-mail-címet kapott, Anna frissíti az adatokat a rendszerben — a jelenlegi e-mail-alapú azonosító alapján, azonnali érvénnyel.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-dental-50 text-dental-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM16.862 4.487L19.5 7.125"/></svg>
+                  <span data-i18n="cap7-tag1">Telefon / e-mail</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span data-i18n="cap7-tag2">Azonnali</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cap 8: Hívás átadás -->
+        <div class="step-animate group">
+          <div class="bg-white rounded-3xl border border-slate-200/80 p-7 h-full shadow-sm hover:shadow-xl hover:border-amber-200/80 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-bl-[3rem] -z-0"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-lg shadow-amber-500/25 mb-5">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+              </div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">8</span>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="cap8-title">Hívásátadás</h3>
+              </div>
+              <p class="text-sm text-slate-500 leading-relaxed" data-i18n="cap8-desc">Ha a páciens munkatárssal szeretne beszélni, technikai hiba történik, vagy Anna nem tud válaszolni, automatikusan értesíti a recepciót a visszahívásról — a páciens sosem marad válasz nélkül.</p>
+              <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+                  <span data-i18n="cap8-tag1">Visszahívás</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-violet-50 text-violet-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                  <span data-i18n="cap8-tag2">Biztonsági háló</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom stats row — matching automated-care stats style -->
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl border border-slate-200/60 p-5 text-center shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-dental-100 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-5 h-5 text-dental-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-slate-900">8</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="cap-stat1-label">Beépített eszköz a pácienskommunikációhoz</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200/60 p-5 text-center shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-slate-900">11</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="cap-stat2-label">Nyelven folyékonyan kommunikál</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200/60 p-5 text-center shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-slate-900" data-i18n="cap-stat3-value">24/7</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="cap-stat3-label">Éjjel-nappal, ünnepnapokon is elérhető</p>
+        </div>
+      </div>
+
+      <!-- 11 Languages Banner -->
+      <div class="mt-14 rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
+        <!-- Banner header -->
+        <div class="bg-gradient-to-r from-dental-50/80 to-blue-50/60 border-b border-dental-200/40 px-7 py-5 flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-dental-500/25 flex-shrink-0">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900" data-i18n="lang-title">Tizenegy nyelven, egy hangon</h3>
+            <p class="text-xs text-dental-600 font-medium" data-i18n="lang-subtitle">Automatikus nyelvfelismerés — minden funkció elérhető minden nyelven</p>
+          </div>
+          <div class="ml-auto hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span data-i18n="lang-auto">Automatikus felismerés</span>
+          </div>
+        </div>
+        <!-- Language grid -->
+        <div class="p-7">
+          <p class="text-sm text-slate-500 leading-relaxed mb-6" data-i18n="lang-desc">Anna automatikusan felismeri a páciens nyelvét a hívás elején, és azon a nyelven folytatja a beszélgetést. Az SMS-ek, e-mailek és naptárbejegyzések is a páciens anyanyelvén készülnek — így a külföldi páciensek is otthon érzik magukat a praxisban, és sosem maradnak kommunikációs hátrányban.</p>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <div class="lang-badge"><span class="lang-flag">🇭🇺</span><span>Magyar</span><span class="lang-code">hu</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇬🇧</span><span>English</span><span class="lang-code">en</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇩🇪</span><span>Deutsch</span><span class="lang-code">de</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇫🇷</span><span>Français</span><span class="lang-code">fr</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇮🇹</span><span>Italiano</span><span class="lang-code">it</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇳🇱</span><span>Nederlands</span><span class="lang-code">nl</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇩🇰</span><span>Dansk</span><span class="lang-code">da</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇳🇴</span><span>Norsk</span><span class="lang-code">no</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇸🇪</span><span>Svenska</span><span class="lang-code">sv</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇫🇮</span><span>Suomi</span><span class="lang-code">fi</span></div>
+            <div class="lang-badge"><span class="lang-flag">🇸🇰</span><span>Slovenčina</span><span class="lang-code">sk</span></div>
+          </div>
+          <!-- Under-banner: key language features -->
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="flex items-center gap-3 bg-slate-50/60 rounded-xl px-4 py-3">
+              <div class="w-8 h-8 rounded-lg bg-dental-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-dental-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-800" data-i18n="lang-feat1-title">Beszélt kommunikáció</p>
+                <p class="text-[11px] text-slate-500" data-i18n="lang-feat1-desc">Élő hangon, természetes beszéddel</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-50/60 rounded-xl px-4 py-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-800" data-i18n="lang-feat2-title">Nyelvspecifikus SMS</p>
+                <p class="text-[11px] text-slate-500" data-i18n="lang-feat2-desc">Visszaigazolás a páciens nyelvén</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-50/60 rounded-xl px-4 py-3">
+              <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-800" data-i18n="lang-feat3-title">Többnyelvű e-mail</p>
+                <p class="text-[11px] text-slate-500" data-i18n="lang-feat3-desc">Naptárleírás 11 nyelven, automatikusan generált</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- Automated Follow-up Section: 24h Reminder + 24h Survey -->
-  <section id="automated-care" class="py-16 lg:py-24 bg-gradient-to-b from-slate-50 to-white">
+  <section id="automated-care" class="py-16 lg:py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <span class="text-xs font-semibold tracking-widest uppercase text-dental-500" data-i18n="care-sub">Automatikus utókövetés</span>
@@ -776,7 +1084,7 @@
       </div>
     </div>
   </section>
-  <section id="social-autopilot" class="py-16 lg:py-24 bg-white">
+  <section id="social-autopilot" class="py-16 lg:py-24 bg-slate-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <span class="text-xs font-semibold tracking-widest uppercase text-violet-700" data-i18n="social-sub">Social AutoPilot</span>
@@ -890,7 +1198,7 @@
     </div>
   </section>
 
-  <section id="demo" class="py-16 lg:py-20 bg-slate-50">
+  <section id="demo" class="py-16 lg:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-14">
         <span class="text-xs font-semibold tracking-widest uppercase text-dental-500" data-i18n="demo-sub">Élő demo</span>
@@ -937,7 +1245,7 @@
   </section>
 
   <!-- FAQ Section -->
-  <section id="faq" class="py-16 lg:py-24 bg-white">
+  <section id="faq" class="py-16 lg:py-24 bg-slate-50">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-14">
         <span class="text-xs font-semibold tracking-widest uppercase text-dental-500" data-i18n="faq-sub">Gyakori kérdések</span>
@@ -2279,6 +2587,53 @@
         'modal-cancel': 'Mégse',
         'modal-start': 'Hívás indítása',
 
+        'cap-sub': 'Anna képességei',
+        'cap-title': 'Mindent tud, amit egy recepciósnak tudnia kell',
+        'cap-desc': 'A foglalástól a lemondáson át a várólistáig — Anna önállóan, valós időben kezeli a teljes pácienskommunikációt telefonon. Minden funkció az összes támogatott nyelven elérhető.',
+        'cap1-title': 'Szabad időpontok',
+        'cap1-desc': 'Anna valós időben keresi a szabad helyeket a Google Naptárban — megadott napra, napszakra vagy orvosra szűrve. A páciens azonnal választ kaphat.',
+        'cap1-tag2': 'Valós idejű',
+        'cap2-title': 'Időpontfoglalás',
+        'cap2-desc': 'A páciens nevének, e-mail-címének és a kívánt időpont megadásával Anna rögzíti a foglalást a naptárban, és azonnal küld egy visszaigazoló SMS-t és e-mailt.',
+        'cap2-tag1': 'Visszaigazolás',
+        'cap3-title': 'Időpontmódosítás',
+        'cap3-desc': 'Ha a páciens másik időpontot kér, Anna törli a régit és lefoglalja az újat — ellenőrzi a naptárban az új időpont elérhetőségét is, hogy ne ütközzön semmivel.',
+        'cap3-tag1': 'Régi → Új',
+        'cap3-tag2': 'Ellenőrzött',
+        'cap4-title': 'Időpontlemondás',
+        'cap4-desc': 'A páciens megerősítheti a lemondást — Anna eltávolítja az eseményt a naptárból, és lemondást visszaigazoló SMS-t és e-mailt küld a megfelelő nyelven.',
+        'cap4-tag1': 'Értesítés',
+        'cap4-tag2': 'Naptárfrissítés',
+        'cap5-title': 'Időpontok lekérdezése',
+        'cap5-desc': 'Ha a páciens nem emlékszik a foglalására, Anna telefon vagy e-mail alapján lekéri a jövőbeli időpontokat, és felolvassa őket a módosítás vagy lemondás megkönnyítéséhez.',
+        'cap5-tag1': 'Keresés',
+        'cap5-tag2': 'Páciensazonosítás',
+        'cap6-title': 'Várólista',
+        'cap6-desc': 'Ha nincs szabad időpont, Anna felírja a pácienst az elsőbbségi várólistára — a preferált időszakkal együtt. Amikor felszabadul egy hely, a rendszer automatikusan értesíti őt.',
+        'cap6-tag1': 'Elsőbbségi',
+        'cap6-tag2': 'Automatikus értesítés',
+        'cap7-title': 'Adatmódosítás',
+        'cap7-desc': 'Ha a páciens új telefonszámot vagy e-mail-címet kapott, Anna frissíti az adatokat a rendszerben — a jelenlegi e-mail-alapú azonosító alapján, azonnali érvénnyel.',
+        'cap7-tag1': 'Telefon / e-mail',
+        'cap7-tag2': 'Azonnali',
+        'cap8-title': 'Hívásátadás',
+        'cap8-desc': 'Ha a páciens munkatárssal szeretne beszélni, technikai hiba történik, vagy Anna nem tud válaszolni, automatikusan értesíti a recepciót a visszahívásról — a páciens sosem marad válasz nélkül.',
+        'cap8-tag1': 'Visszahívás',
+        'cap8-tag2': 'Biztonsági háló',
+        'cap-stat1-label': 'Beépített eszköz a pácienskommunikációhoz',
+        'cap-stat2-label': 'Nyelven folyékonyan kommunikál',
+        'cap-stat3-label': 'Éjjel-nappal, ünnepnapokon is elérhető',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Tizenegy nyelven, egy hangon',
+        'lang-subtitle': 'Automatikus nyelvfelismerés — minden funkció elérhető minden nyelven',
+        'lang-auto': 'Automatikus felismerés',
+        'lang-desc': 'Anna automatikusan felismeri a páciens nyelvét a hívás elején, és azon a nyelven folytatja a beszélgetést. Az SMS-ek, e-mailek és naptárbejegyzések is a páciens anyanyelvén készülnek — így a külföldi páciensek is otthon érzik magukat a praxisban, és sosem maradnak kommunikációs hátrányban.',
+        'lang-feat1-title': 'Beszélt kommunikáció',
+        'lang-feat1-desc': 'Élő hangon, természetes beszéddel',
+        'lang-feat2-title': 'Nyelvspecifikus SMS',
+        'lang-feat2-desc': 'Visszaigazolás a páciens nyelvén',
+        'lang-feat3-title': 'Többnyelvű e-mail',
+        'lang-feat3-desc': 'Naptárleírás 11 nyelven, automatikusan generált',
       },
       en: {
         'page-title': 'Anna — DentAi Senior Assistant | 24/7 Call Handling & Booking',
@@ -2519,6 +2874,53 @@
         'modal-cancel': 'Cancel',
         'modal-start': 'Start Call',
 
+        'cap-sub': 'Anna\'s capabilities',
+        'cap-title': 'Everything a receptionist needs to know',
+        'cap-desc': 'From booking to cancellations and the waitlist — Anna independently handles all patient communication by phone in real time. Every feature is available in all supported languages.',
+        'cap1-title': 'Available appointments',
+        'cap1-desc': 'Anna searches for available slots in Google Calendar in real time — filtered by date, time of day, or doctor. The patient gets an instant selection.',
+        'cap1-tag2': 'Real-time',
+        'cap2-title': 'Appointment booking',
+        'cap2-desc': 'Once the patient provides their name, email address, and desired time, Anna records the booking in the calendar and immediately sends a confirmation SMS and e-mail.',
+        'cap2-tag1': 'Confirmation',
+        'cap3-title': 'Appointment modification',
+        'cap3-desc': 'If the patient requests a different time, Anna cancels the old one and books the new one — she also checks the calendar for the new time\'s availability to prevent any conflicts.',
+        'cap3-tag1': 'Old → New',
+        'cap3-tag2': 'Verified',
+        'cap4-title': 'Appointment cancellation',
+        'cap4-desc': 'The patient can confirm the cancellation — Anna removes the event from the calendar and sends a cancellation confirmation SMS and e-mail in the appropriate language.',
+        'cap4-tag1': 'Notification',
+        'cap4-tag2': 'Calendar update',
+        'cap5-title': 'Appointment lookup',
+        'cap5-desc': 'If the patient doesn\'t remember their booking, Anna retrieves future appointments by phone or e-mail and reads them out to facilitate modification or cancellation.',
+        'cap5-tag1': 'Search',
+        'cap5-tag2': 'Patient identification',
+        'cap6-title': 'Waitlist',
+        'cap6-desc': 'If no appointment is available, Anna adds the patient to the priority waitlist — along with their preferred time slots. When a slot opens up, the system automatically notifies them.',
+        'cap6-tag1': 'Priority',
+        'cap6-tag2': 'Automatic notification',
+        'cap7-title': 'Data modification',
+        'cap7-desc': 'If the patient has a new phone number or e-mail address, Anna updates the data in the system — based on the current e-mail identifier, with immediate effect.',
+        'cap7-tag1': 'Phone / e-mail',
+        'cap7-tag2': 'Immediate',
+        'cap8-title': 'Call transfer',
+        'cap8-desc': 'If the patient wants to speak with a staff member, if a technical error occurs, or if Anna cannot answer, she automatically notifies the reception for a callback — the patient is never left without a response.',
+        'cap8-tag1': 'Callback',
+        'cap8-tag2': 'Safety net',
+        'cap-stat1-label': 'Built-in tools for patient communication',
+        'cap-stat2-label': 'Languages spoken fluently',
+        'cap-stat3-label': 'Available day and night, even on holidays',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Eleven languages, one voice',
+        'lang-subtitle': 'Automatic language detection — every feature available in every language',
+        'lang-auto': 'Automatic detection',
+        'lang-desc': 'Anna automatically detects the patient\'s language at the start of the call and continues the conversation in that language. SMS messages, e-mails, and calendar entries are also created in the patient\'s native language — so international patients feel at home in the practice and are never at a communication disadvantage.',
+        'lang-feat1-title': 'Spoken communication',
+        'lang-feat1-desc': 'Live voice, natural speech',
+        'lang-feat2-title': 'Language-specific SMS',
+        'lang-feat2-desc': 'Confirmation in the patient\'s language',
+        'lang-feat3-title': 'Multilingual e-mail',
+        'lang-feat3-desc': 'Calendar description in 11 languages, generated automatically',
       },
       de: {
         'page-title': 'Anna — DentAi Senior Assistentin | 24/7 Anrufbearbeitung & Terminbuchung',
@@ -2759,6 +3161,53 @@
         'modal-cancel': 'Abbrechen',
         'modal-start': 'Anruf starten',
 
+        'cap-sub': 'Annas Fähigkeiten',
+        'cap-title': 'Alles, was eine Rezeptionistin wissen muss',
+        'cap-desc': 'Von der Buchung über die Stornierung bis zur Warteliste — Anna bearbeitet selbstständig und in Echtzeit die gesamte Patientenkommunikation am Telefon. Alle Funktionen sind in allen unterstützten Sprachen verfügbar.',
+        'cap1-title': 'Freie Termine',
+        'cap1-desc': 'Anna sucht in Echtzeit nach freien Terminen im Google Calendar — gefiltert nach Datum, Tageszeit oder Arzt. Der Patient erhält sofort eine Auswahl.',
+        'cap1-tag2': 'Echtzeit',
+        'cap2-title': 'Terminbuchung',
+        'cap2-desc': 'Unter Angabe des Patientennamens, der E-Mail-Adresse und der gewünschten Uhrzeit trägt Anna die Buchung in den Kalender ein und sendet sofort eine Bestätigungs-SMS und -E-Mail.',
+        'cap2-tag1': 'Bestätigung',
+        'cap3-title': 'Terminänderung',
+        'cap3-desc': 'Wenn der Patient einen anderen Termin wünscht, storniert Anna den alten und bucht den neuen — sie prüft auch die Verfügbarkeit des neuen Termins im Kalender, damit es keine Konflikte gibt.',
+        'cap3-tag1': 'Alt → Neu',
+        'cap3-tag2': 'Geprüft',
+        'cap4-title': 'Terminstornierung',
+        'cap4-desc': 'Der Patient kann die Stornierung bestätigen — Anna entfernt den Termin aus dem Kalender und sendet eine Stornierungsbestätigung per SMS und E-Mail in der entsprechenden Sprache.',
+        'cap4-tag1': 'Benachrichtigung',
+        'cap4-tag2': 'Kalenderaktualisierung',
+        'cap5-title': 'Terminabfrage',
+        'cap5-desc': 'Wenn der Patient sich nicht an seinen Termin erinnert, ruft Anna anstehende Termine ab und liest sie am Telefon vor, um eine Änderung oder Stornierung zu erleichtern.',
+        'cap5-tag1': 'Suche',
+        'cap5-tag2': 'Patientenidentifikation',
+        'cap6-title': 'Warteliste',
+        'cap6-desc': 'Wenn kein Termin frei ist, trägt Anna den Patienten in die Prioritätswarteliste ein — mit den bevorzugten Zeitfenstern. Wenn ein Platz frei wird, benachrichtigt das System ihn automatisch.',
+        'cap6-tag1': 'Priorität',
+        'cap6-tag2': 'Automatische Benachrichtigung',
+        'cap7-title': 'Datenänderung',
+        'cap7-desc': 'Wenn der Patient eine neue Telefonnummer oder E-Mail-Adresse hat, aktualisiert Anna die Daten im System — basierend auf der aktuellen E-Mail-Kennung, mit sofortiger Wirkung.',
+        'cap7-tag1': 'Telefon / E-Mail',
+        'cap7-tag2': 'Sofort',
+        'cap8-title': 'Anrufweiterleitung',
+        'cap8-desc': 'Wenn der Patient mit einem Mitarbeiter sprechen möchte, ein technischer Fehler auftritt oder Anna nicht antworten kann, benachrichtigt sie automatisch die Rezeption für einen Rückruf — der Patient bleibt niemals ohne Antwort.',
+        'cap8-tag1': 'Rückruf',
+        'cap8-tag2': 'Sicherheitsnetz',
+        'cap-stat1-label': 'Integrierte Tools für die Patientenkommunikation',
+        'cap-stat2-label': 'Sprachen, in denen fließend kommuniziert wird',
+        'cap-stat3-label': 'Tag und Nacht erreichbar, auch an Feiertagen',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Elf Sprachen, eine Stimme',
+        'lang-subtitle': 'Automatische Spracherkennung — alle Funktionen in allen Sprachen verfügbar',
+        'lang-auto': 'Automatische Erkennung',
+        'lang-desc': 'Anna erkennt die Sprache des Patienten automatisch zu Beginn des Anrufs und führt das Gespräch in dieser Sprache fort. SMS, E-Mails und Kalendereinträge werden ebenfalls in der Muttersprache des Patienten erstellt — so fühlen sich internationale Patienten in der Praxis wohl und haben nie einen Kommunikationsnachteil.',
+        'lang-feat1-title': 'Mündliche Kommunikation',
+        'lang-feat1-desc': 'Live-Stimme, natürliches Sprechen',
+        'lang-feat2-title': 'Sprachspezifische SMS',
+        'lang-feat2-desc': 'Bestätigung in der Sprache des Patienten',
+        'lang-feat3-title': 'Mehrsprachige E-Mail',
+        'lang-feat3-desc': 'Kalenderbeschreibung in 11 Sprachen, automatisch generiert',
       },
 nl: {
         'page-title': 'Anna — DentAi Senior Assistente | 24/7 Oproepafhandeling & Afspraakboeking',
@@ -2997,7 +3446,55 @@ nl: {
         'modal-li4': '<strong>Uitsluiting van aansprakelijkheid:</strong> Ik aanvaard geen enkele aansprakelijkheid voor de verstrekte gegevens of de door de AI gegenereerde antwoorden. Het testen van deze applicatie geschiedt volledig op eigen risico.',
         'modal-agree': 'Door verder te gaan, verklaart u het volgende: Ik begrijp dat dit een testomgeving is, ik zal geen echte persoonsgegevens verstrekken en ik start het gesprek op eigen risico.',
         'modal-cancel': 'Annuleren',
-        'modal-start': 'Gesprek starten'
+        'modal-start': 'Gesprek starten',
+
+        'cap-sub': 'Anna\'s mogelijkheden',
+        'cap-title': 'Alles wat een receptioniste moet weten',
+        'cap-desc': 'Van boeken tot annuleren en de wachtlijst — Anna behandelt zelfstandig en in realtime de volledige patiëntcommunicatie telefonisch. Elke functie is beschikbaar in alle ondersteunde talen.',
+        'cap1-title': 'Beschikbare afspraken',
+        'cap1-desc': 'Anna zoekt in realtime naar beschikbare plekken in Google Agenda — gefilterd op datum, dagdeel of arts. De patiënt krijgt direct een overzicht van de opties.',
+        'cap1-tag2': 'Realtime',
+        'cap2-title': 'Afspraak boeken',
+        'cap2-desc': 'Met opgave van de naam, het e-mailadres en de gewenste tijd van de patiënt legt Anna de boeking vast in de agenda en stuurt onmiddellijk een bevestigings-sms en -e-mail.',
+        'cap2-tag1': 'Bevestiging',
+        'cap3-title': 'Afspraak wijzigen',
+        'cap3-desc': 'Als de patiënt een andere tijd wil, annuleert Anna de oude en boekt een nieuwe — ze controleert ook de beschikbaarheid van de nieuwe tijd in de agenda zodat er geen conflicten ontstaan.',
+        'cap3-tag1': 'Oud → Nieuw',
+        'cap3-tag2': 'Gecontroleerd',
+        'cap4-title': 'Afspraak annuleren',
+        'cap4-desc': 'De patiënt kan de annulering bevestigen — Anna verwijdert de afspraak uit de agenda en stuurt een annuleringsbevestiging per sms en e-mail in de juiste taal.',
+        'cap4-tag1': 'Melding',
+        'cap4-tag2': 'Agenda-update',
+        'cap5-title': 'Afspraken opvragen',
+        'cap5-desc': 'Als de patiënt zich de afspraak niet meer herinnert, haalt Anna komende afspraken op via telefoon of e-mail en leest ze voor om wijziging of annulering te vergemakkelijken.',
+        'cap5-tag1': 'Zoeken',
+        'cap5-tag2': 'Patiëntidentificatie',
+        'cap6-title': 'Wachtlijst',
+        'cap6-desc': 'Als er geen afspraak beschikbaar is, zet Anna de patiënt op de prioriteitswachtlijst — met de gewenste tijdsvakken. Als er een plek vrijkomt, wordt de patiënt automatisch op de hoogte gebracht.',
+        'cap6-tag1': 'Prioriteit',
+        'cap6-tag2': 'Automatische melding',
+        'cap7-title': 'Gegevens wijzigen',
+        'cap7-desc': 'Als de patiënt een nieuw telefoonnummer of e-mailadres heeft, werkt Anna de gegevens bij in het systeem — op basis van de huidige e-mailidentificatie, met onmiddellijke ingang.',
+        'cap7-tag1': 'Telefoon / e-mail',
+        'cap7-tag2': 'Onmiddellijk',
+        'cap8-title': 'Oproep doorverbinden',
+        'cap8-desc': 'Als de patiënt met een medewerker wil spreken, er een technische fout optreedt of Anna niet kan antwoorden, brengt ze automatisch de receptie op de hoogte voor een terugbelverzoek — de patiënt blijft nooit zonder antwoord.',
+        'cap8-tag1': 'Terugbellen',
+        'cap8-tag2': 'Vangnet',
+        'cap-stat1-label': 'Ingebouwde tools voor patiëntcommunicatie',
+        'cap-stat2-label': 'Talen waarin vloeiend wordt gecommuniceerd',
+        'cap-stat3-label': 'Dag en nacht beschikbaar, ook op feestdagen',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Elf talen, één stem',
+        'lang-subtitle': 'Automatische taaldetectie — elke functie beschikbaar in elke taal',
+        'lang-auto': 'Automatische detectie',
+        'lang-desc': 'Anna herkent de taal van de patiënt automatisch aan het begin van het gesprek en gaat door in die taal. SMS-berichten, e-mails en agenda-items worden ook in de moedertaal van de patiënt aangemaakt — zodat internationale patiënten zich thuis voelen in de praktijk en nooit een communicatieachterstand oplopen.',
+        'lang-feat1-title': 'Spraakcommunicatie',
+        'lang-feat1-desc': 'Live stem, natuurlijk gesproken',
+        'lang-feat2-title': 'Taalspecifieke SMS',
+        'lang-feat2-desc': 'Bevestiging in de taal van de patiënt',
+        'lang-feat3-title': 'Meertalige e-mail',
+        'lang-feat3-desc': 'Agendabeschrijving in 11 talen, automatisch gegenereerd',
       },
 
       fr: {
@@ -3237,8 +3734,55 @@ nl: {
         'modal-li4': '<strong>Exclusion de responsabilité :</strong> Je décline toute responsabilité concernant les données fournies ou les réponses générées par l\'intelligence artificielle. Les tests sont effectués sous votre entière responsabilité.',
         'modal-agree': 'En continuant, je confirme : Je comprends qu\'il s\'agit d\'un environnement de test, je m\'engage à ne fournir aucune donnée réelle et je lance l\'appel à mes propres risques.',
         'modal-cancel': 'Annuler',
-        'modal-start': 'Lancer l\'appel'
+        'modal-start': 'Lancer l\'appel',
 
+        'cap-sub': 'Capacités d\'Anna',
+        'cap-title': 'Tout ce qu\'une réceptionniste doit savoir',
+        'cap-desc': 'De la réservation à l\'annulation en passant par la liste d\'attente — Anna gère de manière autonome et en temps réel l\'ensemble de la communication avec les patients par téléphone. Toutes les fonctionnalités sont disponibles dans toutes les langues prises en charge.',
+        'cap1-title': 'Rendez-vous disponibles',
+        'cap1-desc': 'Anna recherche en temps réel les créneaux disponibles dans Google Agenda — filtrés par date, moment de la journée ou médecin. Le patient obtient immédiatement une sélection.',
+        'cap1-tag2': 'Temps réel',
+        'cap2-title': 'Prise de rendez-vous',
+        'cap2-desc': 'À partir du nom du patient, de son adresse e-mail et de l\'horaire souhaité, Anna enregistre la réservation dans l\'agenda et envoie immédiatement un SMS et un e-mail de confirmation.',
+        'cap2-tag1': 'Confirmation',
+        'cap3-title': 'Modification de rendez-vous',
+        'cap3-desc': 'Si le patient demande un autre créneau, Anna annule l\'ancien et réserve le nouveau — elle vérifie également la disponibilité du nouveau créneau dans l\'agenda pour éviter tout conflit.',
+        'cap3-tag1': 'Ancien → Nouveau',
+        'cap3-tag2': 'Vérifié',
+        'cap4-title': 'Annulation de rendez-vous',
+        'cap4-desc': 'Le patient peut confirmer l\'annulation — Anna supprime l\'événement de l\'agenda et envoie un SMS et un e-mail de confirmation d\'annulation dans la langue appropriée.',
+        'cap4-tag1': 'Notification',
+        'cap4-tag2': 'Mise à jour de l\'agenda',
+        'cap5-title': 'Recherche de rendez-vous',
+        'cap5-desc': 'Si le patient ne se souvient pas de sa réservation, Anna récupère les rendez-vous à venir et les lui lit au téléphone pour faciliter la modification ou l\'annulation.',
+        'cap5-tag1': 'Recherche',
+        'cap5-tag2': 'Identification du patient',
+        'cap6-title': 'Liste d\'attente',
+        'cap6-desc': 'Si aucun créneau n\'est disponible, Anna inscrit le patient sur la liste d\'attente prioritaire — avec ses créneaux préférés. Lorsqu\'une place se libère, le système l'en avertit automatiquement.',
+        'cap6-tag1': 'Priorité',
+        'cap6-tag2': 'Notification automatique',
+        'cap7-title': 'Modification des données',
+        'cap7-desc': 'Si le patient a un nouveau numéro de téléphone ou une nouvelle adresse e-mail, Anna met à jour les données dans le système — sur la base de l\'identifiant e-mail actuel, avec effet immédiat.',
+        'cap7-tag1': 'Téléphone / e-mail',
+        'cap7-tag2': 'Immédiat',
+        'cap8-title': 'Transfert d\'appel',
+        'cap8-desc': 'Si le patient souhaite parler à un collaborateur, qu\'une erreur technique se produit ou qu\'Anna ne peut pas répondre, elle notifie automatiquement la réception pour un rappel — le patient n\'est jamais laissé sans réponse.',
+        'cap8-tag1': 'Rappel',
+        'cap8-tag2': 'Filet de sécurité',
+        'cap-stat1-label': '8 outils intégrés pour la communication avec les patients',
+        'cap-stat2-label': 'Langues parlées couramment',
+        'cap-stat3-label': 'Disponible jour et nuit, même les jours fériés',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Onze langues, une seule voix',
+        'lang-subtitle': 'Détection automatique de la langue — chaque fonctionnalité disponible dans chaque langue',
+        'lang-auto': 'Détection automatique',
+        'lang-desc': 'Anna détecte automatiquement la langue du patient au début de l\'appel et continue la conversation dans cette langue. Les SMS, e-mails et entrées d\'agenda sont également créés dans la langue maternelle du patient — ainsi, les patients internationaux se sentent à l\'aise dans le cabinet et ne sont jamais désavantagés dans la communication.',
+        'lang-feat1-title': 'Communication parlée',
+        'lang-feat1-desc': 'Voix en direct, parole naturelle',
+        'lang-feat2-title': 'SMS spécifique à la langue',
+        'lang-feat2-desc': 'Confirmation dans la langue du patient',
+        'lang-feat3-title': 'E-mail multilingue',
+        'lang-feat3-desc': 'Description de l\'agenda en 11 langues, générée automatiquement',
       },
       it: {
         'page-title': 'Anna — DentAi Assistente Senior | Gestione chiamate 24/7 & Prenotazione',
@@ -3477,8 +4021,55 @@ nl: {
         'modal-li4': '<strong>Esclusione di responsabilità:</strong> Si declina ogni responsabilità per i dati inseriti o per le risposte generate dall\'intelligenza artificiale. Il test viene effettuato sotto la propria responsabilità.',
         'modal-agree': 'Proseguendo, l\'utente dichiara: Comprendo che si tratta di un ambiente di test, mi impegno a non fornire dati reali e avvio la chiamata sotto la mia responsabilità.',
         'modal-cancel': 'Annulla',
-        'modal-start': 'Avvia la chiamata'
+        'modal-start': 'Avvia la chiamata',
 
+        'cap-sub': 'Capacità di Anna',
+        'cap-title': 'Tutto quello che una receptionist deve sapere',
+        'cap-desc': 'Dalla prenotazione all\'annullamento fino alla lista d\'attesa — Anna gestisce in modo autonomo e in tempo reale l\'intera comunicazione con i pazienti per telefono. Ogni funzione è disponibile in tutte le lingue supportate.',
+        'cap1-title': 'Appuntamenti disponibili',
+        'cap1-desc': 'Anna cerca in tempo reale gli slot disponibili in Google Calendar — filtrati per data, fascia oraria o medico. Il paziente ottiene subito una selezione.',
+        'cap1-tag2': 'Tempo reale',
+        'cap2-title': 'Prenotazione dell\'appuntamento',
+        'cap2-desc': 'Una volta inseriti il nome del paziente, l\'indirizzo e-mail e l\'orario desiderato, Anna registra la prenotazione nel calendario e invia immediatamente un SMS e un\'e-mail di conferma.',
+        'cap2-tag1': 'Conferma',
+        'cap3-title': 'Modifica dell\'appuntamento',
+        'cap3-desc': 'Se il paziente richiede un orario diverso, Anna annulla il vecchio e prenota il nuovo — verifica anche la disponibilità del nuovo orario nel calendario per evitare sovrapposizioni.',
+        'cap3-tag1': 'Vecchio → Nuovo',
+        'cap3-tag2': 'Verificato',
+        'cap4-title': 'Annullamento dell\'appuntamento',
+        'cap4-desc': 'Il paziente può confermare l\'annullamento — Anna rimuove l\'evento dal calendario e invia un SMS e un\'e-mail di conferma dell\'annullamento nella lingua appropriata.',
+        'cap4-tag1': 'Notifica',
+        'cap4-tag2': 'Aggiornamento calendario',
+        'cap5-title': 'Ricerca dell\'appuntamento',
+        'cap5-desc': 'Se il paziente non ricorda la prenotazione, Anna recupera gli appuntamenti futuri e li legge ad alta voce per facilitare la modifica o l\'annullamento.',
+        'cap5-tag1': 'Ricerca',
+        'cap5-tag2': 'Identificazione del paziente',
+        'cap6-title': 'Lista d\'attesa',
+        'cap6-desc': 'Se non c\'è un appuntamento disponibile, Anna iscrive il paziente alla lista d\'attesa prioritaria — con le fasce orarie preferite. Quando si libera un posto, il sistema lo notifica automaticamente.',
+        'cap6-tag1': 'Priorità',
+        'cap6-tag2': 'Notifica automatica',
+        'cap7-title': 'Modifica dei dati',
+        'cap7-desc': 'Se il paziente ha un nuovo numero di telefono o un nuovo indirizzo e-mail, Anna aggiorna i dati nel sistema — in base all\'identificatore e-mail attuale, con effetto immediato.',
+        'cap7-tag1': 'Telefono / e-mail',
+        'cap7-tag2': 'Immediato',
+        'cap8-title': 'Trasferimento di chiamata',
+        'cap8-desc': 'Se il paziente vuole parlare con un collaboratore, se si verifica un errore tecnico o se Anna non può rispondere, avvisa automaticamente la reception per un richiamo — il paziente non rimane mai senza risposta.',
+        'cap8-tag1': 'Richiamo',
+        'cap8-tag2': 'Rete di sicurezza',
+        'cap-stat1-label': '8 strumenti integrati per la comunicazione con i pazienti',
+        'cap-stat2-label': 'Lingue parlate correntemente',
+        'cap-stat3-label': 'Disponibile giorno e notte, anche nei festivi',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Undici lingue, una sola voce',
+        'lang-subtitle': 'Rilevamento automatico della lingua — ogni funzione disponibile in ogni lingua',
+        'lang-auto': 'Rilevamento automatico',
+        'lang-desc': 'Anna rileva automaticamente la lingua del paziente all\'inizio della chiamata e continua la conversazione in quella lingua. SMS, e-mail e voci del calendario vengono creati nella lingua madre del paziente — così i pazienti internazionali si sentono a proprio agio nello studio e non hanno mai uno svantaggio comunicativo.',
+        'lang-feat1-title': 'Comunicazione parlata',
+        'lang-feat1-desc': 'Voce dal vivo, conversazione naturale',
+        'lang-feat2-title': 'SMS specifico per lingua',
+        'lang-feat2-desc': 'Conferma nella lingua del paziente',
+        'lang-feat3-title': 'E-mail multilingue',
+        'lang-feat3-desc': 'Descrizione del calendario in 11 lingue, generata automaticamente',
       },
 da: {
         'page-title': 'Anna — Seniorassistent hos DentAi | Døgnåben samtalehåndtering & bestilling',
@@ -3718,6 +4309,54 @@ da: {
         'modal-agree': 'Ved at fortsætte bekræfter jeg: Jeg er indforstået med, at dette er et testmiljø, at jeg ikke må opgive rigtige personoplysninger, og at jeg starter opkaldet på eget ansvar.',
         'modal-cancel': 'Annuller',
         'modal-start': 'Start samtale',
+
+        'cap-sub': 'Annas evner',
+        'cap-title': 'Alt, hvad en receptionist bør vide',
+        'cap-desc': 'Fra booking til afbestilling og venteliste — Anna håndterer selvstændigt og i realtid hele patientkommunikationen pr. telefon. Alle funktioner er tilgængelige på alle understøttede sprog.',
+        'cap1-title': 'Ledige tider',
+        'cap1-desc': 'Anna søger i realtid efter ledige tider i Google Kalender — filtreret efter dato, tidspunkt eller læge. Patienten får straks et udvalg.',
+        'cap1-tag2': 'Realtid',
+        'cap2-title': 'Tidsbestilling',
+        'cap2-desc': 'Ved at opgive patientens navn, e-mailadresse og ønsket tidspunkt registrerer Anna bookingen i kalenderen og sender straks en bekræftelses-SMS og -e-mail.',
+        'cap2-tag1': 'Bekræftelse',
+        'cap3-title': 'Ændring af tid',
+        'cap3-desc': 'Hvis patienten ønsker et andet tidspunkt, aflyser Anna den gamle og booker den nye — hun tjekker også kalenderen for det nye tidspunks tilgængelighed, så der ikke opstår konflikter.',
+        'cap3-tag1': 'Gammel → Ny',
+        'cap3-tag2': 'Kontrolleret',
+        'cap4-title': 'Afbestilling af tid',
+        'cap4-desc': 'Patienten kan bekræfte afbestillingen — Anna fjerner begivenheden fra kalenderen og sender en bekræftelses-SMS og -e-mail for afbestillingen på det relevante sprog.',
+        'cap4-tag1': 'Notifikation',
+        'cap4-tag2': 'Kalenderopdatering',
+        'cap5-title': 'Tidsopslag',
+        'cap5-desc': 'Hvis patienten ikke kan huske sin booking, henter Anna fremtidige tider via telefon eller e-mail og læser dem op for at lette ændring eller afbestilling.',
+        'cap5-tag1': 'Søgning',
+        'cap5-tag2': 'Patientidentifikation',
+        'cap6-title': 'Venteliste',
+        'cap6-desc': 'Hvis der ikke er nogen ledig tid, skriver Anna patienten på prioritetsventelisten — med de foretrukne tidsrum. Når en plads bliver ledig, bliver patienten automatisk underrettet.',
+        'cap6-tag1': 'Prioritet',
+        'cap6-tag2': 'Automatisk underretning',
+        'cap7-title': 'Dataændring',
+        'cap7-desc': 'Hvis patienten har fået et nyt telefonnummer eller en ny e-mailadresse, opdaterer Anna dataene i systemet — baseret på den nuværende e-mailidentifikator med øjeblikkelig virkning.',
+        'cap7-tag1': 'Telefon / e-mail',
+        'cap7-tag2': 'Øjeblikkelig',
+        'cap8-title': 'Opkaldsoverførsel',
+        'cap8-desc': 'Hvis patienten ønsker at tale med en medarbejder, der opstår en teknisk fejl, eller Anna ikke kan svare, underretter hun automatisk receptionen om tilbageopkald — patienten bliver aldrig uden svar.',
+        'cap8-tag1': 'Tilbageopkald',
+        'cap8-tag2': 'Sikkerhedsnet',
+        'cap-stat1-label': 'Indbyggede værktøjer til patientkommunikation',
+        'cap-stat2-label': 'Sprog, der tales flydende',
+        'cap-stat3-label': 'Tilgængelig dag og nat, også på helligdage',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Elleve sprog, én stemme',
+        'lang-subtitle': 'Automatisk sproggenkendelse — alle funktioner tilgængelige på alle sprog',
+        'lang-auto': 'Automatisk genkendelse',
+        'lang-desc': 'Anna genkender automatisk patientens sprog i starten af opkaldet og fortsætter samtalen på det sprog. SMS-beskeder, e-mails og kalenderposter oprettes også på patientens modersmål — så udenlandske patienter føler sig hjemme i klinikken og står aldrig i en kommunikationsmæssig ulempe.',
+        'lang-feat1-title': 'Talt kommunikation',
+        'lang-feat1-desc': 'Live-stemme, naturlig tale',
+        'lang-feat2-title': 'Sprogspecifik SMS',
+        'lang-feat2-desc': 'Bekræftelse på patientens sprog',
+        'lang-feat3-title': 'Flersproget e-mail',
+        'lang-feat3-desc': 'Kalenderbeskrivelse på 11 sprog, automatisk genereret',
       },
 
       no: {
@@ -3957,8 +4596,55 @@ da: {
         'modal-li4': '<strong>Ansvarsfraskrivelse:</strong> Jeg påtar meg intet ansvar for data som oppgis eller svar generert av den kunstige intelligensen. Testing utføres på eget ansvar.',
         'modal-agree': 'Ved å fortsette bekrefter jeg: Jeg forstår at dette er et testmiljø, at jeg ikke skal oppgi reelle data, og at jeg starter samtalen på eget ansvar.',
         'modal-cancel': 'Avbryt',
-        'modal-start': 'Start samtale'
+        'modal-start': 'Start samtale',
 
+        'cap-sub': 'Annas funksjoner',
+        'cap-title': 'Alt en resepsjonist bør vite',
+        'cap-desc': 'Fra bestilling og avbestilling til ventelister — Anna håndterer selvstendig og i sanntid all pasientkommunikasjon per telefon. Alle funksjoner er tilgjengelige på alle støttede språk.',
+        'cap1-title': 'Ledige timer',
+        'cap1-desc': 'Anna søker i sanntid etter ledige timer i Google Kalender — filtrert etter dato, tidspunkt eller lege. Pasienten får umiddelbart et utvalg av tider.',
+        'cap1-tag2': 'Sanntid',
+        'cap2-title': 'Timebestilling',
+        'cap2-desc': 'Når pasienten oppgir navn, e-postadresse og ønsket tidspunkt, registrerer Anna bestillingen i kalenderen og sender umiddelbart en bekreftelse på sms og e-post.',
+        'cap2-tag1': 'Bekreftelse',
+        'cap3-title': 'Endre time',
+        'cap3-desc': 'Hvis pasienten ønsker et annet tidspunkt, avbestiller Anna den gamle timen og bestiller en ny — hun sjekker også kalenderen for den nye tidens tilgjengelighet slik at det ikke oppstår konflikter.',
+        'cap3-tag1': 'Gammel → Ny',
+        'cap3-tag2': 'Kontrollert',
+        'cap4-title': 'Avbestille time',
+        'cap4-desc': 'Pasienten kan bekrefte avbestillingen — Anna sletter hendelsen fra kalenderen og sender en avbestillingsbekreftelse på sms og e-post på riktig språk.',
+        'cap4-tag1': 'Varsling',
+        'cap4-tag2': 'Kalenderoppdatering',
+        'cap5-title': 'Timeoppslag',
+        'cap5-desc': 'Hvis pasienten ikke husker avtalen sin, henter Anna fremtidige timer via telefon eller e-post og leser dem opp for å lette endring eller avbestilling.',
+        'cap5-tag1': 'Søk',
+        'cap5-tag2': 'Pasientidentifikasjon',
+        'cap6-title': 'Venteliste',
+        'cap6-desc': 'Hvis ingen time er ledig, setter Anna pasienten på en prioritert venteliste — sammen med foretrukne tidsrom. Når en plass blir ledig, blir pasienten automatisk varslet.',
+        'cap6-tag1': 'Prioritet',
+        'cap6-tag2': 'Automatisk varsling',
+        'cap7-title': 'Dataendring',
+        'cap7-desc': 'Hvis pasienten har fått nytt telefonnummer eller ny e-postadresse, oppdaterer Anna dataene i systemet — basert på nåværende e-postidentifikator, med umiddelbar virkning.',
+        'cap7-tag1': 'Telefon / e-post',
+        'cap7-tag2': 'Umiddelbart',
+        'cap8-title': 'Samtaleoverføring',
+        'cap8-desc': 'Hvis pasienten ønsker å snakke med en medarbeider, hvis det oppstår en teknisk feil, eller hvis Anna ikke kan svare, varsler hun automatisk resepsjonen om tilbakeringing — pasienten blir aldri stående uten svar.',
+        'cap8-tag1': 'Tilbakeringing',
+        'cap8-tag2': 'Sikkerhetsnett',
+        'cap-stat1-label': 'Innebygde verktøy for pasientkommunikasjon',
+        'cap-stat2-label': 'Språk som tales flytende',
+        'cap-stat3-label': 'Tilgjengelig dag og natt, også på helligdager',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Elleve språk, én stemme',
+        'lang-subtitle': 'Automatisk språkdeteksjon — alle funksjoner tilgjengelige på alle språk',
+        'lang-auto': 'Automatisk gjenkjenning',
+        'lang-desc': 'Anna kjenner automatisk igjen pasientens språk i starten av samtalen og fortsetter på det språket. SMS-er, e-poster og kalenderoppføringer opprettes også på pasientens morsmål — slik at utenlandske pasienter føler seg hjemme i praksisen og aldri står i en kommunikasjonsulempe.',
+        'lang-feat1-title': 'Muntlig kommunikasjon',
+        'lang-feat1-desc': 'Live-stemme, naturlig tale',
+        'lang-feat2-title': 'Språkspesifikk SMS',
+        'lang-feat2-desc': 'Bekreftelse på pasientens språk',
+        'lang-feat3-title': 'Flerspråklig e-post',
+        'lang-feat3-desc': 'Kalenderbeskrivelse på 11 språk, automatisk generert',
       },
 sv: {
         'page-title': 'Anna — Seniorassistent på DentAi | Dygnet runt samtalshantering & bokning',
@@ -4198,6 +4884,54 @@ sv: {
         'modal-agree': 'Genom att fortsätta bekräftar jag: Jag förstår att detta är en testmiljö, att jag inte ska ange riktiga personuppgifter och att jag startar samtalet på egen risk.',
         'modal-cancel': 'Avbryt',
         'modal-start': 'Starta samtal',
+
+        'cap-sub': 'Annas funktioner',
+        'cap-title': 'Allt en receptionist behöver veta',
+        'cap-desc': 'Från bokning och avbokning till väntelistan — Anna hanterar självständigt och i realtid all patientkommunikation per telefon. Alla funktioner är tillgängliga på alla språk som stöds.',
+        'cap1-title': 'Lediga tider',
+        'cap1-desc': 'Anna söker i realtid efter lediga tider i Google Kalender — filtrerat efter datum, tidpunkt eller läkare. Patienten får omedelbart ett urval av alternativ.',
+        'cap1-tag2': 'Realtid',
+        'cap2-title': 'Tidsbokning',
+        'cap2-desc': 'När patienten uppger sitt namn, sin e-postadress och önskad tid registrerar Anna bokningen i kalendern och skickar omedelbart ett bekräftelse-sms och ett e-postmeddelande.',
+        'cap2-tag1': 'Bekräftelse',
+        'cap3-title': 'Ändra tid',
+        'cap3-desc': 'Om patienten önskar en annan tid avbokar Anna den gamla tiden och bokar en ny — hon kontrollerar även kalendern för den nya tidens tillgänglighet så att inga konflikter uppstår.',
+        'cap3-tag1': 'Gammal → Ny',
+        'cap3-tag2': 'Kontrollerad',
+        'cap4-title': 'Avboka tid',
+        'cap4-desc': 'Patienten kan bekräfta avbokningen — Anna tar bort händelsen från kalendern och skickar en avbokningsbekräftelse via sms och e-post på rätt språk.',
+        'cap4-tag1': 'Avisering',
+        'cap4-tag2': 'Kalenderuppdatering',
+        'cap5-title': 'Hitta bokning',
+        'cap5-desc': 'Om patienten inte kommer ihåg sin bokning hämtar Anna kommande tider via telefon eller e-post och läser upp dem för att underlätta ändring eller avbokning.',
+        'cap5-tag1': 'Sök',
+        'cap5-tag2': 'Patientidentifiering',
+        'cap6-title': 'Väntelista',
+        'cap6-desc': 'Om ingen tid är tillgänglig skriver Anna in patienten på prioritetsväntelistan — med önskade tidsintervall. När en plats blir ledig meddelas patienten automatiskt.',
+        'cap6-tag1': 'Prioritet',
+        'cap6-tag2': 'Automatiskt meddelande',
+        'cap7-title': 'Dataändring',
+        'cap7-desc': 'Om patienten har fått ett nytt telefonnummer eller en ny e-postadress uppdaterar Anna uppgifterna i systemet — baserat på nuvarande e-postadress som identifierare, med omedelbar verkan.',
+        'cap7-tag1': 'Telefon / e-post',
+        'cap7-tag2': 'Omedelbar',
+        'cap8-title': 'Samtalsöverföring',
+        'cap8-desc': 'Om patienten vill prata med en medarbetare, om ett tekniskt fel uppstår eller om Anna inte kan svara, meddelar hon automatiskt receptionen för återringning — patienten lämnas aldrig utan svar.',
+        'cap8-tag1': 'Återringning',
+        'cap8-tag2': 'Säkerhetsnät',
+        'cap-stat1-label': 'Inbyggda verktyg för patientkommunikation',
+        'cap-stat2-label': 'Språk som talas flytande',
+        'cap-stat3-label': 'Tillgänglig dag och natt, även på helgdagar',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Elva språk, en röst',
+        'lang-subtitle': 'Automatisk språkdetektering — alla funktioner tillgängliga på alla språk',
+        'lang-auto': 'Automatisk identifiering',
+        'lang-desc': 'Anna känner automatiskt igen patientens språk i början av samtalet och fortsätter konversationen på det språket. SMS, e-post och kalenderposter skapas också på patientens modersmål — så att utländska patienter känner sig hemma i praktiken och aldrig har en kommunikationsnackdel.',
+        'lang-feat1-title': 'Muntlig kommunikation',
+        'lang-feat1-desc': 'Live-röst, naturligt tal',
+        'lang-feat2-title': 'Språkspecifik SMS',
+        'lang-feat2-desc': 'Bekräftelse på patientens språk',
+        'lang-feat3-title': 'Flerspråkig e-post',
+        'lang-feat3-desc': 'Kalenderbeskrivning på 11 språk, automatiskt genererad',
       },
 fi: {
         'page-title': 'Anna — DentAi Senior Avustaja | Ympärivuorokautinen puhelinvastaus & ajanvaraus',
@@ -4437,6 +5171,54 @@ fi: {
         'modal-agree': 'Jatkamalla vahvistan seuraavan: Ymmärrän, että tämä on testiympäristö, sitoudun olemaan antamatta oikeita henkilötietojani ja aloitan puhelun omalla vastuullani.',
         'modal-cancel': 'Peruuta',
         'modal-start': 'Aloita puhelu',
+
+        'cap-sub': 'Annan kyvyt',
+        'cap-title': 'Kaikki, mitä vastaanottovirkailijan on tiedettävä',
+        'cap-desc': 'Varauksesta peruutukseen ja jonotuslistalle — Anna hoitaa itsenäisesti ja reaaliajassa kaiken potilasviestinnän puhelimitse. Kaikki toiminnot ovat saatavilla kaikilla tuetuilla kielillä.',
+        'cap1-title': 'Vapaat ajat',
+        'cap1-desc': 'Anna hakee reaaliajassa vapaat ajat Google-kalenterista — suodatettuna päivämäärän, kellonajan tai lääkärin mukaan. Potilas saa heti valikoiman ehdotuksia.',
+        'cap1-tag2': 'Reaaliaika',
+        'cap2-title': 'Ajanvaraus',
+        'cap2-desc': 'Kun potilas antaa nimensä, sähköpostiosoitteensa ja haluamansa ajan, Anna tallentaa varauksen kalenteriin ja lähettää heti tekstiviesti- ja sähköpostivahvistuksen.',
+        'cap2-tag1': 'Vahvistus',
+        'cap3-title': 'Ajan muuttaminen',
+        'cap3-desc': 'Jos potilas pyytää toista aikaa, Anna peruuttaa vanhan ja varaa uuden — hän tarkistaa myös uuden ajan saatavuuden kalenterista päällekkäisyyksien välttämiseksi.',
+        'cap3-tag1': 'Vanha → Uusi',
+        'cap3-tag2': 'Tarkistettu',
+        'cap4-title': 'Ajan peruminen',
+        'cap4-desc': 'Potilas voi vahvistaa peruutuksen — Anna poistaa tapahtuman kalenterista ja lähettää peruutusvahvistuksen tekstiviestillä ja sähköpostilla oikealla kielellä.',
+        'cap4-tag1': 'Ilmoitus',
+        'cap4-tag2': 'Kalenteripäivitys',
+        'cap5-title': 'Aikojen haku',
+        'cap5-desc': 'Jos potilas ei muista varaustaan, Anna hakee tulevat ajat puhelinnumeron tai sähköpostiosoitteen perusteella ja lukee ne ääneen muuttamisen tai peruuttamisen helpottamiseksi.',
+        'cap5-tag1': 'Haku',
+        'cap5-tag2': 'Potilastunnistus',
+        'cap6-title': 'Jonotuslista',
+        'cap6-desc': 'Jos vapaata aikaa ei ole, Anna lisää potilaan ensisijaiselle jonotuslistalle — yhdessä tämän toivomien aikojen kanssa. Kun paikka vapautuu, järjestelmä ilmoittaa siitä hänelle automaattisesti.',
+        'cap6-tag1': 'Etusija',
+        'cap6-tag2': 'Automaattinen ilmoitus',
+        'cap7-title': 'Tietojen muuttaminen',
+        'cap7-desc': 'Jos potilas on saanut uuden puhelinnumeron tai sähköpostiosoitteen, Anna päivittää tiedot järjestelmässä — nykyisen sähköpostitunnuksen perusteella, välittömästi.',
+        'cap7-tag1': 'Puhelin / sähköposti',
+        'cap7-tag2': 'Välitön',
+        'cap8-title': 'Puhelun siirto',
+        'cap8-desc': 'Jos potilas haluaa puhua työntekijän kanssa, jos tapahtuu tekninen virhe tai jos Anna ei pysty vastaamaan, hän ilmoittaa automaattisesti vastaanotolle soittopyynnöstä — potilas ei jää koskaan ilman vastausta.',
+        'cap8-tag1': 'Soittopyyntö',
+        'cap8-tag2': 'Turvaverkko',
+        'cap-stat1-label': 'Sisäänrakennetut työkalut potilasviestintään',
+        'cap-stat2-label': 'Kielet, joilla kommunikoidaan sujuvasti',
+        'cap-stat3-label': 'Saatavilla yötä päivää, myös pyhinä',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Yksitoista kieltä, yksi ääni',
+        'lang-subtitle': 'Automaattinen kielen tunnistus — kaikki toiminnot saatavilla kaikilla kielillä',
+        'lang-auto': 'Automaattinen tunnistus',
+        'lang-desc': 'Anna tunnistaa automaattisesti potilaan kielen puhelun alussa ja jatkaa keskustelua sillä kielellä. SMS-viestit, sähköpostit ja kalenterimerkinnät tehdään myös potilaan äidinkielellä — jotta ulkomaiset potilaat tuntevat olonsa kotoisaksi vastaanotolla eivätkä koskaan joudu viestintähuono-osaisiksi.',
+        'lang-feat1-title': 'Puhuttu viestintä',
+        'lang-feat1-desc': 'Live-ääni, luonnollinen puhe',
+        'lang-feat2-title': 'Kielikohtainen SMS',
+        'lang-feat2-desc': 'Vahvistus potilaan kielellä',
+        'lang-feat3-title': 'Monikielinen sähköposti',
+        'lang-feat3-desc': 'Kalenterikuvaus 11 kielellä, automaattisesti generoitu',
       },
 
       sk: {
@@ -4676,27 +5458,74 @@ fi: {
         'modal-li4': '<strong>Vylúčenie zodpovednosti:</strong> Nenesiem žiadnu zodpovednosť za poskytnuté údaje ani za odpovede generované umelou inteligenciou. Testovanie vykonávate na vlastné riziko.',
         'modal-agree': 'Pokračovaním potvrdzujem: Rozumiem, že ide o testovacie prostredie, zaväzujem sa neposkytovať reálne osobné údaje a hovor spúšťam na vlastnú zodpovednosť.',
         'modal-cancel': 'Zrušiť',
-        'modal-start': 'Spustiť hovor'
+        'modal-start': 'Spustiť hovor',
 
+        'cap-sub': 'Schopnosti Anny',
+        'cap-title': 'Všetko, čo musí vedieť recepčná',
+        'cap-desc': 'Od rezervácie cez zrušenie až po čakaciu listinu — Anna samostatne a v reálnom čase spravuje celú komunikáciu s pacientmi telefonicky. Všetky funkcie sú dostupné vo všetkých podporovaných jazykoch.',
+        'cap1-title': 'Voľné termíny',
+        'cap1-desc': 'Anna v reálnom čase vyhľadáva voľné miesta v Google Kalendári — filtrované podľa dátumu, časti dňa alebo lekára. Pacient dostane okamžitý výber.',
+        'cap1-tag2': 'Reálny čas',
+        'cap2-title': 'Rezervácia termínu',
+        'cap2-desc': 'Po zadaní mena pacienta, e-mailovej adresy a požadovaného času Anna zaznamená rezerváciu do kalendára a okamžite odošle potvrdzujúcu SMS a e-mail.',
+        'cap2-tag1': 'Potvrdenie',
+        'cap3-title': 'Zmena termínu',
+        'cap3-desc': 'Ak pacient požaduje iný termín, Anna zruší starý termín a rezervuje nový — skontroluje aj dostupnosť nového termínu v kalendári, aby nedošlo ku konfliktom.',
+        'cap3-tag1': 'Starý → Nový',
+        'cap3-tag2': 'Overený',
+        'cap4-title': 'Zrušenie termínu',
+        'cap4-desc': 'Pacient môže potvrdiť zrušenie — Anna odstráni udalosť z kalendára a odošle potvrdenie o zrušení SMS a e-mailom v príslušnom jazyku.',
+        'cap4-tag1': 'Oznámenie',
+        'cap4-tag2': 'Aktualizácia kalendára',
+        'cap5-title': 'Vyhľadanie termínov',
+        'cap5-desc': 'Ak si pacient nepamätá svoju rezerváciu, Anna vyhľadá nadchádzajúce termíny podľa telefónneho čísla alebo e-mailu a prečíta ich nahlas, aby uľahčila zmenu alebo zrušenie.',
+        'cap5-tag1': 'Vyhľadávanie',
+        'cap5-tag2': 'Identifikácia pacienta',
+        'cap6-title': 'Čakacia listina',
+        'cap6-desc': 'Ak nie je voľný termín, Anna zapíše pacienta na prioritnú čakaciu listinu — spolu s preferovanými časovými úsekmi. Keď sa uvoľní miesto, systém ho automaticky upozorní.',
+        'cap6-tag1': 'Priorita',
+        'cap6-tag2': 'Automatické upozornenie',
+        'cap7-title': 'Zmena údajov',
+        'cap7-desc': 'Ak pacient získal nové telefónne číslo alebo e-mailovú adresu, Anna aktualizuje údaje v systéme — na základe aktuálneho e-mailového identifikátora s okamžitou platnosťou.',
+        'cap7-tag1': 'Telefón / e-mail',
+        'cap7-tag2': 'Okamžité',
+        'cap8-title': 'Prepojenie hovoru',
+        'cap8-desc': 'Ak pacient chce hovoriť s kolegom, ak dôjde k technickej chybe alebo ak Anna nedokáže odpovedať, automaticky upozorní recepciu na spätný hovor — pacient nikdy neostane bez odpovede.',
+        'cap8-tag1': 'Spätný hovor',
+        'cap8-tag2': 'Bezpečnostná sieť',
+        'cap-stat1-label': 'Zabudovaných nástrojov na komunikáciu s pacientmi',
+        'cap-stat2-label': 'Jazyky, v ktorých plynule komunikuje',
+        'cap-stat3-label': 'K dispozícii vo dne i v noci, aj počas sviatkov',
+        'cap-stat3-value': '24/7',
+        'lang-title': 'Jedenásť jazykov, jeden hlas',
+        'lang-subtitle': 'Automatická detekcia jazyka — všetky funkcie dostupné vo všetkých jazykoch',
+        'lang-auto': 'Automatická detekcia',
+        'lang-desc': 'Anna automaticky rozpozná jazyk pacienta na začiatku hovoru a pokračuje v konverzácii v tomto jazyku. SMS, e-maily a kalendárové záznamy sa vytvárajú aj v rodnom jazyku pacienta — takže zahraniční pacienti sa cítia v praxi ako doma a nikdy nie sú v komunikačnej nevýhode.',
+        'lang-feat1-title': 'Hovorená komunikácia',
+        'lang-feat1-desc': 'Živý hlas, prirodzená reč',
+        'lang-feat2-title': 'Jazykovo špecifická SMS',
+        'lang-feat2-desc': 'Potvrdenie v jazyku pacienta',
+        'lang-feat3-title': 'Viacjazyčný e-mail',
+        'lang-feat3-desc': 'Popis kalendára v 11 jazykoch, automaticky generovaný',
       }
     };
     // Init: localStorage → IP geolokáció → böngésző nyelv → angol
     const SUPPORTED_LANGS = ['hu', 'en', 'de', 'nl', 'fr', 'it', 'da', 'no', 'sv', 'fi', 'sk'];
     // Országkód → nyelv leképezés (ISO 3166-1 alpha-2 → nyelvkód)
     const COUNTRY_TO_LANG = {
-      'HU': 'hu', 'DE': 'de', 'AT': 'de', 'CH': 'de', 'LI': 'de',
-      'NL': 'nl', 'BE': 'nl',
-      'FR': 'fr', 'LU': 'fr', 'MC': 'fr',
-      'IT': 'it', 'SM': 'it', 'VA': 'it',
-      'DK': 'da', 'FO': 'da', 'GL': 'da',
-      'NO': 'no', 'SJ': 'no',
+      'HU': 'hu\', \'DE\': \'de\', \'AT\': \'de\', \'CH\': \'de\', \'LI\': \'de',
+      'NL': 'nl\', \'BE\': \'nl',
+      'FR': 'fr\', \'LU\': \'fr\', \'MC\': \'fr',
+      'IT': 'it\', \'SM\': \'it\', \'VA\': \'it',
+      'DK': 'da\', \'FO\': \'da\', \'GL\': \'da',
+      'NO': 'no\', \'SJ\': \'no',
       'SE': 'sv',
       'FI': 'fi',
       'SK': 'sk',
-      'GB': 'en', 'IE': 'en', 'US': 'en', 'CA': 'en', 'AU': 'en', 'NZ': 'en',
-      'CZ': 'sk', 'PL': 'en', 'RO': 'en', 'ES': 'en', 'PT': 'en', 'HR': 'en',
-      'RS': 'en', 'SI': 'en', 'BG': 'en', 'GR': 'en', 'EE': 'en', 'LV': 'en',
-      'LT': 'en', 'IS': 'en', 'MT': 'en', 'CY': 'en'
+      'GB': 'en\', \'IE\': \'en\', \'US\': \'en\', \'CA\': \'en\', \'AU\': \'en\', \'NZ\': \'en',
+      'CZ': 'sk\', \'PL\': \'en\', \'RO\': \'en\', \'ES\': \'en\', \'PT\': \'en\', \'HR\': \'en',
+      'RS': 'en\', \'SI\': \'en\', \'BG\': \'en\', \'GR\': \'en\', \'EE\': \'en\', \'LV\': \'en',
+      'LT': 'en\', \'IS\': \'en\', \'MT\': \'en\', \'CY\': \'en'
     };
     let currentLang = 'hu'; // HTML alapértelmezett
 
@@ -4717,13 +5546,42 @@ fi: {
           }
         }
       });
-      // Update active lang badge
+      // Update active lang badge (mobile menu)
       document.querySelectorAll('.lang-badge').forEach(b => {
         b.classList.remove('ring-2','ring-dental-400','ring-offset-1');
         if (b.getAttribute('data-lang') === lang) {
           b.classList.add('ring-2','ring-dental-400','ring-offset-1');
         }
       });
+      // Update header dropdown button
+      const dropdownFlag = document.getElementById('lang-dropdown-flag');
+      const dropdownLabel = document.getElementById('lang-dropdown-label');
+      const dropdownMenu = document.getElementById('lang-dropdown-menu');
+      if (dropdownFlag && dropdownLabel) {
+        const langOption = dropdownMenu ? dropdownMenu.querySelector('.lang-option[data-lang="' + lang + '"]') : null;
+        if (langOption) {
+          const svg = langOption.querySelector('svg');
+          if (svg) dropdownFlag.innerHTML = svg.outerHTML;
+        }
+        const langLabels = {hu:'Magyar',en:'English',de:'Deutsch',nl:'Nederlands',fr:'Français',it:'Italiano',da:'Dansk',no:'Norsk',sv:'Svenska',fi:'Suomi',sk:'Slovenčina',es:'Español'};
+        dropdownLabel.textContent = langLabels[lang] || lang.toUpperCase();
+      }
+      // Highlight active lang in dropdown menu
+      if (dropdownMenu) {
+        dropdownMenu.querySelectorAll('.lang-option').forEach(opt => {
+          opt.classList.remove('bg-slate-100','font-bold');
+          if (opt.getAttribute('data-lang') === lang) {
+            opt.classList.add('bg-slate-100','font-bold');
+          }
+        });
+      }
+      // Close dropdown after selection
+      if (dropdownMenu) {
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.visibility = 'hidden';
+        dropdownMenu.style.transform = 'translateY(-4px)';
+        dropdownMenu.style.pointerEvents = 'none';
+      }
     }
 
     // Nyelv meghatározása: 1. localStorage → 2. IP geolokáció → 3. böngésző → 4. angol
@@ -4777,10 +5635,53 @@ fi: {
       }
     })();
 
+    // Mobile menu lang badges
     document.querySelectorAll('.lang-badge[data-lang]').forEach(b => {
       b.style.cursor = 'pointer';
       b.addEventListener('click', () => { switchLang(b.getAttribute('data-lang')); closeMenu(); });
     });
+
+    // Desktop language dropdown
+    (function() {
+      const btn = document.getElementById('lang-dropdown-btn');
+      const menu = document.getElementById('lang-dropdown-menu');
+      const chevron = document.getElementById('lang-dropdown-chevron');
+      if (!btn || !menu) return;
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = menu.style.visibility === 'visible';
+        if (isOpen) {
+          menu.style.opacity = '0';
+          menu.style.visibility = 'hidden';
+          menu.style.transform = 'translateY(-4px)';
+          menu.style.pointerEvents = 'none';
+          if (chevron) chevron.style.transform = '';
+        } else {
+          menu.style.opacity = '1';
+          menu.style.visibility = 'visible';
+          menu.style.transform = 'translateY(0)';
+          menu.style.pointerEvents = 'auto';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        }
+      });
+
+      menu.querySelectorAll('.lang-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          switchLang(this.getAttribute('data-lang'));
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.style.opacity = '0';
+          menu.style.visibility = 'hidden';
+          menu.style.transform = 'translateY(-4px)';
+          menu.style.pointerEvents = 'none';
+          if (chevron) chevron.style.transform = '';
+        }
+      });
+    })();
 
     // --- FAQ Accordion Logic ---
     (function(){
