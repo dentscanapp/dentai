@@ -97,10 +97,13 @@
     @keyframes wave-bar{0%,100%{height:4px}50%{height:18px}}.voice-wave-bar{width:3px;border-radius:2px;background:currentColor;animation:wave-bar .6s ease-in-out infinite}.voice-wave-bar:nth-child(1){animation-delay:0s}.voice-wave-bar:nth-child(2){animation-delay:.1s}.voice-wave-bar:nth-child(3){animation-delay:.2s}.voice-wave-bar:nth-child(4){animation-delay:.3s}.voice-wave-bar:nth-child(5){animation-delay:.15s}
     @keyframes glow-breathe{0%,100%{box-shadow:0 0 20px rgba(59,130,246,.3),0 0 60px rgba(59,130,246,.1)}50%{box-shadow:0 0 30px rgba(59,130,246,.5),0 0 80px rgba(59,130,246,.2)}}.call-active-glow{animation:glow-breathe 1.5s ease-in-out infinite}
     /* === Language badge styles === */
-    .lang-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .85rem;border-radius:.75rem;background:#fff;border:1px solid rgba(226,232,240,.7);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all .25s ease;font-size:.8125rem;font-weight:600;color:#334155;white-space:nowrap}
+    .lang-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .75rem;border-radius:.75rem;background:#fff;border:1px solid rgba(226,232,240,.7);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all .25s ease;font-size:.8125rem;font-weight:600;color:#334155;white-space:nowrap}
     .lang-badge:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.12);border-color:rgba(191,219,254,.7)}
-    .lang-badge .lang-flag{font-size:1.25rem;line-height:1}
-    .lang-badge .lang-code{font-size:.625rem;font-weight:700;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase}
+    .lang-badge svg{display:inline-block;border-radius:2px;vertical-align:middle}
+    .lang-option svg{display:inline-block;vertical-align:middle}
+    #lang-dropdown-flag svg{display:inline-block;vertical-align:middle}
+    #lang-dropdown-btn svg{display:inline-block;vertical-align:middle}
+    /* Fix: Tailwind reset sets svg{display:block}, but flags/chevrons inside flex containers need inline-block */
     /* Capabilities section glow decoration */
     .cap-glow{position:absolute;border-radius:50%;filter:blur(64px);pointer-events:none;opacity:.5}
     .status-idle{color:#64748b}.status-connecting{color:#f59e0b}.status-listening{color:#10b981}.status-speaking{color:#3b82f6}
@@ -190,30 +193,17 @@
         
         <!-- Mobile language badges -->
         <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-50 w-full py-3 px-3 rounded-2xl border border-slate-100">
-          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" data-lang="hu">🇭🇺 Magyar
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="en">🇬🇧 English
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="de">🇩🇪 Deutsch
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-orange-50 border border-orange-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-orange-700" data-lang="nl">🇳🇱 Nederlands
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-violet-50 border border-violet-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-violet-700" data-lang="fr">🇫🇷 Français
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-emerald-700" data-lang="it">🇮🇹 Italiano
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700" data-lang="da">🇩🇰 Dansk
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="no">🇳🇴 Norsk
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="sv">🇸🇪 Svenska
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="fi">🇫🇮 Suomi
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-slate-700" data-lang="sk">🇸🇰 Slovenčina
-          </span>
-          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="es">🇪🇸 Español
-          </span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700 ring-2 ring-dental-400 ring-offset-1" data-lang="hu"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg>Magyar</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="en"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>English</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-amber-700" data-lang="de"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg>Deutsch</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-orange-50 border border-orange-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-orange-700" data-lang="nl"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg>Nederlands</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-violet-50 border border-violet-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-violet-700" data-lang="fr"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg>Français</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-emerald-700" data-lang="it"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg>Italiano</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-red-50 border border-red-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-red-700" data-lang="da"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg>Dansk</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="no"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg>Norsk</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="sv"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg>Svenska</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-blue-50 border border-blue-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-blue-700" data-lang="fi"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg>Suomi</span>
+          <span class="lang-badge inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 rounded-full px-2 py-1 text-[11px] font-bold text-slate-700" data-lang="sk"><svg class="w-4 h-3 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg>Slovenčina</span>
         </div>
 
         <!-- Status indicator -->
@@ -778,17 +768,17 @@
         <div class="p-7">
           <p class="text-sm text-slate-500 leading-relaxed mb-6" data-i18n="lang-desc">Anna automatikusan felismeri a páciens nyelvét a hívás elején, és azon a nyelven folytatja a beszélgetést. Az SMS-ek, e-mailek és naptárbejegyzések is a páciens anyanyelvén készülnek — így a külföldi páciensek is otthon érzik magukat a praxisban, és sosem maradnak kommunikációs hátrányban.</p>
           <div class="flex flex-wrap items-center justify-center gap-3">
-            <div class="lang-badge"><span class="lang-flag">🇭🇺</span><span>Magyar</span><span class="lang-code">hu</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇬🇧</span><span>English</span><span class="lang-code">en</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇩🇪</span><span>Deutsch</span><span class="lang-code">de</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇫🇷</span><span>Français</span><span class="lang-code">fr</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇮🇹</span><span>Italiano</span><span class="lang-code">it</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇳🇱</span><span>Nederlands</span><span class="lang-code">nl</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇩🇰</span><span>Dansk</span><span class="lang-code">da</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇳🇴</span><span>Norsk</span><span class="lang-code">no</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇸🇪</span><span>Svenska</span><span class="lang-code">sv</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇫🇮</span><span>Suomi</span><span class="lang-code">fi</span></div>
-            <div class="lang-badge"><span class="lang-flag">🇸🇰</span><span>Slovenčina</span><span class="lang-code">sk</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg><span>Magyar</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg><span>English</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg><span>Deutsch</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg><span>Français</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg><span>Italiano</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg><span>Nederlands</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg><span>Dansk</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg><span>Norsk</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg><span>Svenska</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg><span>Suomi</span></div>
+            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg><span>Slovenčina</span></div>
           </div>
           <!-- Under-banner: key language features -->
           <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1228,11 +1218,12 @@
           <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden">
             <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4 flex items-center justify-between">
               <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-dental-600 flex items-center justify-center text-white shadow-md shadow-dental-600/20"><svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg></div><div><h3 class="font-semibold text-slate-900" data-i18n="cal-title">Anna élő naptára</h3><p class="text-[11px] text-slate-400" data-i18n="cal-sub">Szabad időpontok valós időben</p></div></div>
-              <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap" data-i18n="cal-sync">Szinkron: <strong id="countdown-text" class="text-dental-600">30s</strong></span></div>
+              <div class="flex items-center gap-2.5 bg-slate-100/60 rounded-full px-3 py-1.5"><div class="relative w-6 h-6"><svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle id="countdown-circle" cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/></svg></div><span class="text-[11px] text-slate-500 whitespace-nowrap"><span id="cal-sync-label">Szinkron:</span> <strong id="countdown-text" class="text-dental-600">30s</strong></span></div>
             </div>
             <div class="relative" style="padding-top:75%;">
               <iframe id="calendar-iframe" class="absolute inset-0 w-full h-full border-0" src="https://calendar.google.com/calendar/embed?src=dental.ai.naptar%40gmail.com&ctz=Europe%2FBudapest&showTitle=0&showPrint=0&showCalendars=0&mode=WEEK" frameborder="0" scrolling="no" title="Anna naptár — DentAi asszisztens" allowfullscreen></iframe>
               <div id="calendar-placeholder" class="absolute inset-0 bg-white flex items-center justify-center"><div class="text-center"><div class="shimmer-placeholder w-64 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-48 h-3 rounded mx-auto mb-2.5"></div><div class="shimmer-placeholder w-56 h-3 rounded mx-auto mb-5"></div><svg class="w-8 h-8 mx-auto text-slate-300 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg><p class="text-xs text-slate-400 mt-2" data-i18n="cal-loading">Anna naptárának betöltése...</p></div></div>
+              <div id="calendar-error" class="absolute inset-0 bg-white items-center justify-center hidden"><div class="text-center px-6"><svg class="w-10 h-10 mx-auto text-slate-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 12.75h4.5"/></svg><p class="text-sm font-semibold text-slate-600 mb-1" data-i18n="cal-err-title">A naptár jelenleg nem elérhető</p><p class="text-xs text-slate-400 mb-3" data-i18n="cal-err-desc">Kérjük, próbálja újra később, vagy hívja Annát közvetlenül.</p><button onclick="retryCalendar()" class="text-xs font-semibold text-dental-600 hover:text-dental-700 bg-dental-50 hover:bg-dental-100 px-4 py-2 rounded-lg transition-colors" data-i18n="cal-err-retry">Újrapróbálkozás</button></div></div>
             </div>
             <div class="bg-slate-50/60 border-t border-slate-200/60 px-6 py-3 flex items-center justify-between">
               <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-slate-500" data-i18n="cal-auto">Automatikus frissítés 30 másodpercenként</span></div>
@@ -1675,28 +1666,67 @@
     let countdown = REFRESH_INTERVAL;
     let calendarTimer = null;
     let calendarVisible = false;
+    let calendarLoaded = false;
     const calendarIframe = document.getElementById('calendar-iframe');
     const countdownText = document.getElementById('countdown-text');
     const countdownCircle = document.getElementById('countdown-circle');
     const placeholder = document.getElementById('calendar-placeholder');
 
-    function hideCalendarPlaceholder() { if (placeholder) placeholder.style.display = 'none'; }
-    calendarIframe.addEventListener('load', hideCalendarPlaceholder);
-    // Fallback: már betöltött iframe esetén (script után) — láthatóság ellenőrzése
-    try { if (calendarIframe.contentWindow && calendarIframe.contentWindow.location) hideCalendarPlaceholder(); } catch(e) { /* cross-origin = betöltött */ hideCalendarPlaceholder(); }
-    // Fallback timer: 4s után mindenképp eltüntetjük (ha valamiért nem jön a load esemény)
-    setTimeout(hideCalendarPlaceholder, 4000);
+    function hideCalendarPlaceholder() {
+      calendarLoaded = true;
+      if (placeholder) placeholder.style.display = 'none';
+    }
+    function showCalendarError() {
+      if (placeholder) placeholder.style.display = 'none';
+      var errEl = document.getElementById('calendar-error');
+      if (errEl) { errEl.classList.remove('hidden'); errEl.style.display = 'flex'; }
+      stopCalendarTimer();
+    }
+    function retryCalendar() {
+      var errEl = document.getElementById('calendar-error');
+      if (errEl) { errEl.classList.add('hidden'); errEl.style.display = ''; }
+      if (placeholder) placeholder.style.display = 'flex';
+      calendarLoaded = false;
+      refreshCalendar();
+    }
+    // Make globally accessible for onclick attributes (after function declarations)
+    // Note: function declarations are hoisted, so this works even though defined below
+
+    if (calendarIframe) {
+      calendarIframe.addEventListener('load', hideCalendarPlaceholder);
+      calendarIframe.addEventListener('error', showCalendarError);
+    }
+    // Fallback: check if iframe already loaded before script ran
+    // For cross-origin iframes, accessing contentWindow.location throws SecurityError
+    // If it throws, the iframe has loaded cross-origin content → hide placeholder
+    // If it doesn't throw, it's still about:blank → don't hide yet
+    if (calendarIframe) {
+      try {
+        var cw = calendarIframe.contentWindow;
+        if (cw && cw.location && cw.location.href && cw.location.href !== 'about:blank') {
+          hideCalendarPlaceholder();
+        }
+      } catch(e) {
+        // SecurityError = cross-origin content loaded
+        hideCalendarPlaceholder();
+      }
+    }
+    // Fallback timer: 15s után ha a placeholder még látszik, hibaüzenetet mutatunk
+    // (increased from 8s to give slow connections more time)
+    setTimeout(function() {
+      if (!calendarLoaded && placeholder && placeholder.style.display !== 'none') showCalendarError();
+    }, 15000);
 
     function refreshCalendar() {
+      if (!calendarIframe) return;
       const src = calendarIframe.src.split('&_t=')[0];
       calendarIframe.src = src + '&_t=' + Date.now();
       countdown = REFRESH_INTERVAL;
       updateCountdownUI();
     }
     function updateCountdownUI() {
-      countdownText.textContent = countdown + 's';
-      const offset = ((REFRESH_INTERVAL - countdown) / REFRESH_INTERVAL) * 88;
-      countdownCircle.style.strokeDashoffset = offset;
+      if (countdownText) countdownText.textContent = countdown + 's';
+      if (countdownCircle) countdownCircle.style.strokeDashoffset = ((REFRESH_INTERVAL - countdown) / REFRESH_INTERVAL) * 88;
     }
     function startCalendarTimer() {
       if (calendarTimer) return; // már fut
@@ -1712,6 +1742,9 @@
         calendarTimer = null;
       }
     }
+    // Make globally accessible for onclick attributes in HTML
+    window.retryCalendar = retryCalendar;
+    window.refreshCalendar = refreshCalendar;
 
     // IntersectionObserver: amikor az iframe legalább 25%-ban látszik, indítjuk a timert.
     // Amikor teljesen kívül kerül, leállítjuk és resetelünk.
@@ -1736,7 +1769,7 @@
           }
         });
       }, { threshold: 0.25 });
-      calObserver.observe(calendarIframe);
+      if (calendarIframe) calObserver.observe(calendarIframe);
     } else {
       // Fallback nagyon régi böngészőkre: indítsuk el ahogy eddig
       startCalendarTimer();
@@ -1762,19 +1795,21 @@
 
     function closeMenu() {
         document.body.classList.remove('menu-open');
-        mobileNav.classList.remove('open');
+        if (mobileNav) mobileNav.classList.remove('open');
     }
 
-    menuToggle.addEventListener('click', () => {
-        document.body.classList.toggle('menu-open');
-        mobileNav.classList.toggle('open');
-    });
+    if (menuToggle && mobileNav) {
+        menuToggle.addEventListener('click', () => {
+            document.body.classList.toggle('menu-open');
+            mobileNav.classList.toggle('open');
+        });
+    }
 
     if (mobileCalendarLink) {
         mobileCalendarLink.addEventListener('click', closeMenu);
     }
     
-    window.addEventListener('scroll',()=>{header.classList.toggle('shadow-md',window.scrollY>10)},{passive:true});
+    if (header) window.addEventListener('scroll',()=>{header.classList.toggle('shadow-md',window.scrollY>10)},{passive:true});
     const chatBubbles=document.querySelectorAll('.chat-bubble'),phoneScreen=document.querySelector('.phone-screen');if(phoneScreen){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){chatBubbles.forEach(b=>{b.style.animation='none';b.offsetHeight;b.style.animation=''})}})},{threshold:0.3});observer.observe(phoneScreen)}
 
     // Step animation on scroll
@@ -1782,7 +1817,8 @@
 
     // --- GDPR/Legal Consent Logic (FEJLESZTVE: LocalStorage + Pipa ikon vezérlés) ---
     // Betöltjük, hogy el lett-e már fogadva
-    let hasConsented = localStorage.getItem('dentalAiConsent') === 'true';
+    let hasConsented = false;
+    try { hasConsented = localStorage.getItem('dentalAiConsent') === 'true'; } catch(e) {}
     const consentModal = document.getElementById('consent-modal');
     const consentModalContent = document.getElementById('consent-modal-content');
     const consentCheckbox = document.getElementById('consent-checkbox');
@@ -1790,46 +1826,43 @@
     const consentCancelBtn = document.getElementById('consent-cancel-btn');
     const consentCheckIcon = document.getElementById('consent-check-icon');
     // JS-ből vezéreljük a pipa SVG láthatóságát az opacity-100 / opacity-0 osztályokkal
-    consentCheckbox.addEventListener('change', (e) => {
+    if (consentCheckbox) consentCheckbox.addEventListener('change', (e) => {
       if (e.target.checked) {
-        consentAcceptBtn.classList.remove('bg-slate-300', 'pointer-events-none');
-        consentAcceptBtn.classList.add('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
-        consentCheckIcon.classList.remove('opacity-0');
-        consentCheckIcon.classList.add('opacity-100');
+        if (consentAcceptBtn) consentAcceptBtn.classList.remove('bg-slate-300', 'pointer-events-none');
+        if (consentAcceptBtn) consentAcceptBtn.classList.add('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+        if (consentCheckIcon) { consentCheckIcon.classList.remove('opacity-0'); consentCheckIcon.classList.add('opacity-100'); }
       } else {
-        consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
-        consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
-        consentCheckIcon.classList.remove('opacity-100');
-        consentCheckIcon.classList.add('opacity-0');
+        if (consentAcceptBtn) consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
+        if (consentAcceptBtn) consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+        if (consentCheckIcon) { consentCheckIcon.classList.remove('opacity-100'); consentCheckIcon.classList.add('opacity-0'); }
       }
     });
 
     function showConsentModal() {
       // Amikor felugrik a modal, biztosítjuk, hogy tiszta állapotból induljon
-      consentCheckbox.checked = false;
-      consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
-      consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
-      consentCheckIcon.classList.remove('opacity-100');
-      consentCheckIcon.classList.add('opacity-0');
+      if (consentCheckbox) consentCheckbox.checked = false;
+      if (consentAcceptBtn) consentAcceptBtn.classList.add('bg-slate-300', 'pointer-events-none');
+      if (consentAcceptBtn) consentAcceptBtn.classList.remove('bg-dental-600', 'hover:bg-dental-700', 'shadow-md', 'shadow-dental-600/20');
+      if (consentCheckIcon) { consentCheckIcon.classList.remove('opacity-100'); consentCheckIcon.classList.add('opacity-0'); }
 
-      consentModal.classList.remove('opacity-0', 'pointer-events-none');
-      consentModalContent.classList.remove('scale-95', 'translate-y-4');
+      if (consentModal) consentModal.classList.remove('opacity-0', 'pointer-events-none');
+      if (consentModalContent) consentModalContent.classList.remove('scale-95', 'translate-y-4');
     }
 
     function hideConsentModal() {
-      consentModal.classList.add('opacity-0', 'pointer-events-none');
-      consentModalContent.classList.add('scale-95', 'translate-y-4');
+      if (consentModal) consentModal.classList.add('opacity-0', 'pointer-events-none');
+      if (consentModalContent) consentModalContent.classList.add('scale-95', 'translate-y-4');
     }
 
-    consentCancelBtn.addEventListener('click', hideConsentModal);
+    if (consentCancelBtn) consentCancelBtn.addEventListener('click', hideConsentModal);
     
-    consentAcceptBtn.addEventListener('click', () => {
-      if (consentCheckbox.checked) {
+    if (consentAcceptBtn) consentAcceptBtn.addEventListener('click', () => {
+      if (consentCheckbox && consentCheckbox.checked) {
         hasConsented = true;
         // Elmentjük a választást a böngésző helyi tárhelyébe
-        localStorage.setItem('dentalAiConsent', 'true');
+        try { localStorage.setItem('dentalAiConsent', 'true'); } catch(e) {}
         hideConsentModal();
-        executeCall(); // Indítás, miután a beleegyezés megtörtént
+        if (typeof executeCall === 'function') executeCall(); // Indítás, miután a beleegyezés megtörtént
       }
     });
 
@@ -2335,13 +2368,13 @@
 
     function setCallState(state){currentCallState=state;const isIdle=state===CALL_STATE.IDLE;heroCallBtn.classList.toggle('hidden',!isIdle);heroHangupBtn.classList.toggle('hidden',isIdle);callRings.classList.toggle('hidden',!isIdle);iconMic.classList.toggle('hidden',state!==CALL_STATE.IDLE);iconSpinner.classList.toggle('hidden',state!==CALL_STATE.CONNECTING);iconWave.classList.toggle('hidden',state!==CALL_STATE.LISTENING&&state!==CALL_STATE.SPEAKING);if(state===CALL_STATE.LISTENING||state===CALL_STATE.SPEAKING){iconWave.classList.remove('hidden');iconWave.classList.add('flex')}else{iconWave.classList.add('hidden');iconWave.classList.remove('flex')}heroCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:heroCallText.textContent=translations[currentLang]['hero-call'];statusDot.className='w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300';statusText.className='text-sm font-medium text-slate-400 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-ready'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-available'];headerCallBtn.classList.remove('hidden');mobileStatusText.textContent=translations[currentLang]['mobile-available'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.CONNECTING:heroCallText.textContent=translations[currentLang]['header-connecting'];statusDot.className='w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-amber-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-connecting'];headerStatus.className='flex items-center gap-2 bg-amber-50/80 border border-amber-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-amber-700';headerStatusText.textContent=translations[currentLang]['header-connecting'];headerCallBtn.classList.add('hidden');mobileStatusText.textContent=translations[currentLang]['header-connecting'];mobileStatusText.className='text-base font-semibold text-amber-700';break;case CALL_STATE.LISTENING:heroCallText.textContent=translations[currentLang]['header-listening'];statusDot.className='w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-emerald-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-listening'];headerStatus.className='flex items-center gap-2 bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-emerald-700';headerStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.textContent=translations[currentLang]['header-listening'];mobileStatusText.className='text-base font-semibold text-emerald-700';break;case CALL_STATE.SPEAKING:heroCallText.textContent=translations[currentLang]['header-speaking'];statusDot.className='w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';statusText.className='text-sm font-medium text-blue-600 transition-colors duration-300';statusText.textContent=translations[currentLang]['status-speaking'];headerStatus.className='flex items-center gap-2 bg-blue-50/80 border border-blue-200/60 rounded-full px-3.5 py-1.5 transition-all duration-300';headerStatusText.className='text-xs font-semibold text-blue-700';headerStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.textContent=translations[currentLang]['header-speaking'];mobileStatusText.className='text-base font-semibold text-blue-700';break}demoCallBtn.classList.toggle('hidden',!isIdle);demoHangupBtn.classList.toggle('hidden',isIdle);demoCallText.textContent=isIdle?translations[currentLang]['hero-call']:state===CALL_STATE.CONNECTING?translations[currentLang]['header-connecting']:state===CALL_STATE.LISTENING?translations[currentLang]['header-listening']:translations[currentLang]['header-speaking'];demoCallBtn.classList.toggle('call-active-glow',state===CALL_STATE.SPEAKING);switch(state){case CALL_STATE.IDLE:demoStatusDot.className='w-2 h-2 rounded-full bg-slate-300 transition-colors duration-300';demoStatusText.className='text-[11px] text-slate-400 transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['demo-voice'];break;case CALL_STATE.CONNECTING:demoStatusDot.className='w-2 h-2 rounded-full bg-amber-400 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-amber-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-connecting'];break;case CALL_STATE.LISTENING:demoStatusDot.className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-emerald-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-listening'];break;case CALL_STATE.SPEAKING:demoStatusDot.className='w-2 h-2 rounded-full bg-blue-500 animate-pulse transition-colors duration-300';demoStatusText.className='text-[11px] text-blue-600 font-medium transition-colors duration-300';demoStatusText.textContent=translations[currentLang]['status-speaking'];break}}
 
-    // Call Button Events
-    heroCallBtn.addEventListener('click',startCall);
-    heroHangupBtn.addEventListener('click',endCall);
-    headerCallBtn.addEventListener('click',startCall);
-    mobileCallBtn.addEventListener('click',() => { closeMenu(); startCall(); });
-    demoCallBtn.addEventListener('click',startCall);
-    demoHangupBtn.addEventListener('click',endCall);
+    // Call Button Events (null-safe)
+    if (heroCallBtn) heroCallBtn.addEventListener('click',startCall);
+    if (heroHangupBtn) heroHangupBtn.addEventListener('click',endCall);
+    if (headerCallBtn) headerCallBtn.addEventListener('click',startCall);
+    if (mobileCallBtn) mobileCallBtn.addEventListener('click',() => { closeMenu(); startCall(); });
+    if (demoCallBtn) demoCallBtn.addEventListener('click',startCall);
+    if (demoHangupBtn) demoHangupBtn.addEventListener('click',endCall);
 
     logDebug('ElevenLabs Conversational AI SDK mód inicializálva');
     updateCountdownUI();
@@ -2528,6 +2561,9 @@
         'cal-auto': 'Automatikus frissítés 30 másodpercenként',
         'cal-refresh': 'Frissítés most',
         'cal-loading': 'Anna naptárának betöltése...',
+        'cal-err-title': 'A naptár jelenleg nem elérhető',
+        'cal-err-desc': 'Kérjük, próbálja újra később, vagy hívja Annát közvetlenül.',
+        'cal-err-retry': 'Újrapróbálkozás',
         'footer-desc': 'Anna — a DentAi Senior Asszisztense. 0–24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.',
         'footer-langs': 'Nyelvek',
         'footer-info-title': 'Információk',
@@ -2815,6 +2851,9 @@
         'cal-auto': 'Auto-refresh every 30 seconds',
         'cal-refresh': 'Refresh now',
         'cal-loading': 'Loading Anna\'s calendar...',
+        'cal-err-title': 'Calendar currently unavailable',
+        'cal-err-desc': 'Please try again later or call Anna directly.',
+        'cal-err-retry': 'Retry',
         'footer-desc': 'Anna — the DentAi Senior Assistant. 24/7 call handling, online booking, and automatic confirmation, so your practice always runs smoothly.',
         'footer-langs': 'Languages',
         'footer-info-title': 'Information',
@@ -3102,6 +3141,9 @@
         'cal-auto': 'Automatische Aktualisierung alle 30 Sekunden',
         'cal-refresh': 'Jetzt aktualisieren',
         'cal-loading': 'Annas Kalender wird geladen...',
+        'cal-err-title': 'Kalender derzeit nicht verfügbar',
+        'cal-err-desc': 'Bitte versuchen Sie es später erneut oder rufen Sie Anna direkt an.',
+        'cal-err-retry': 'Erneut versuchen',
         'footer-desc': 'Anna — die DentAi Senior Assistentin. 24/7 Anrufbearbeitung, Online-Buchung und automatische Bestätigung, damit Ihre Praxis immer reibungslos läuft.',
         'footer-langs': 'Sprachen',
         'footer-info-title': 'Informationen',
@@ -3389,6 +3431,9 @@ nl: {
         'cal-auto': 'Automatische update elke 30 seconden',
         'cal-refresh': 'Nu vernieuwen',
         'cal-loading': 'Agenda van Anna laden...',
+        'cal-err-title': 'Agenda momenteel niet beschikbaar',
+        'cal-err-desc': 'Probeer het later opnieuw of bel Anna direct.',
+        'cal-err-retry': 'Opnieuw proberen',
         'footer-desc': 'Anna — de DentAi Senior Assistente. 24/7 oproepafhandeling, online boeking en automatische bevestiging, zodat uw praktijk altijd soepel draait.',
         'footer-langs': 'Talen',
         'footer-info-title': 'Informatie',
@@ -3677,6 +3722,9 @@ nl: {
         'cal-auto': 'Actualisation automatique toutes les 30 secondes',
         'cal-refresh': 'Actualiser',
         'cal-loading': 'Chargement du calendrier d\'Anna...',
+        'cal-err-title': 'Calendrier actuellement indisponible',
+        'cal-err-desc': 'Veuillez réessayer plus tard ou appeler Anna directement.',
+        'cal-err-retry': 'Réessayer',
         'footer-desc': 'Anna — l\'Assistante Senior DentAi. Gestion d\'appels 24/7, réservation en ligne et confirmation automatique, pour que votre cabinet fonctionne toujours sereinement.',
         'footer-langs': 'Langues',
         'footer-info-title': 'Informations',
@@ -3758,7 +3806,7 @@ nl: {
         'cap5-tag1': 'Recherche',
         'cap5-tag2': 'Identification du patient',
         'cap6-title': 'Liste d\'attente',
-        'cap6-desc': 'Si aucun créneau n\'est disponible, Anna inscrit le patient sur la liste d\'attente prioritaire — avec ses créneaux préférés. Lorsqu\'une place se libère, le système l'en avertit automatiquement.',
+        'cap6-desc': 'Si aucun créneau n\'est disponible, Anna inscrit le patient sur la liste d\'attente prioritaire — avec ses créneaux préférés. Lorsqu\'une place se libère, le système l\'en avertit automatiquement.',
         'cap6-tag1': 'Priorité',
         'cap6-tag2': 'Notification automatique',
         'cap7-title': 'Modification des données',
@@ -3964,6 +4012,9 @@ nl: {
         'cal-auto': 'Aggiornamento automatico ogni 30 secondi',
         'cal-refresh': 'Aggiorna ora',
         'cal-loading': 'Caricamento del calendario di Anna...',
+        'cal-err-title': 'Calendario attualmente non disponibile',
+        'cal-err-desc': 'Riprovi più tardi o chiami Anna direttamente.',
+        'cal-err-retry': 'Riprova',
         'footer-desc': 'Anna — l\'Assistente Senior DentAi. Gestione chiamate 24/7, prenotazione online e conferma automatica, affinché il Suo studio funzioni sempre senza intoppi.',
         'footer-langs': 'Lingue',
         'footer-info-title': 'Informazioni',
@@ -4251,6 +4302,9 @@ da: {
         'cal-auto': 'Automatisk opdatering hvert 30. sekund',
         'cal-refresh': 'Opdater nu',
         'cal-loading': 'Indlæser Annas kalender...',
+        'cal-err-title': 'Kalenderen er i øjeblikket ikke tilgængelig',
+        'cal-err-desc': 'Prøv igen senere, eller ring til Anna direkte.',
+        'cal-err-retry': 'Prøv igen',
         'footer-desc': 'Anna — Seniorassistent hos DentAi. Døgnåben samtalehåndtering, netbestilling og automatisk bekræftelse, således at din praksis altid fungerer roligt.',
         'footer-langs': 'Sprog',
         'footer-info-title': 'Information',
@@ -4539,6 +4593,9 @@ da: {
         'cal-auto': 'Automatisk oppdatering hvert 30. sekund',
         'cal-refresh': 'Oppdater nå',
         'cal-loading': 'Laster Annas kalender...',
+        'cal-err-title': 'Kalenderen er for øyeblikket ikke tilgjengelig',
+        'cal-err-desc': 'Prøv igjen senere, eller ring Anna direkte.',
+        'cal-err-retry': 'Prøv igjen',
         'footer-desc': 'Anna — DentAi Senior Assistent. Døgnåpen samtalehåndtering, nettbestilling og automatisk bekreftelse, slik at praksisen din alltid fungerer rolig.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Informasjon',
@@ -4826,6 +4883,9 @@ sv: {
         'cal-auto': 'Automatisk uppdatering var 30:e sekund',
         'cal-refresh': 'Uppdatera nu',
         'cal-loading': 'Laddar Annas kalender...',
+        'cal-err-title': 'Kalendern är för närvarande inte tillgänglig',
+        'cal-err-desc': 'Försök igen senare eller ring Anna direkt.',
+        'cal-err-retry': 'Försök igen',
         'footer-desc': 'Anna — Seniorassistent på DentAi. Dygnet runt samtalshantering, nätbokning och automatisk bekräftelse, så att din praktik alltid fungerar lugnt.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Information',
@@ -5113,6 +5173,9 @@ fi: {
         'cal-auto': 'Automaattinen päivitys 30 sekunnin välein',
         'cal-refresh': 'Päivitä nyt',
         'cal-loading': 'Ladataan Annan kalenteria...',
+        'cal-err-title': 'Kalenteri ei ole tällä hetkellä käytettävissä',
+        'cal-err-desc': 'Yritä myöhemmin uudelleen tai soita Annalle suoraan.',
+        'cal-err-retry': 'Yritä uudelleen',
         'footer-desc': 'Anna — DentAi Senior Avustaja. Ympärivuorokautinen puhelinvastaus, verkkovaraus ja automaattinen vahvistus, jotta vastaanottosi toimii aina rauhallisesti.',
         'footer-langs': 'Kielet',
         'footer-info-title': 'Lisätietoa',
@@ -5401,6 +5464,9 @@ fi: {
         'cal-auto': 'Automatická aktualizácia každých 30 sekúnd',
         'cal-refresh': 'Aktualizovať teraz',
         'cal-loading': 'Načítavam Annin kalendár...',
+        'cal-err-title': 'Kalendár momentálne nie je dostupný',
+        'cal-err-desc': 'Skúste to prosím neskôr alebo zavolajte Anne priamo.',
+        'cal-err-retry': 'Skúsiť znova',
         'footer-desc': 'Anna — DentAi Senior Asistentka. Nonstop príjem hovorov, online rezervácia a automatické potvrdenie, aby vaša prax vždy fungovala pokojne.',
         'footer-langs': 'Jazyky',
         'footer-info-title': 'Informácie',
@@ -5513,19 +5579,19 @@ fi: {
     const SUPPORTED_LANGS = ['hu', 'en', 'de', 'nl', 'fr', 'it', 'da', 'no', 'sv', 'fi', 'sk'];
     // Országkód → nyelv leképezés (ISO 3166-1 alpha-2 → nyelvkód)
     const COUNTRY_TO_LANG = {
-      'HU': 'hu\', \'DE\': \'de\', \'AT\': \'de\', \'CH\': \'de\', \'LI\': \'de',
-      'NL': 'nl\', \'BE\': \'nl',
-      'FR': 'fr\', \'LU\': \'fr\', \'MC\': \'fr',
-      'IT': 'it\', \'SM\': \'it\', \'VA\': \'it',
-      'DK': 'da\', \'FO\': \'da\', \'GL\': \'da',
-      'NO': 'no\', \'SJ\': \'no',
+      'HU': 'hu', 'DE': 'de', 'AT': 'de', 'CH': 'de', 'LI': 'de',
+      'NL': 'nl', 'BE': 'nl',
+      'FR': 'fr', 'LU': 'fr', 'MC': 'fr',
+      'IT': 'it', 'SM': 'it', 'VA': 'it',
+      'DK': 'da', 'FO': 'da', 'GL': 'da',
+      'NO': 'no', 'SJ': 'no',
       'SE': 'sv',
       'FI': 'fi',
       'SK': 'sk',
-      'GB': 'en\', \'IE\': \'en\', \'US\': \'en\', \'CA\': \'en\', \'AU\': \'en\', \'NZ\': \'en',
-      'CZ': 'sk\', \'PL\': \'en\', \'RO\': \'en\', \'ES\': \'en\', \'PT\': \'en\', \'HR\': \'en',
-      'RS': 'en\', \'SI\': \'en\', \'BG\': \'en\', \'GR\': \'en\', \'EE\': \'en\', \'LV\': \'en',
-      'LT': 'en\', \'IS\': \'en\', \'MT\': \'en\', \'CY\': \'en'
+      'GB': 'en', 'IE': 'en', 'US': 'en', 'CA': 'en', 'AU': 'en', 'NZ': 'en',
+      'CZ': 'sk', 'PL': 'en', 'RO': 'en', 'ES': 'en', 'PT': 'en', 'HR': 'en',
+      'RS': 'en', 'SI': 'en', 'BG': 'en', 'GR': 'en', 'EE': 'en', 'LV': 'en',
+      'LT': 'en', 'IS': 'en', 'MT': 'en', 'CY': 'en'
     };
     let currentLang = 'hu'; // HTML alapértelmezett
 
@@ -5581,6 +5647,11 @@ fi: {
         dropdownMenu.style.visibility = 'hidden';
         dropdownMenu.style.transform = 'translateY(-4px)';
         dropdownMenu.style.pointerEvents = 'none';
+      }
+      // Update cal-sync-label separately (was data-i18n="cal-sync" but that destroyed the countdown-text child)
+      var calSyncLabel = document.getElementById('cal-sync-label');
+      if (calSyncLabel && t['cal-sync'] !== undefined) {
+        calSyncLabel.textContent = t['cal-sync'];
       }
     }
 
