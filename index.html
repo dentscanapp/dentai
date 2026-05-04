@@ -1597,6 +1597,32 @@
     </div>
   </footer>
 
+  <!-- Adatvédelmi beleegyező modal -->
+  <div id="consent-modal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="consent-modal-content" class="bg-white rounded-2xl shadow-2xl max-w-md w-[calc(100%-2rem)] p-6 sm:p-7 transform scale-95 translate-y-4 transition-all duration-300">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-dental-50 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-dental-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900" data-i18n="consent-title">Adatvédelmi tájékoztatás</h3>
+      </div>
+      <p class="text-sm text-slate-600 leading-relaxed mb-5" data-i18n="consent-text">A hívás során hangadatot dolgoz fel az ElevenLabs (USA, EU SCC + DPA). A beszélgetést minőségbiztosítás céljából rögzíthetjük. Bármikor kérhet emberi visszahívást. A részletek az Adatvédelmi tájékoztatóban olvashatók.</p>
+      <label class="flex items-start gap-3 cursor-pointer mb-5 group">
+        <div class="relative flex-shrink-0 mt-0.5">
+          <input type="checkbox" id="consent-checkbox" class="peer sr-only" />
+          <div class="w-5 h-5 rounded-md border-2 border-slate-300 bg-white peer-checked:bg-dental-600 peer-checked:border-dental-600 transition-colors flex items-center justify-center">
+            <svg id="consent-check-icon" class="w-3.5 h-3.5 text-white opacity-0 transition-opacity" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </div>
+        <span class="text-sm text-slate-700 leading-snug" data-i18n="consent-checkbox-label">Elolvastam és elfogadom az adatvédelmi tájékoztatást, valamint beleegyezek a hangadatom kezelésébe.</span>
+      </label>
+      <div class="flex gap-3">
+        <button id="consent-cancel-btn" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors" data-i18n="consent-cancel">Mégse</button>
+        <button id="consent-accept-btn" class="flex-1 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-300 pointer-events-none transition-all" data-i18n="consent-accept">Elfogadom</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ElevenLabs Conversational AI SDK -->
   <script type="importmap">
   {
@@ -2500,7 +2526,8 @@
         'treat1-name': 'Vizsgálat / Konzultáció',
         'treat1-dur': '30 perc',
         'treat2-name': 'Fogkőleszedés',
-        'treat2-dur': '30 perc',        'treat4-name': 'Töméscsere',
+        'treat2-dur': '30 perc',
+        'treat4-name': 'Töméscsere',
         'treat4-dur': '45 perc',
         'treat5-name': 'Gyökérkezelés',
         'treat5-dur': '90 perc',
@@ -2579,6 +2606,11 @@
         'footer-langs': 'Nyelvek',
         'footer-info-title': 'Információk',
         'footer-portfolio': 'Portfólió demo Készítette: Petor Péter',
+        'consent-title': 'Adatvédelmi tájékoztatás',
+        'consent-text': 'A hívás során hangadatot dolgoz fel az ElevenLabs (USA, EU SCC + DPA). A beszélgetést minőségbiztosítás céljából rögzíthetjük. Bármikor kérhet emberi visszahívást. A részletek az Adatvédelmi tájékoztatóban olvashatók.',
+        'consent-checkbox-label': 'Elolvastam és elfogadom az adatvédelmi tájékoztatást, valamint beleegyezek a hangadatom kezelésébe.',
+        'consent-cancel': 'Mégse',
+        'consent-accept': 'Elfogadom',
         'footer-impressum': 'Impresszum',
         'footer-privacy': 'Adatkezelési Tájékoztató',
         'footer-gdpr': 'Jogi nyilatkozat: Ez egy portfolió demo. Kérem, ne adjon meg valós adatokat! Az AI válaszaiért felelősséget nem vállalok.',
@@ -2815,7 +2847,8 @@
         'treat1-name': 'Examination / Consultation',
         'treat1-dur': '30 min',
         'treat2-name': 'Tartar Removal',
-        'treat2-dur': '30 min',        'treat4-name': 'Filling Replacement',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Filling Replacement',
         'treat4-dur': '45 min',
         'treat5-name': 'Root Canal Treatment',
         'treat5-dur': '90 min',
@@ -2894,6 +2927,11 @@
         'footer-langs': 'Languages',
         'footer-info-title': 'Information',
         'footer-portfolio': 'Proof-of-Concept by: Peter Petor',
+        'consent-title': 'Privacy Notice',
+        'consent-text': 'During the call, voice data is processed by ElevenLabs (USA, EU SCC + DPA). The conversation may be recorded for quality assurance. You can request a human callback at any time. Details are available in the Privacy Policy.',
+        'consent-checkbox-label': 'I have read and accept the privacy notice and consent to the processing of my voice data.',
+        'consent-cancel': 'Cancel',
+        'consent-accept': 'I Accept',
         'footer-impressum': 'Imprint',
         'footer-privacy': 'Privacy Policy',
         'footer-gdpr': 'Disclaimer: This is a portfolio demo. Please do not provide real data! I assume no liability for AI responses.',
@@ -3130,7 +3168,8 @@
         'treat1-name': 'Untersuchung / Beratung',
         'treat1-dur': '30 Min.',
         'treat2-name': 'Zahnsteinentfernung',
-        'treat2-dur': '30 Min.',        'treat4-name': 'Füllungswechsel',
+        'treat2-dur': '30 Min.',
+        'treat4-name': 'Füllungswechsel',
         'treat4-dur': '45 Min.',
         'treat5-name': 'Wurzelbehandlung',
         'treat5-dur': '90 Min.',
@@ -3209,6 +3248,11 @@
         'footer-langs': 'Sprachen',
         'footer-info-title': 'Informationen',
         'footer-portfolio': 'Portfolio Demo erstellt von: Peter Petor',
+        'consent-title': 'Datenschutzhinweis',
+        'consent-text': 'Während des Anrufs werden Sprachdaten von ElevenLabs verarbeitet (USA, EU SCC + DPA). Das Gespräch kann zu Qualitätszwecken aufgezeichnet werden. Sie können jederzeit einen Rückruf durch einen Mitarbeiter anfordern. Details finden Sie in der Datenschutzerklärung.',
+        'consent-checkbox-label': 'Ich habe den Datenschutzhinweis gelesen und akzeptiere die Verarbeitung meiner Sprachdaten.',
+        'consent-cancel': 'Abbrechen',
+        'consent-accept': 'Akzeptieren',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Datenschutzerklärung',
         'footer-gdpr': 'Haftungsausschluss: Dies ist eine Portfolio-Demo. Bitte geben Sie keine echten Daten an! Ich übernehme keine Haftung für KI-Antworten.',
@@ -3445,7 +3489,8 @@ nl: {
         'treat1-name': 'Onderzoek / Consult',
         'treat1-dur': '30 min',
         'treat2-name': 'Tartaarverwijdering',
-        'treat2-dur': '30 min',        'treat4-name': 'Vulling vervangen',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Vulling vervangen',
         'treat4-dur': '45 min',
         'treat5-name': 'Wortelkanaalbehandeling',
         'treat5-dur': '90 min',
@@ -3524,6 +3569,11 @@ nl: {
         'footer-langs': 'Talen',
         'footer-info-title': 'Informatie',
         'footer-portfolio': 'Portfolio-demo Gemaakt door: Peter Petor',
+        'consent-title': 'Privacyverklaring',
+        'consent-text': 'Tijdens het gesprek worden spraakgegevens verwerkt door ElevenLabs (VS, EU SCC + DPA). Het gesprek kan voor kwaliteitsborging worden opgenomen. U kunt op elk moment een terugbelverzoek door een medewerker indienen. Details vindt u in het privacybeleid.',
+        'consent-checkbox-label': 'Ik heb de privacyverklaring gelezen en ga akkoord met de verwerking van mijn spraakgegevens.',
+        'consent-cancel': 'Annuleren',
+        'consent-accept': 'Ik accepteer',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privacyverklaring',
         'footer-gdpr': 'Juridische disclaimer: Dit is een portfolio-demo. Geef alstublieft geen echte gegevens! Ik aanvaard geen aansprakelijkheid voor AI-antwoorden.',
@@ -3761,7 +3811,8 @@ nl: {
         'treat1-name': 'Examen / Consultation',
         'treat1-dur': '30 min',
         'treat2-name': 'Détartrage',
-        'treat2-dur': '30 min',        'treat4-name': 'Remplacement d\'obturation',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Remplacement d\'obturation',
         'treat4-dur': '45 min',
         'treat5-name': 'Traitement de canal',
         'treat5-dur': '90 min',
@@ -3840,6 +3891,11 @@ nl: {
         'footer-langs': 'Langues',
         'footer-info-title': 'Informations',
         'footer-portfolio': 'Démo Portfolio par : Peter Petor',
+        'consent-title': 'Avis de confidentialité',
+        'consent-text': 'Pendant l\'appel, les données vocales sont traitées par ElevenLabs (USA, SCC UE + DPA). L\'appel peut être enregistré à des fins d\'assurance qualité. Vous pouvez demander un rappel par un agent à tout moment. Les détails sont disponibles dans la politique de confidentialité.',
+        'consent-checkbox-label': 'J\'ai lu et j\'accepte l\'avis de confidentialité et consent au traitement de mes données vocales.',
+        'consent-cancel': 'Annuler',
+        'consent-accept': 'J\'accepte',
         'footer-impressum': 'Mentions légales',
         'footer-privacy': 'Politique de confidentialité',
         'footer-gdpr': 'Avertissement : Ceci est une démo portfolio. Veuillez ne pas fournir de données réelles ! Je décline toute responsabilité pour les réponses de l\'IA.',
@@ -4076,7 +4132,8 @@ nl: {
         'treat1-name': 'Visita / Consulenza',
         'treat1-dur': '30 min',
         'treat2-name': 'Pulizia tartaro',
-        'treat2-dur': '30 min',        'treat4-name': 'Sostituzione otturazione',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Sostituzione otturazione',
         'treat4-dur': '45 min',
         'treat5-name': 'Trattamento canalare',
         'treat5-dur': '90 min',
@@ -4155,6 +4212,11 @@ nl: {
         'footer-langs': 'Lingue',
         'footer-info-title': 'Informazioni',
         'footer-portfolio': 'Demo Portfolio di: Peter Petor',
+        'consent-title': 'Informativa sulla privacy',
+        'consent-text': 'Durante la chiamata, i dati vocali sono elaborati da ElevenLabs (USA, SCC UE + DPA). La conversazione può essere registrata per scopi di controllo qualità. È possibile richiedere un richiamata da un operatore in qualsiasi momento. I dettagli sono disponibili nell\'informativa sulla privacy.',
+        'consent-checkbox-label': 'Ho letto e accetto l\'informativa sulla privacy e acconsento al trattamento dei miei dati vocali.',
+        'consent-cancel': 'Annulla',
+        'consent-accept': 'Accetto',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Informativa sulla privacy',
         'footer-gdpr': 'Avvertenza: Questa è una demo portfolio. Non fornisca dati reali! Non assumo responsabilità per le risposte dell\'IA.',
@@ -4391,7 +4453,8 @@ da: {
         'treat1-name': 'Undersøgelse / Konsultation',
         'treat1-dur': '30 min',
         'treat2-name': 'Tandstensfjernelse',
-        'treat2-dur': '30 min',        'treat4-name': 'Fyldningsskift',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Fyldningsskift',
         'treat4-dur': '45 min',
         'treat5-name': 'Rodbehandling',
         'treat5-dur': '90 min',
@@ -4469,6 +4532,11 @@ da: {
         'footer-langs': 'Sprog',
         'footer-info-title': 'Information',
         'footer-portfolio': 'Portefølje Demo Lavet af: Peter Petor',
+        'consent-title': 'Fortrolighedserklæring',
+        'consent-text': 'Under opkaldet behandles stemmedata af ElevenLabs (USA, EU SCC + DPA). Samtalen kan optages til kvalitetssikring. Du kan til enhver tid anmode om tilbagekaldelse fra en medarbejder. Detaljer findes i fortidspolitikken.',
+        'consent-checkbox-label': 'Jeg har læst og accepterer fortrolighedserklæringen og samtykker i behandlingen af mine stemmedata.',
+        'consent-cancel': 'Annuller',
+        'consent-accept': 'Jeg accepterer',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privatlivspolitik',
         'footer-gdpr': 'Juridisk bemærkning: Dette er en portefølje-demo. Venligst ikke opgiv ægte data! Jeg påtager mig intet ansvar for AI-ens svar.',
@@ -4706,7 +4774,8 @@ da: {
         'treat1-name': 'Undersøkelse / Konsultasjon',
         'treat1-dur': '30 min',
         'treat2-name': 'Tannstensfjerning',
-        'treat2-dur': '30 min',        'treat4-name': 'Fyllingsskift',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Fyllingsskift',
         'treat4-dur': '45 min',
         'treat5-name': 'Rotbehandling',
         'treat5-dur': '90 min',
@@ -4784,6 +4853,11 @@ da: {
         'footer-langs': 'Språk',
         'footer-info-title': 'Informasjon',
         'footer-portfolio': 'Portefølje Demo Laget av: Peter Petor',
+        'consent-title': 'Personvernerklæring',
+        'consent-text': 'Under samtalen behandles stemmedata av ElevenLabs (USA, EU SCC + DPA). Samtalen kan tas opp for kvalitetssikring. Du kan når som helst be om tilbakeringing fra en medarbeider. Detaljer finnes i personvernerklæringen.',
+        'consent-checkbox-label': 'Jeg har lest og aksepterer personvernerklæringen og samtykker til behandling av mine stemmedata.',
+        'consent-cancel': 'Avbryt',
+        'consent-accept': 'Jeg aksepterer',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Personvernerklæring',
         'footer-gdpr': 'Juridisk merknad: Dette er en portefølje-demo. Vennligst ikke oppgi ekte data! Jeg tar ikke ansvar for AI-ens svar.',
@@ -5020,7 +5094,8 @@ sv: {
         'treat1-name': 'Undersökning / Konsultation',
         'treat1-dur': '30 min',
         'treat2-name': 'Tandstensborttagning',
-        'treat2-dur': '30 min',        'treat4-name': 'Fyllningsbyte',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Fyllningsbyte',
         'treat4-dur': '45 min',
         'treat5-name': 'Rotbehandling',
         'treat5-dur': '90 min',
@@ -5098,6 +5173,11 @@ sv: {
         'footer-langs': 'Språk',
         'footer-info-title': 'Information',
         'footer-portfolio': 'Portfölj Demo Skapad av: Peter Petor',
+        'consent-title': 'Integritetsmeddelande',
+        'consent-text': 'Under samtalet bearbetas röstdata av ElevenLabs (USA, EU SCC + DPA). Samtalet kan spelas in för kvalitetssäkring. Du kan när som helst begära återkoppling från en medarbetare. Detaljer finns i integritetspolicyn.',
+        'consent-checkbox-label': 'Jag har läst och accepterar integritetsmeddelandet och samtycker till behandling av min röstdata.',
+        'consent-cancel': 'Avbryt',
+        'consent-accept': 'Jag accepterar',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Integritetspolicy',
         'footer-gdpr': 'Juridiskt meddelande: Detta är en portfölj-demo. Vänligen uppge inte riktiga data! Jag tar inget ansvar för AI:ns svar.',
@@ -5334,7 +5414,8 @@ fi: {
         'treat1-name': 'Tutkimus / Konsultaatio',
         'treat1-dur': '30 min',
         'treat2-name': 'Hammaskiven poisto',
-        'treat2-dur': '30 min',        'treat4-name': 'Paikan vaihto',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Paikan vaihto',
         'treat4-dur': '45 min',
         'treat5-name': 'Juurihoito',
         'treat5-dur': '90 min',
@@ -5412,6 +5493,11 @@ fi: {
         'footer-langs': 'Kielet',
         'footer-info-title': 'Lisätietoa',
         'footer-portfolio': 'Portfolio Demo Tekijä: Peter Petor',
+        'consent-title': 'Tietosuojailmoitus',
+        'consent-text': 'Puhelun aikana äänitietoja käsittelee ElevenLabs (USA, EU SCC + DPA). Keskustelu voidaan tallentaa laadunvarmistusta varten. Voit milloin tahansa pyytää ihmispalautussoiton. Yksityiskohdat löytyvät tietosuojaselosteesta.',
+        'consent-checkbox-label': 'Olen lukenut ja hyväksyn tietosuojailmoituksen ja suostun äänitietojeni käsittelyyn.',
+        'consent-cancel': 'Peruuta',
+        'consent-accept': 'Hyväksyn',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Tietosuojaseloste',
         'footer-gdpr': 'Oikeudellinen huomautus: Tämä on portfoliodemo. Älä anna todellisia tietoja! En ota vastuuta tekoälyn vastauksista.',
@@ -5649,7 +5735,8 @@ fi: {
         'treat1-name': 'Vyšetrenie / Konzultácia',
         'treat1-dur': '30 min',
         'treat2-name': 'Odstránenie zubného kameňa',
-        'treat2-dur': '30 min',        'treat4-name': 'Výmena plomby',
+        'treat2-dur': '30 min',
+        'treat4-name': 'Výmena plomby',
         'treat4-dur': '45 min',
         'treat5-name': 'Ošetrenie koreňa',
         'treat5-dur': '90 min',
@@ -5728,6 +5815,11 @@ fi: {
         'footer-langs': 'Jazyky',
         'footer-info-title': 'Informácie',
         'footer-portfolio': 'Portfóliové demo Vytvoril: Peter Petor',
+        'consent-title': 'Ochrana osobných údajov',
+        'consent-text': 'Počas hovoru sú hlasové údaje spracované spoločnosťou ElevenLabs (USA, EU SCC + DPA). Rozhovor môže byť nahrávaný na účely zabezpečenia kvality. Kedykoľvek môžete požiadať o spätný hovor od zamestnanca. Podrobnosti nájdete v zásade ochrany osobných údajov.',
+        'consent-checkbox-label': 'Prečítal som si a prijímam oznámenie o ochrane osobných údajov a súhlasím so spracovaním mojich hlasových údajov.',
+        'consent-cancel': 'Zrušiť',
+        'consent-accept': 'Prijať',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Oznámenie o ochrane údajov',
         'footer-gdpr': 'Právne vyhlásenie: Toto je portfóliová demo. Prosím, neuvádzajte skutočné údaje! Za odpovede AI nepreberám zodpovednosť.',
