@@ -1629,6 +1629,66 @@
     </div>
   </div>
 
+  <!-- Legal Modal (Impresszum + Adatkezelési Tájékoztató) -->
+  <div id="legal-modal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="legal-modal-content" class="bg-white rounded-2xl shadow-2xl max-w-lg w-[calc(100%-2rem)] max-h-[90vh] flex flex-col transform scale-95 translate-y-4 transition-all duration-300">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 pt-6 pb-0">
+        <div class="flex gap-4 border-b border-slate-200 w-full">
+          <button type="button" class="legal-tab pb-3 px-1 text-sm font-semibold border-b-2 border-dental-600 text-dental-700 transition-colors" data-legal-tab="impressum" data-i18n="legal-tab-impressum">Impresszum</button>
+          <button type="button" class="legal-tab pb-3 px-1 text-sm font-semibold border-b-2 border-transparent text-slate-500 transition-colors" data-legal-tab="privacy" data-i18n="legal-tab-privacy">Adatkezelési Tájékoztató</button>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="overflow-y-auto flex-1 px-6 py-5 text-sm text-slate-700 leading-relaxed">
+        <!-- Impresszum panel -->
+        <div data-legal-panel="impressum">
+          <p data-i18n="imp-intro">Jelen weboldal egy portfolió bemutató, melyet az alábbi természetes személy üzemeltet. A weboldal nem nyújt valós egészségügyi szolgáltatást.</p>
+          <div class="mt-4 space-y-2">
+            <p><span class="font-semibold" data-i18n="imp-name-label">Üzemeltető neve:</span> <span data-i18n="imp-name-value">Petor Péter (természetes személy)</span></p>
+            <p><span class="font-semibold" data-i18n="imp-email-label">E-mail cím:</span> info@dentai.me</p>
+            <p><span class="font-semibold" data-i18n="imp-purpose-label">Oldal célja:</span> <span data-i18n="imp-purpose-value">Portfolió / technológiai demó (nem kereskedelmi szolgáltatás)</span></p>
+            <p><span class="font-semibold" data-i18n="imp-host-label">Tárhelyszolgáltató:</span> <span data-i18n="imp-host-value">Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA)</span></p>
+          </div>
+          <p class="mt-4 text-xs text-slate-500 leading-relaxed" data-i18n="imp-legal-basis">Jogszabályi alap: 2001. évi CVIII. törvény (Ektv.) az elektronikus kereskedelmi szolgáltatásokról. A "DentAi asszisztens" elnevezés kizárólag fiktív, demonstrációs célt szolgál, valós egészségügyi intézmény nem létezik ezen a néven.</p>
+        </div>
+        <!-- Privacy panel -->
+        <div data-legal-panel="privacy" class="hidden">
+          <p data-i18n="priv-intro">Jelen tájékoztató a weboldal látogatása során történő adatkezelésről nyújt információt a GDPR (EU 2016/679 rendelet) és a 2011. évi CXII. törvény (Infotv.) alapján.</p>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h1">1. Adatkezelő</h4>
+          <p data-i18n="priv-p1">Petor Péter természetes személy, kapcsolat: info@dentai.me. Az oldal portfolió demó, valós egészségügyi adatkezelés nem történik.</p>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h2">2. Kezelt adatok és célok</h4>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li data-i18n="priv-li2-1" data-i18n-html="true"><strong>Technikai adatok:</strong> IP-cím, böngésző és eszköz típusa, látogatás ideje — kizárólag a weboldal technikai üzemeltetése és biztonsági okokból (Cloudflare).</li>
+            <li data-i18n="priv-li2-2" data-i18n-html="true"><strong>Hangadatok (csak ha indítja a hívást):</strong> Az Ön mikrofonjából érkező hang ideiglenesen feldolgozásra kerül a beszélgetés generálása érdekében (ElevenLabs). Kérjük, ne osszon meg valós személyes adatot!</li>
+            <li data-i18n="priv-li2-3" data-i18n-html="true"><strong>LocalStorage:</strong> A nyilatkozat elfogadását rögzítő adat tárolása kizárólag kliensoldalon történik, szerveroldali adattovábbítás nélkül.</li>
+          </ul>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h3">3. Harmadik fél szolgáltatók (külföldi adattovábbítás)</h4>
+          <p data-i18n="priv-p3">Az oldal az alábbi külső szolgáltatók erőforrásait tölti be. Ezáltal az Ön IP-címe és böngésző-adatai továbbításra kerülhetnek EGT-n kívüli harmadik országokba (jellemzően USA), ahol az érintett szolgáltatók saját adatvédelmi szabályzata vonatkozik az adatkezelésre:</p>
+          <ul class="list-disc pl-5 space-y-1.5 mt-2">
+            <li data-i18n="priv-li3-1" data-i18n-html="true"><strong>Cloudflare</strong> (CDN, tárhely) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a></li>
+            <li data-i18n="priv-li3-2" data-i18n-html="true"><strong>Google Fonts</strong> (betűtípusok) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">policies.google.com/privacy</a></li>
+            <li data-i18n="priv-li3-3" data-i18n-html="true"><strong>Tailwind CDN</strong> (CSS keretrendszer)</li>
+            <li data-i18n="priv-li3-4" data-i18n-html="true"><strong>ElevenLabs</strong> (hangalapú AI) — <a href="https://elevenlabs.io/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">elevenlabs.io/privacy</a></li>
+            <li data-i18n="priv-li3-5" data-i18n-html="true"><strong>Cal.com</strong> (naptár iframe) — <a href="https://cal.com/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">cal.com/privacy</a></li>
+          </ul>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h4">4. Adatkezelés jogalapja és időtartama</h4>
+          <p data-i18n="priv-p4">A technikai adatok kezelésének jogalapja a GDPR 6. cikk (1) f) pontja (jogos érdek — a weboldal technikai üzemeltetése). A hangalapú interakció jogalapja a hozzájárulás (GDPR 6. cikk (1) a)), melyet a hívás indítása előtti felugró ablakban ad meg. Valós idejű hangfeldolgozás történik, a hangadatokat nem tároljuk hosszú távon.</p>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h5">5. Az Ön jogai</h4>
+          <p data-i18n="priv-p5">Ön jogosult tájékoztatást kérni, helyesbítést, törlést és tiltakozást kezdeményezni adatai kezelésével kapcsolatban. Kérelmét a info@dentai.me e-mail címre küldheti. Panaszt a Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH, www.naih.hu) tehet.</p>
+          <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h6">6. Felelősségkizárás</h4>
+          <p data-i18n="priv-p6">Ez egy portfolió demó. Az AI által generált válaszok nem minősülnek egészségügyi tanácsnak. Az üzemeltető semmilyen felelősséget nem vállal a felhasználó által megadott adatokért, illetve a mesterséges intelligencia válaszaiból eredő esetleges károkért.</p>
+          <p class="mt-4 text-xs text-slate-400" data-i18n="priv-updated">Hatályos: 2026. április 26.</p>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-slate-100">
+        <button id="legal-close-btn" type="button" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors" data-i18n="legal-close">Bezárás</button>
+        <button id="legal-ok-btn" type="button" class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-dental-600 hover:bg-dental-700 transition-colors">OK</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ElevenLabs Conversational AI SDK -->
   <script type="importmap">
   {
@@ -2642,7 +2702,7 @@
         'priv-h2': '2. Kezelt adatok és célok',
         'priv-li2-1': '<strong>Technikai adatok:</strong> IP-cím, böngésző és eszköz típusa, látogatás ideje — kizárólag a weboldal technikai üzemeltetése és biztonsági okokból (Cloudflare).',
         'priv-li2-2': '<strong>Hangadatok (csak ha indítja a hívást):</strong> Az Ön mikrofonjából érkező hang ideiglenesen feldolgozásra kerül a beszélgetés generálása érdekében (ElevenLabs). Kérjük, ne osszon meg valós személyes adatot!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> Az Ön böngészőjében tárolódik egy jelölés arról, hogy elfogadta a jogi nyilatkozatot — ezt nem továbbítjuk szervernek.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> A nyilatkozat elfogadását rögzítő adat tárolása kizárólag kliensoldalon történik, szerveroldali adattovábbítás nélkül.',
         'priv-h3': '3. Harmadik fél szolgáltatók (külföldi adattovábbítás)',
         'priv-p3': 'Az oldal az alábbi külső szolgáltatók erőforrásait tölti be. Ezáltal az Ön IP-címe és böngésző-adatai továbbításra kerülhetnek EGT-n kívüli harmadik országokba (jellemzően USA), ahol az érintett szolgáltatók saját adatvédelmi szabályzata vonatkozik az adatkezelésre:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, tárhely) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -2954,7 +3014,7 @@
         'priv-h2': '2. Data processed and purposes',
         'priv-li2-1': '<strong>Technical data:</strong> IP address, browser/device type, visit time — solely to serve the website and for security (Cloudflare).',
         'priv-li2-2': '<strong>Voice data (only if you start the call):</strong> Audio from your microphone is temporarily processed to generate the conversation (ElevenLabs). Please do not share real personal data!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> A flag is stored in your browser confirming you accepted the legal notice — this is not transmitted to any server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Data recording the acceptance of the declaration is stored exclusively on the client side, with no server-side data transmission.',
         'priv-h3': '3. Third-party providers (cross-border data transfer)',
         'priv-p3': 'The site loads resources from the third parties below. Therefore your IP address and browser data may be transferred to non-EU/EEA countries (third countries, typically the USA), where the relevant providers\' own privacy policies apply:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -3266,14 +3326,14 @@
         'priv-h2': '2. Verarbeitete Daten und Zwecke',
         'priv-li2-1': '<strong>Technische Daten:</strong> IP-Adresse, Browser-/Gerätetyp, Besuchszeit — ausschließlich zur Bereitstellung der Website und aus Sicherheitsgründen (Cloudflare).',
         'priv-li2-2': '<strong>Sprachdaten (nur bei Anrufstart):</strong> Audio aus Ihrem Mikrofon wird vorübergehend zur Erzeugung der Konversation verarbeitet (ElevenLabs). Bitte teilen Sie keine echten persönlichen Daten mit!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> In Ihrem Browser wird eine Markierung gespeichert, dass Sie die rechtlichen Hinweise akzeptiert haben — diese wird an keinen Server übertragen.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Die Speicherung der die Annahme der Erklärung bestätigenden Daten erfolgt ausschließlich clientseitig, ohne serverseitige Datenübertragung.',
         'priv-h3': '3. Drittanbieter (Drittstaatenübermittlung)',
         'priv-p3': 'Die Seite lädt Ressourcen von folgenden Drittanbietern. Dadurch können Ihre IP-Adresse und Browserdaten in Nicht-EU/EWR-Länder (Drittstaaten, typischerweise die USA) übermittelt werden, wo die jeweiligen Datenschutzrichtlinien der Anbieter gelten:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, Hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
         'priv-li3-2': '<strong>Google Fonts</strong> (Schriftarten) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">policies.google.com/privacy</a>',
         'priv-li3-3': '<strong>Tailwind CDN</strong> (CSS-Framework)',
         'priv-li3-4': '<strong>ElevenLabs</strong> (Voice-KI) — <a href="https://elevenlabs.io/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">elevenlabs.io/privacy</a>',
-        'priv-li3-5': '<strong>Cal.com</strong> (Kalender-iframe) — <a href="https://cal.com/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">cal.com/privacy</a>',
+        'priv-li3-5': '<strong>Cal.com</strong> (Kalender-Iframe) — <a href="https://cal.com/privacy" target="_blank" rel="noopener" class="text-dental-600 hover:underline">cal.com/privacy</a>',
         'priv-h4': '4. Rechtsgrundlage und Speicherdauer',
         'priv-p4': 'Technische Daten werden gemäß Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse — sicherer Betrieb der Website) verarbeitet. Sprachinteraktion erfolgt auf Grundlage der Einwilligung (Art. 6 Abs. 1 lit. a), die vor Anrufstart im Pop-up erteilt wird. Sprachdaten werden nicht langfristig gespeichert.',
         'priv-h5': '5. Ihre Rechte',
@@ -3578,7 +3638,7 @@ nl: {
         'priv-h2': '2. Verwerkte gegevens en doeleinden',
         'priv-li2-1': '<strong>Technische gegevens:</strong> IP-adres, browser-/apparaattype, bezoekduur — uitsluitend voor de technische werking van de website en om veiligheidsredenen (Cloudflare).',
         'priv-li2-2': '<strong>Spraakgegevens (alleen bij gespreksstart):</strong> Audio van uw microfoon wordt tijdelijk verwerkt om het gesprek te genereren (ElevenLabs). Deel alstublieft geen echte persoonlijke gegevens!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> In uw browser wordt een markering opgeslagen dat u de juridische kennisgeving heeft geaccepteerd — deze wordt niet naar een server verzonden.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> De gegevens die de aanvaarding van de verklaring vastleggen, worden uitsluitend aan de clientzijde opgeslagen, zonder serverzijde gegevensoverdracht.',
         'priv-h3': '3. Derde partijen (internationale gegevensoverdracht)',
         'priv-p3': 'De site laadt bronnen van de volgende derde partijen. Daardoor kunnen uw IP-adres en browsergegevens worden overgedragen aan derde landen (meestal de VS), waar het desbetreffende privacybeleid van de aanbieder geldt:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -3891,7 +3951,7 @@ nl: {
         'priv-h2': '2. Données traitées et finalités',
         'priv-li2-1': '<strong>Données techniques :</strong> adresse IP, type de navigateur/appareil, heure de visite — uniquement pour le bon fonctionnement du site et pour la sécurité (Cloudflare).',
         'priv-li2-2': '<strong>Données vocales (uniquement si vous lancez l\'appel) :</strong> L\'audio de votre microphone est temporairement traité pour générer la conversation (ElevenLabs). Veuillez ne pas partager de données personnelles réelles !',
-        'priv-li2-3': '<strong>LocalStorage :</strong> Un indicateur est stocké dans votre navigateur confirmant que vous avez accepté l\'avis juridique — il n\'est transmis à aucun serveur.',
+        'priv-li2-3': '<strong>LocalStorage :</strong> Les données enregistrement l\'acceptation de la déclaration sont stockées exclusivement côté client, sans transmission de données côté serveur.',
         'priv-h3': '3. Prestataires tiers (transfert international de données)',
         'priv-p3': 'Le site charge des ressources provenant des prestataires tiers ci-dessous. Votre adresse IP et vos données de navigation peuvent donc être transférées vers des pays tiers (généralement les USA), où les propres politiques de confidentialité des prestataires concernés s\'appliquent :',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hébergement) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -4203,7 +4263,7 @@ nl: {
         'priv-h2': '2. Dati trattati e finalità',
         'priv-li2-1': '<strong>Dati tecnici:</strong> indirizzo IP, tipo di browser/dispositivo, orario di visita — esclusivamente per il corretto funzionamento del sito e per motivi di sicurezza (Cloudflare).',
         'priv-li2-2': '<strong>Dati vocali (solo se si avvia la chiamata):</strong> L\'audio del Suo microfono viene elaborato temporaneamente per generare la conversazione (ElevenLabs). La preghiamo di non condividere dati personali reali!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> Un flag viene memorizzato nel Suo browser confermando che ha accettato l\'informativa legale — non viene trasmesso ad alcun server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> I dati che registrano l\'accettazione della dichiarazione sono memorizzati esclusivamente lato client, senza trasmissione di dati lato server.',
         'priv-h3': '3. Fornitori terzi (trasferimento internazionale dei dati)',
         'priv-p3': 'Il sito carica risorse dai seguenti fornitori terzi. Pertanto, il Suo indirizzo IP e i dati di navigazione possono essere trasferiti in paesi terzi (tipicamente USA), dove si applicano le rispettive politiche sulla privacy dei fornitori:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -4514,7 +4574,7 @@ da: {
         'priv-h2': '2. Behandlede data og formål',
         'priv-li2-1': '<strong>Tekniske data:</strong> IP-adresse, browser og enhedstype, besøgstidspunkt — udelukkende til hjemmesidebetjening og sikkerhedsmæssige årsager (Cloudflare).',
         'priv-li2-2': '<strong>Taledata (kun ved samtalestart):</strong> Lyd fra din mikrofon behandles midlertidigt for at generere samtalen (ElevenLabs). Venligst ikke del reelle personoplysninger!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> I din browser gemmes en markering om at du har accepteret den juridiske erklæring — dette sendes ikke til nogen server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Data, der registrerer accepten af erklæringen, opbevares udelukkende på klientsiden, uden overførsel af data på serversiden.',
         'priv-h3': '3. Tredjepartsudbydere (dataoverførsel til udlandet)',
         'priv-p3': 'Hjemmesiden indlæser ressourcer fra følgende eksterne udbydere. Derved kan din IP-adresse og browserdata overføres til land udenfor EU/EOS (tredjelande, typisk USA), hvor den pågældende udbyders egne privatlivsregler gælder for databehandlingen:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -4826,7 +4886,7 @@ da: {
         'priv-h2': '2. Behandlede data og formål',
         'priv-li2-1': '<strong>Tekniske data:</strong> IP-adresse, nettleser og enhetstype, besøkstidspunkt — utelukkende for nettsidebetjening og sikkerhetsgrunner (Cloudflare).',
         'priv-li2-2': '<strong>Taledata (kun ved samtalestart):</strong> Lyd fra mikrofonen din behandles midlertidig for å generere samtalen (ElevenLabs). Vennligst ikke del reelle personopplysninger!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> I nettleseren din lagres en merking om at du har akseptert den juridiske erklæringen — dette sendes ikke til noen server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Data som registrerer aksepten av erklæringen, lagres utelukkende på klientsiden, uten overføring av data på serversiden.',
         'priv-h3': '3. Tredjepartsleverandører (dataoverføring til utlandet)',
         'priv-p3': 'Nettsiden laster inn ressurser fra følgende eksterne leverandører. Dermed kan din IP-adresse og nettleserdata overføres til land utenfor EU/EØS (tredjeland, typisk USA), der den aktuelle leverandørens egne personvernregler gjelder for databehandlingen:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -5137,7 +5197,7 @@ sv: {
         'priv-h2': '2. Behandlade data och syfte',
         'priv-li2-1': '<strong>Tekniska data:</strong> IP-adress, webbläsare och enhetstyp, besökstidspunkt — uteslutande för webbplatsdrift och säkerhetsskäl (Cloudflare).',
         'priv-li2-2': '<strong>Taldata (endast vid samtalstart):</strong> Ljud från din mikrofon bearbetas tillfälligt för att generera samtalet (ElevenLabs). Vänligen dela inte verkliga personuppgifter!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> I din webbläsare lagras en markering om att du har accepterat den juridiska förklaringen — detta skickas inte till någon server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Data som registrerar acceptansen av förklaringen lagras uteslutande på klientsidan, utan överföring av data på serversidan.',
         'priv-h3': '3. Tredjepartsleverantörer (dataöverföring till utlandet)',
         'priv-p3': 'Webbplatsen laddar in resurser från följande externa leverantörer. Därmed kan din IP-adress och webbläsardata överföras till länder utanför EU/EES (tredjeländer, typiskt USA), där den aktuella leverantörens egna integritetsregler gäller för databehandlingen:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -5448,7 +5508,7 @@ fi: {
         'priv-h2': '2. Käsitellyt tiedot ja tarkoitukset',
         'priv-li2-1': '<strong>Tekniset tiedot:</strong> IP-osoite, selain ja laitetyyppi, vierailun ajankohta — yksinomaan verkkosivuston toimintaa ja turvallisuutta varten (Cloudflare).',
         'priv-li2-2': '<strong>Puhetiedot (vain puhelun alussa):</strong> mikrofonisi ääni käsitellään väliaikaisesti keskustelun tuottamiseksi (ElevenLabs). Älä jaa todellisia henkilötietojasi!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> Selaimeesi tallennetaan merkintä siitä, että olet hyväksynyt oikeudellisen ilmoituksen — tätä ei lähetetä mihinkään palvelimeen.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Ilmoituksen hyväksymisen tallentavat tiedot säilytetään yksinomaan asiakaspuolella ilman palvelinpuolen tiedonsiirtoa.',
         'priv-h3': '3. Kolmannen osapuolen palveluntarjoajat (tietojensiirto ulkomaille)',
         'priv-p3': 'Verkkosivusto lataa resursseja seuraavilta ulkoisilta palveluntarjoajilta. Näin ollen IP-osoitteesi ja selaintietosi voidaan siirtää kolmansiin maihin (tyypillisesti Yhdysvaltoihin), missä kyseisen palveluntarjoajan omat tietosuojasäännöt ovat voimassa tietojenkäsittelyssä:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, isännöinti) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
@@ -5761,7 +5821,7 @@ fi: {
         'priv-h2': '2. Spracovávané údaje a účely',
         'priv-li2-1': '<strong>Technické údaje:</strong> IP adresa, typ prehliadača a zariadenia, čas návštevy — výhradne za účelom obsluhy webovej stránky a z bezpečnostných dôvodov (Cloudflare).',
         'priv-li2-2': '<strong>Hlasové údaje (len pri spustení hovoru):</strong> Zvuk z vášho mikrofónu sa dočasne spracováva na generovanie konverzácie (ElevenLabs). Prosím, nezdieľajte skutočné osobné údaje!',
-        'priv-li2-3': '<strong>LocalStorage:</strong> Vo vašom prehliadači sa uloží označenie, že ste prijali právne vyhlásenie — to sa neposiela na žiadny server.',
+        'priv-li2-3': '<strong>LocalStorage:</strong> Údaje zaznamenávajúce prijatie vyhlásenia sa ukladajú výhradne na strane klienta, bez prenosu údajov na strane servera.',
         'priv-h3': '3. Poskytovatelia tretích strán (prenos údajov do zahraničia)',
         'priv-p3': 'Webová stránka načítava zdroje od nasledujúcich externých poskytovateľov. Tým môžu byť vaša IP adresa a údaje prehliadača prenesené do tretích krajín (typicky USA), kde platia príslušné pravidlá ochrany údajov poskytovateľa:',
         'priv-li3-1': '<strong>Cloudflare</strong> (CDN, hosting) — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-dental-600 hover:underline">privacypolicy</a>',
