@@ -310,7 +310,7 @@
               </a>
             </div>
           </div>
-          <div class="mt-10 flex flex-wrap gap-x-6 gap-y-3 items-center justify-center lg:justify-start text-sm text-slate-500">
+          <div class="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-3 items-center sm:items-center justify-center lg:justify-start text-sm text-slate-500">
             <div class="flex items-center gap-1.5"><svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="feat-1">0–24 híváskezelés</span></div>
             <div class="flex items-center gap-1.5"><svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="feat-2">Automatikus visszaigazolás</span></div>
             <div class="flex items-center gap-1.5"><svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span data-i18n="feat-3">11 nyelven</span></div>
@@ -1289,27 +1289,24 @@
           <div class="space-y-3">
             <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
               <span class="text-sm text-slate-800 font-medium" data-i18n="treat1-name">Vizsgálat / Konzultáció</span>
-              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat1-dur">30 perc (1 slot)</span>
+              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat1-dur">30 perc</span>
             </div>
             <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
               <span class="text-sm text-slate-800 font-medium" data-i18n="treat2-name">Fogkőleszedés</span>
-              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat2-dur">30 perc (1 slot)</span>
+              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat2-dur">30 perc</span>
             </div>
-            <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
-              <span class="text-sm text-slate-800 font-medium" data-i18n="treat3-name">Kombinált (Vizsgálat + Fogkőleszedés)</span>
-              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat3-dur">60 perc (2 slot)</span>
-            </div>
+
             <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
               <span class="text-sm text-slate-800 font-medium" data-i18n="treat4-name">Töméscsere</span>
-              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat4-dur">60 perc (2 slot)</span>
+              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat4-dur">45 perc</span>
             </div>
             <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
               <span class="text-sm text-slate-800 font-medium" data-i18n="treat5-name">Gyökérkezelés</span>
-              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat5-dur">90 perc (3 slot)</span>
+              <span class="text-xs font-semibold text-dental-600 bg-dental-50 px-2.5 py-1 rounded-full" data-i18n="treat5-dur">90 perc</span>
             </div>
             <div class="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-200/60">
               <span class="text-sm text-slate-800 font-medium" data-i18n="treat6-name">Sürgősségi ellátás</span>
-              <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full" data-i18n="treat6-dur">60 perc (2 slot)</span>
+              <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full" data-i18n="treat6-dur">60 perc</span>
             </div>
           </div>
         </div>
@@ -2501,17 +2498,14 @@
         'clinic-treatments-title': 'Kezelések és időtartam',
         'clinic-treatments-note': '30 perces sávrácson',
         'treat1-name': 'Vizsgálat / Konzultáció',
-        'treat1-dur': '30 perc (1 slot)',
+        'treat1-dur': '30 perc',
         'treat2-name': 'Fogkőleszedés',
-        'treat2-dur': '30 perc (1 slot)',
-        'treat3-name': 'Kombinált (Vizsgálat + Fogkőleszedés)',
-        'treat3-dur': '60 perc (2 slot)',
-        'treat4-name': 'Töméscsere',
-        'treat4-dur': '60 perc (2 slot)',
+        'treat2-dur': '30 perc',        'treat4-name': 'Töméscsere',
+        'treat4-dur': '45 perc',
         'treat5-name': 'Gyökérkezelés',
-        'treat5-dur': '90 perc (3 slot)',
+        'treat5-dur': '90 perc',
         'treat6-name': 'Sürgősségi ellátás',
-        'treat6-dur': '60 perc (2 slot)',
+        'treat6-dur': '60 perc',
 
         'faq-sub': 'Gyakori kérdések',
         'social-sub': 'Social AutoPilot',
@@ -2819,17 +2813,14 @@
         'clinic-treatments-title': 'Treatments & Duration',
         'clinic-treatments-note': '30-minute time slots',
         'treat1-name': 'Examination / Consultation',
-        'treat1-dur': '30 min (1 slot)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Tartar Removal',
-        'treat2-dur': '30 min (1 slot)',
-        'treat3-name': 'Combined (Exam + Tartar Removal)',
-        'treat3-dur': '60 min (2 slots)',
-        'treat4-name': 'Filling Replacement',
-        'treat4-dur': '60 min (2 slots)',
+        'treat2-dur': '30 min',        'treat4-name': 'Filling Replacement',
+        'treat4-dur': '45 min',
         'treat5-name': 'Root Canal Treatment',
-        'treat5-dur': '90 min (3 slots)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Emergency Care',
-        'treat6-dur': '60 min (2 slots)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Frequently Asked Questions',
         'social-sub': 'Social AutoPilot',
@@ -3137,17 +3128,14 @@
         'clinic-treatments-title': 'Behandlungen & Dauer',
         'clinic-treatments-note': '30-Minuten-Zeitslots',
         'treat1-name': 'Untersuchung / Beratung',
-        'treat1-dur': '30 Min. (1 Slot)',
+        'treat1-dur': '30 Min.',
         'treat2-name': 'Zahnsteinentfernung',
-        'treat2-dur': '30 Min. (1 Slot)',
-        'treat3-name': 'Kombiniert (Untersuchung + Zahnstein)',
-        'treat3-dur': '60 Min. (2 Slots)',
-        'treat4-name': 'Füllungswechsel',
-        'treat4-dur': '60 Min. (2 Slots)',
+        'treat2-dur': '30 Min.',        'treat4-name': 'Füllungswechsel',
+        'treat4-dur': '45 Min.',
         'treat5-name': 'Wurzelbehandlung',
-        'treat5-dur': '90 Min. (3 Slots)',
+        'treat5-dur': '90 Min.',
         'treat6-name': 'Notfallversorgung',
-        'treat6-dur': '60 Min. (2 Slots)',
+        'treat6-dur': '60 Min.',
 
         'faq-sub': 'Häufig gestellte Fragen',
         'social-sub': 'Social AutoPilot',
@@ -3455,17 +3443,14 @@ nl: {
         'clinic-treatments-title': 'Behandelingen & Duur',
         'clinic-treatments-note': 'Tijdblokken van 30 minuten',
         'treat1-name': 'Onderzoek / Consult',
-        'treat1-dur': '30 min (1 blok)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Tartaarverwijdering',
-        'treat2-dur': '30 min (1 blok)',
-        'treat3-name': 'Gecombineerd (Onderzoek + Tartaar)',
-        'treat3-dur': '60 min (2 blokken)',
-        'treat4-name': 'Vulling vervangen',
-        'treat4-dur': '60 min (2 blokken)',
+        'treat2-dur': '30 min',        'treat4-name': 'Vulling vervangen',
+        'treat4-dur': '45 min',
         'treat5-name': 'Wortelkanaalbehandeling',
-        'treat5-dur': '90 min (3 blokken)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Spoedzorg',
-        'treat6-dur': '60 min (2 blokken)',
+        'treat6-dur': '60 min',
 
         'social-sub': 'Social AutoPilot',
         'social-title': 'Anna post voor u',
@@ -3774,17 +3759,14 @@ nl: {
         'clinic-treatments-title': 'Traitements & Durée',
         'clinic-treatments-note': 'Créneaux de 30 minutes',
         'treat1-name': 'Examen / Consultation',
-        'treat1-dur': '30 min (1 créneau)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Détartrage',
-        'treat2-dur': '30 min (1 créneau)',
-        'treat3-name': 'Combiné (Examen + Détartrage)',
-        'treat3-dur': '60 min (2 créneaux)',
-        'treat4-name': 'Remplacement d\'obturation',
-        'treat4-dur': '60 min (2 créneaux)',
+        'treat2-dur': '30 min',        'treat4-name': 'Remplacement d\'obturation',
+        'treat4-dur': '45 min',
         'treat5-name': 'Traitement de canal',
-        'treat5-dur': '90 min (3 créneaux)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Soins d\'urgence',
-        'treat6-dur': '60 min (2 créneaux)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Questions fréquentes',
         'social-sub': 'Social AutoPilot',
@@ -4092,17 +4074,14 @@ nl: {
         'clinic-treatments-title': 'Trattamenti & Durata',
         'clinic-treatments-note': 'Fasce orarie da 30 minuti',
         'treat1-name': 'Visita / Consulenza',
-        'treat1-dur': '30 min (1 fascia)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Pulizia tartaro',
-        'treat2-dur': '30 min (1 fascia)',
-        'treat3-name': 'Combinato (Visita + Pulizia tartaro)',
-        'treat3-dur': '60 min (2 fasce)',
-        'treat4-name': 'Sostituzione otturazione',
-        'treat4-dur': '60 min (2 fasce)',
+        'treat2-dur': '30 min',        'treat4-name': 'Sostituzione otturazione',
+        'treat4-dur': '45 min',
         'treat5-name': 'Trattamento canalare',
-        'treat5-dur': '90 min (3 fasce)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Pronto soccorso dentale',
-        'treat6-dur': '60 min (2 fasce)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Domande frequenti',
         'social-sub': 'Social AutoPilot',
@@ -4410,17 +4389,14 @@ da: {
         'clinic-treatments-title': 'Behandlinger & Varighed',
         'clinic-treatments-note': '30-minutters tidsblokke',
         'treat1-name': 'Undersøgelse / Konsultation',
-        'treat1-dur': '30 min (1 blok)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Tandstensfjernelse',
-        'treat2-dur': '30 min (1 blok)',
-        'treat3-name': 'Kombineret (Undersøgelse + Tandsten)',
-        'treat3-dur': '60 min (2 blokke)',
-        'treat4-name': 'Fyldningsskift',
-        'treat4-dur': '60 min (2 blokke)',
+        'treat2-dur': '30 min',        'treat4-name': 'Fyldningsskift',
+        'treat4-dur': '45 min',
         'treat5-name': 'Rodbehandling',
-        'treat5-dur': '90 min (3 blokke)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Akutbehandling',
-        'treat6-dur': '60 min (2 blokke)',
+        'treat6-dur': '60 min',
 
         'social-sub': 'Social AutoPilot',
         'social-title': 'Anna poster for dig',
@@ -4728,17 +4704,14 @@ da: {
         'clinic-treatments-title': 'Behandlinger & Varighet',
         'clinic-treatments-note': '30-minutters tidsblokker',
         'treat1-name': 'Undersøkelse / Konsultasjon',
-        'treat1-dur': '30 min (1 blokk)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Tannstensfjerning',
-        'treat2-dur': '30 min (1 blokk)',
-        'treat3-name': 'Kombinert (Undersøkelse + Tannstein)',
-        'treat3-dur': '60 min (2 blokker)',
-        'treat4-name': 'Fyllingsskift',
-        'treat4-dur': '60 min (2 blokker)',
+        'treat2-dur': '30 min',        'treat4-name': 'Fyllingsskift',
+        'treat4-dur': '45 min',
         'treat5-name': 'Rotbehandling',
-        'treat5-dur': '90 min (3 blokker)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Akuttbehandling',
-        'treat6-dur': '60 min (2 blokker)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Ofte stilte spørsmål',
         'social-sub': 'Social AutoPilot',
@@ -5045,17 +5018,14 @@ sv: {
         'clinic-treatments-title': 'Behandlingar & Duration',
         'clinic-treatments-note': '30-minuters tidsluckor',
         'treat1-name': 'Undersökning / Konsultation',
-        'treat1-dur': '30 min (1 lucka)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Tandstensborttagning',
-        'treat2-dur': '30 min (1 lucka)',
-        'treat3-name': 'Kombinerad (Undersökning + Tandsten)',
-        'treat3-dur': '60 min (2 luckor)',
-        'treat4-name': 'Fyllningsbyte',
-        'treat4-dur': '60 min (2 luckor)',
+        'treat2-dur': '30 min',        'treat4-name': 'Fyllningsbyte',
+        'treat4-dur': '45 min',
         'treat5-name': 'Rotbehandling',
-        'treat5-dur': '90 min (3 luckor)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Akutvård',
-        'treat6-dur': '60 min (2 luckor)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Vanliga frågor',
         'social-sub': 'Social AutoPilot',
@@ -5362,17 +5332,14 @@ fi: {
         'clinic-treatments-title': 'Hoidot & Kesto',
         'clinic-treatments-note': '30 minuutin aikaikkunat',
         'treat1-name': 'Tutkimus / Konsultaatio',
-        'treat1-dur': '30 min (1 ikkuna)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Hammaskiven poisto',
-        'treat2-dur': '30 min (1 ikkuna)',
-        'treat3-name': 'Yhdistelmä (Tutkimus + Hammaskivi)',
-        'treat3-dur': '60 min (2 ikkunaa)',
-        'treat4-name': 'Paikan vaihto',
-        'treat4-dur': '60 min (2 ikkunaa)',
+        'treat2-dur': '30 min',        'treat4-name': 'Paikan vaihto',
+        'treat4-dur': '45 min',
         'treat5-name': 'Juurihoito',
-        'treat5-dur': '90 min (3 ikkunaa)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Hätähoito',
-        'treat6-dur': '60 min (2 ikkunaa)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Usein kysytyt kysymykset',
         'social-sub': 'Social AutoPilot',
@@ -5680,17 +5647,14 @@ fi: {
         'clinic-treatments-title': 'Liečby & Trvanie',
         'clinic-treatments-note': '30-minútové časové bloky',
         'treat1-name': 'Vyšetrenie / Konzultácia',
-        'treat1-dur': '30 min (1 blok)',
+        'treat1-dur': '30 min',
         'treat2-name': 'Odstránenie zubného kameňa',
-        'treat2-dur': '30 min (1 blok)',
-        'treat3-name': 'Kombinované (Vyšetrenie + Zubný kameň)',
-        'treat3-dur': '60 min (2 bloky)',
-        'treat4-name': 'Výmena plomby',
-        'treat4-dur': '60 min (2 bloky)',
+        'treat2-dur': '30 min',        'treat4-name': 'Výmena plomby',
+        'treat4-dur': '45 min',
         'treat5-name': 'Ošetrenie koreňa',
-        'treat5-dur': '90 min (3 bloky)',
+        'treat5-dur': '90 min',
         'treat6-name': 'Núdzová starostlivosť',
-        'treat6-dur': '60 min (2 bloky)',
+        'treat6-dur': '60 min',
 
         'faq-sub': 'Časté otázky',
         'social-sub': 'Social AutoPilot',
