@@ -141,7 +141,120 @@
     .faq-toggle { transition: color 0.2s ease; }
     .faq-toggle:hover { color: #1e293b; }
   </style>
-</head>
+
+  <!-- ============================================================= -->
+  <!-- AI / FUTURE THEME OVERRIDES — modern, AI-fókuszú esztétika    -->
+  <!-- Sötét hero, mesh gradient, glassmorph kártyák, neon akcensek  -->
+  <!-- ============================================================= -->
+  <!-- POLISH OVERRIDES — eredeti design finomítva, prémium részletek -->
+  <!-- ============================================================= -->
+  <style id="polish-overrides">
+    :root{
+      --d-50:#eff6ff;--d-100:#dbeafe;--d-200:#bfdbfe;--d-300:#93c5fd;
+      --d-400:#60a5fa;--d-500:#3b82f6;--d-600:#2563eb;--d-700:#1d4ed8;--d-800:#1e40af;
+      --ink-900:#0b1220;--ink-700:#1f2a3d;--ink-500:#54607a;--ink-400:#7e8aa3;
+      --line:#e6eaf2;--paper-2:#f7f9fc;
+    }
+    body{letter-spacing:-0.005em;font-feature-settings:"ss01","cv11","tnum";color:var(--ink-700)}
+    h1,h2,h3,h4{color:var(--ink-900);letter-spacing:-0.024em}
+    h1.font-extrabold{font-weight:800!important;letter-spacing:-0.034em!important}
+    h2.text-3xl,h2.text-4xl{font-weight:700!important;letter-spacing:-0.028em!important}
+    @media(min-width:640px){h2.sm\:text-4xl{font-size:2.4rem!important;line-height:1.1!important}}
+
+    .bg-slate-50{background-color:var(--paper-2)!important}
+    .border-slate-200,.border-slate-200\/50,.border-slate-200\/60,.border-slate-200\/80,.border-slate-100{border-color:var(--line)!important}
+
+    .text-dental-500{color:var(--d-500)!important}
+    .text-dental-600{color:var(--d-600)!important}
+    .text-dental-700{color:var(--d-700)!important}
+    .bg-dental-50{background-color:var(--d-50)!important}
+    .bg-dental-100{background-color:var(--d-100)!important}
+    .bg-dental-600{background-color:var(--d-600)!important}
+    .bg-dental-700{background-color:var(--d-700)!important}
+    .border-dental-200,.border-dental-200\/40,.border-dental-200\/60,.border-dental-200\/80{border-color:var(--d-200)!important}
+
+    .hero-bg{background:radial-gradient(ellipse 70% 50% at 20% 35%,rgba(37,99,235,0.07) 0%,transparent 65%),radial-gradient(ellipse 55% 50% at 82% 65%,rgba(96,165,250,0.06) 0%,transparent 65%),linear-gradient(180deg,#fafbfd 0%,#ffffff 100%)!important}
+    h1 .bg-gradient-to-r.from-dental-600.via-blue-500.to-dental-500{background:linear-gradient(95deg,#1d4ed8 0%,#3b82f6 45%,#2563eb 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+
+    #hero-call-btn{background:linear-gradient(180deg,#2f7af0 0%,#1d4ed8 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 1px 0 rgba(8,12,30,0.04),0 12px 28px -10px rgba(37,99,235,0.45)!important;font-weight:600!important;letter-spacing:0.005em;transition:transform .25s ease,box-shadow .25s ease,filter .2s ease!important}
+    #hero-call-btn:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:inset 0 1px 0 rgba(255,255,255,0.22),0 16px 36px -10px rgba(37,99,235,0.55)!important}
+    .call-ring-1{border-color:rgba(37,99,235,0.32)!important}
+    .call-ring-2{border-color:rgba(37,99,235,0.16)!important}
+
+    #header-call-btn{background:linear-gradient(180deg,#2f7af0 0%,#1d4ed8 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 6px 16px -8px rgba(37,99,235,0.45)!important}
+    #header-call-btn:hover{filter:brightness(1.05)}
+    #mobile-call-btn{background:linear-gradient(180deg,#2f7af0 0%,#1d4ed8 100%)!important;box-shadow:0 12px 28px -10px rgba(37,99,235,0.45)!important}
+
+    #header{background:rgba(255,255,255,0.82)!important;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--line)!important}
+
+    #header-status,.bg-emerald-50\/80{background:rgba(16,185,129,0.09)!important;border-color:rgba(16,185,129,0.28)!important}
+    .text-emerald-700{color:#047857!important}
+    .pulse-dot::after,.pulse-dot::before{background:#10b981!important}
+
+    .rounded-3xl{border-radius:1.25rem!important}
+    .rounded-2xl{border-radius:0.875rem!important}
+    .rounded-xl{border-radius:0.625rem!important}
+
+    .bg-white.rounded-3xl,.bg-slate-50.rounded-3xl{border:1px solid var(--line)!important;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease,border-color .35s ease}
+    .group:hover>.bg-white.rounded-3xl,.group:hover>.bg-slate-50.rounded-3xl,.bg-white.rounded-3xl:hover,.bg-slate-50.rounded-3xl:hover{transform:translateY(-3px);border-color:var(--d-200)!important;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 38px -18px rgba(37,99,235,0.18),0 4px 12px -6px rgba(8,12,30,0.06)!important}
+
+    .w-14.h-14.rounded-2xl.bg-gradient-to-br.from-dental-500.to-blue-600,.w-14.h-14.rounded-2xl.bg-dental-600{background:linear-gradient(180deg,#3b82f6 0%,#1d4ed8 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.20),0 10px 24px -8px rgba(37,99,235,0.45)!important}
+
+    .step-num{background:var(--d-50)!important;color:var(--d-700)!important;box-shadow:inset 0 0 0 1px var(--d-200)!important;font-feature-settings:"tnum","cv11"}
+    .bg-dental-50.text-dental-700,.bg-dental-50 .text-dental-700{background:var(--d-50)!important;color:var(--d-700)!important;box-shadow:inset 0 0 0 1px rgba(37,99,235,0.10)}
+
+    .bg-gradient-to-br.from-dental-50\/80.to-blue-50\/60{background:linear-gradient(165deg,#eff6ff 0%,#ffffff 75%)!important;border-color:var(--d-200)!important}
+    .bg-gradient-to-br.from-dental-500.to-blue-600{background:linear-gradient(180deg,#3b82f6 0%,#1d4ed8 100%)!important}
+    .chat-bubble .bg-dental-600{background:linear-gradient(180deg,#2f7af0 0%,#1d4ed8 100%)!important}
+
+    .phone-frame{box-shadow:0 0 0 1.5px #1e2a44,0 30px 70px -20px rgba(8,12,30,0.30),0 10px 24px -8px rgba(8,12,30,0.10),0 0 60px rgba(37,99,235,0.10)!important}
+
+    .hero-bg .float-slow>.bg-white,.hero-bg .float-med>.bg-white,.hero-bg .hidden.lg\:block .bg-white{background:rgba(255,255,255,0.85)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)!important;box-shadow:0 12px 36px -16px rgba(37,99,235,0.18),0 4px 10px -4px rgba(8,12,30,0.06)!important}
+    .float-slow.bg-dental-200\/20,.float-med.bg-blue-200\/20{background-color:rgba(96,165,250,0.16)!important;filter:blur(36px);opacity:0.7}
+
+    .shadow-sm{--tw-shadow:0 1px 2px rgba(8,12,30,0.05)!important;box-shadow:var(--tw-shadow)!important}
+    .shadow-lg{--tw-shadow:0 14px 32px -14px rgba(8,12,30,0.16),0 4px 10px -4px rgba(8,12,30,0.06)!important;box-shadow:var(--tw-shadow)!important}
+    .shadow-xl{--tw-shadow:0 26px 56px -22px rgba(8,12,30,0.20),0 6px 14px -6px rgba(8,12,30,0.08)!important;box-shadow:var(--tw-shadow)!important}
+    .hover\:shadow-xl:hover{--tw-shadow:0 28px 60px -22px rgba(37,99,235,0.25),0 8px 18px -8px rgba(8,12,30,0.10)!important;box-shadow:var(--tw-shadow)!important}
+
+    .text-dental-500.uppercase{letter-spacing:0.20em!important;font-weight:700!important;color:var(--d-600)!important}
+
+    section.py-16{padding-top:5rem!important;padding-bottom:5rem!important}
+    @media(min-width:1024px){section.lg\:py-24{padding-top:7rem!important;padding-bottom:7rem!important}section.lg\:py-20{padding-top:6rem!important;padding-bottom:6rem!important}}
+    section .text-center.max-w-2xl>h2{margin-top:0.75rem!important}
+    section .text-center.max-w-2xl>p{margin-top:1.25rem!important;line-height:1.65!important}
+
+    .text-slate-900{color:var(--ink-900)!important}
+    .text-slate-700{color:#2c3a55!important}
+    .text-slate-600{color:var(--ink-700)!important}
+    .text-slate-500{color:var(--ink-500)!important}
+    .text-slate-400{color:var(--ink-400)!important}
+
+    button.rounded-2xl,a.rounded-2xl{border-radius:0.75rem!important}
+
+    .faq-item{border-color:var(--line)!important;background:#fff!important;transition:all .28s ease}
+    .faq-item:hover{border-color:var(--d-200)!important;box-shadow:0 6px 20px -10px rgba(37,99,235,0.20)!important}
+    .faq-item.faq-open{border-color:var(--d-300)!important;background:var(--paper-2)!important;box-shadow:0 8px 22px -10px rgba(37,99,235,0.22)!important}
+    .faq-item.faq-open .faq-chevron{color:var(--d-600)!important}
+
+    .lang-badge{background:#fff!important;border-color:var(--line)!important;transition:all .25s ease}
+    .lang-badge:hover{transform:translateY(-1px);border-color:var(--d-200)!important;box-shadow:0 4px 12px -6px rgba(37,99,235,0.18)!important}
+    #lang-dropdown-btn{background:rgba(255,255,255,0.7)!important;border-color:var(--line)!important;backdrop-filter:blur(8px)}
+    #lang-dropdown-btn:hover{background:var(--d-50)!important;border-color:var(--d-200)!important}
+
+    .loader-ring{border-color:var(--d-500)!important}
+    .loader-dot{background:var(--d-500)!important}
+
+    ::selection{background:rgba(37,99,235,0.22);color:var(--ink-900)}
+
+    input:focus,textarea:focus,select:focus{outline:none!important;border-color:var(--d-500)!important;box-shadow:0 0 0 3px rgba(37,99,235,0.18)!important}
+
+    @keyframes mic-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.92}}
+
+    .cap-glow{opacity:0.45!important;filter:blur(80px)!important}
+    .prompt-card:hover{box-shadow:0 6px 18px -8px rgba(37,99,235,0.18)!important;border-color:var(--d-200)!important;transform:translateX(2px)}
+  </style>
+
 <body class="bg-white text-slate-800 antialiased">
   <!-- DentAi Loader — eltűnik amikor a nyelv detektálás kész -->
   <div id="app-loader" style="position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;transition:opacity .45s ease,visibility .45s ease;">
@@ -1053,7 +1166,7 @@
                   </div>
                   <div>
                     <p class="text-[11px] font-semibold text-slate-800" data-i18n="care2-email-from">DentAi asszisztens</p>
-                    <p class="text-[10px] text-slate-400" data-i18n="care2-email-to">→ kovacs.janos@email.hu</p>
+                    <p class="text-[10px] text-slate-400" data-i18n="care2-email-to">→ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02696d746361712c68636c6d7142676f636b6e2c6a77">[email&#160;protected]</a></p>
                   </div>
                 </div>
                 <div class="bg-white rounded-xl border border-slate-200/60 p-3">
@@ -1551,7 +1664,7 @@
           <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             <div class="px-6 pb-5 pt-0">
               <div class="pl-[52px]">
-                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a info@dentai.me címen.</p>
+                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb2b5bdb49bbfbeb5afbab2f5b6be">[email&#160;protected]</a> címen.</p>
               </div>
             </div>
           </div>
@@ -1574,7 +1687,7 @@
           <h4 class="font-semibold text-white mb-3" data-i18n="footer-contact">Kapcsolat</h4>
           <ul class="space-y-2 text-sm">
             <li class="flex items-center gap-2 justify-center md:justify-start">
-              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>info@dentai.me
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="543d3a323b1430313a20353d7a3931">[email&#160;protected]</a>
             </li>
           </ul>
           <div class="flex items-center gap-3 mt-4 justify-center md:justify-start">
@@ -1646,7 +1759,7 @@
           <p data-i18n="imp-intro">Jelen weboldal egy portfolió bemutató, melyet az alábbi természetes személy üzemeltet. A weboldal nem nyújt valós egészségügyi szolgáltatást.</p>
           <div class="mt-4 space-y-2">
             <p><span class="font-semibold" data-i18n="imp-name-label">Üzemeltető neve:</span> <span data-i18n="imp-name-value">Petor Péter (természetes személy)</span></p>
-            <p><span class="font-semibold" data-i18n="imp-email-label">E-mail cím:</span> info@dentai.me</p>
+            <p><span class="font-semibold" data-i18n="imp-email-label">E-mail cím:</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="345d5a525b7450515a40555d1a5951">[email&#160;protected]</a></p>
             <p><span class="font-semibold" data-i18n="imp-purpose-label">Oldal célja:</span> <span data-i18n="imp-purpose-value">Portfolió / technológiai demó (nem kereskedelmi szolgáltatás)</span></p>
             <p><span class="font-semibold" data-i18n="imp-host-label">Tárhelyszolgáltató:</span> <span data-i18n="imp-host-value">Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA)</span></p>
           </div>
@@ -1656,7 +1769,7 @@
         <div data-legal-panel="privacy" class="hidden">
           <p data-i18n="priv-intro">Jelen tájékoztató a weboldal látogatása során történő adatkezelésről nyújt információt a GDPR (EU 2016/679 rendelet) és a 2011. évi CXII. törvény (Infotv.) alapján.</p>
           <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h1">1. Adatkezelő</h4>
-          <p data-i18n="priv-p1">Petor Péter természetes személy, kapcsolat: info@dentai.me. Az oldal portfolió demó, valós egészségügyi adatkezelés nem történik.</p>
+          <p data-i18n="priv-p1">Petor Péter természetes személy, kapcsolat: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="254c4b434a6541404b51444c0b4840">[email&#160;protected]</a>. Az oldal portfolió demó, valós egészségügyi adatkezelés nem történik.</p>
           <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h2">2. Kezelt adatok és célok</h4>
           <ul class="list-disc pl-5 space-y-1.5">
             <li data-i18n="priv-li2-1" data-i18n-html="true"><strong>Technikai adatok:</strong> IP-cím, böngésző és eszköz típusa, látogatás ideje — kizárólag a weboldal technikai üzemeltetése és biztonsági okokból (Cloudflare).</li>
@@ -1675,7 +1788,7 @@
           <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h4">4. Adatkezelés jogalapja és időtartama</h4>
           <p data-i18n="priv-p4">A technikai adatok kezelésének jogalapja a GDPR 6. cikk (1) f) pontja (jogos érdek — a weboldal technikai üzemeltetése). A hangalapú interakció jogalapja a hozzájárulás (GDPR 6. cikk (1) a)), melyet a hívás indítása előtti felugró ablakban ad meg. Valós idejű hangfeldolgozás történik, a hangadatokat nem tároljuk hosszú távon.</p>
           <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h5">5. Az Ön jogai</h4>
-          <p data-i18n="priv-p5">Ön jogosult tájékoztatást kérni, helyesbítést, törlést és tiltakozást kezdeményezni adatai kezelésével kapcsolatban. Kérelmét a info@dentai.me e-mail címre küldheti. Panaszt a Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH, www.naih.hu) tehet.</p>
+          <p data-i18n="priv-p5">Ön jogosult tájékoztatást kérni, helyesbítést, törlést és tiltakozást kezdeményezni adatai kezelésével kapcsolatban. Kérelmét a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80e9eee6efc0e4e5eef4e1e9aeede5">[email&#160;protected]</a> e-mail címre küldheti. Panaszt a Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH, www.naih.hu) tehet.</p>
           <h4 class="font-semibold text-slate-900 mt-4 mb-1" data-i18n="priv-h6">6. Felelősségkizárás</h4>
           <p data-i18n="priv-p6">Ez egy portfolió demó. Az AI által generált válaszok nem minősülnek egészségügyi tanácsnak. Az üzemeltető semmilyen felelősséget nem vállal a felhasználó által megadott adatokért, illetve a mesterséges intelligencia válaszaiból eredő esetleges károkért.</p>
           <p class="mt-4 text-xs text-slate-400" data-i18n="priv-updated">Hatályos: 2026. április 26.</p>
@@ -1690,7 +1803,7 @@
   </div>
 
   <!-- ElevenLabs Conversational AI SDK -->
-  <script type="importmap">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="importmap">
   {
     "imports": {
       "@elevenlabs/client": "https://esm.sh/@elevenlabs/client@1.4.0"
