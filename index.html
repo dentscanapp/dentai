@@ -561,12 +561,10 @@
             <p class="text-sm text-slate-500 mb-8" data-i18n="roi-inputs-desc">Húzza a csúszkákat — az eredmény azonnal frissül.</p>
 
             <div class="mb-8">
-              <div class="flex items-baseline justify-between mb-3">
-                <label for="roi-calls" class="text-sm font-semibold text-slate-700" data-i18n="roi-calls-label">Hány hívást fogad naponta?</label>
-                <div class="flex items-baseline gap-1">
-                  <span id="roi-calls-value" class="text-2xl font-bold text-slate-900 tabular-nums">40</span>
-                  <span class="text-sm text-slate-500" data-i18n="roi-calls-unit">hívás/nap</span>
-                </div>
+              <label for="roi-calls" class="block text-sm font-semibold text-slate-700 mb-1" data-i18n="roi-calls-label">Hány hívást fogad naponta?</label>
+              <div class="flex items-baseline gap-1 mb-3">
+                <span id="roi-calls-value" class="text-2xl font-bold text-slate-900 tabular-nums">40</span>
+                <span class="text-sm text-slate-500" data-i18n="roi-calls-unit">hívás/nap</span>
               </div>
               <input id="roi-calls" type="range" min="5" max="200" step="1" value="40" class="roi-slider w-full">
               <div class="flex justify-between mt-1 text-[11px] text-slate-400 font-medium">
@@ -575,24 +573,20 @@
             </div>
 
             <div class="mb-8">
-              <div class="flex items-baseline justify-between mb-3">
-                <label for="roi-missed" class="text-sm font-semibold text-slate-700" data-i18n="roi-missed-label">Elszalasztott hívások aránya</label>
-                <div class="flex items-baseline gap-1">
-                  <span id="roi-missed-value" class="text-2xl font-bold text-slate-900 tabular-nums">25</span>
-                  <span class="text-sm text-slate-500">%</span>
-                </div>
+              <label for="roi-missed" class="block text-sm font-semibold text-slate-700 mb-1" data-i18n="roi-missed-label">Elszalasztott hívások aránya</label>
+              <div class="flex items-baseline gap-1 mb-3">
+                <span id="roi-missed-value" class="text-2xl font-bold text-slate-900 tabular-nums">25</span>
+                <span class="text-sm text-slate-500">%</span>
               </div>
               <input id="roi-missed" type="range" min="5" max="60" step="1" value="25" class="roi-slider w-full">
               <p class="mt-2 text-xs text-slate-400" data-i18n="roi-missed-hint">Hétvége, ebédidő, párhuzamos hívások, nyelvi akadályok.</p>
             </div>
 
             <div>
-              <div class="flex items-baseline justify-between mb-3">
-                <label for="roi-value" class="text-sm font-semibold text-slate-700" data-i18n="roi-value-label">Átlagos kezelés értéke</label>
-                <div class="flex items-baseline gap-1">
-                  <span id="roi-value-value" class="text-2xl font-bold text-slate-900 tabular-nums">25 000</span>
-                  <span class="text-sm text-slate-500" data-i18n="roi-value-currency">Ft</span>
-                </div>
+              <label for="roi-value" class="block text-sm font-semibold text-slate-700 mb-1" data-i18n="roi-value-label">Átlagos kezelés értéke</label>
+              <div class="flex items-baseline gap-1 mb-3">
+                <span id="roi-value-value" class="text-2xl font-bold text-slate-900 tabular-nums">25 000</span>
+                <span class="text-sm text-slate-500" data-i18n="roi-value-currency">Ft</span>
               </div>
               <input id="roi-value" type="range" min="5000" max="150000" step="1000" value="25000" class="roi-slider w-full">
               <div class="flex justify-between mt-1 text-[11px] text-slate-400 font-medium">
