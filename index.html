@@ -2601,50 +2601,51 @@
 
           // Send first_message + custom_llm_additional_context with the detected language
           // so Anna greets and speaks in the user's language throughout the conversation.
+          const noRepeat = ' CRITICAL: You already introduced yourself in the first message. Do NOT repeat your name, your introduction, or the call recording notice. Respond directly to what the user says.';
           const langData = {
             hu: {
-              first_message: 'Jó napot kívánok! Anna vagyok, a Dent-AI fogászati asszisztens. Miben segíthetek ma?',
-              context: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.'
+              first_message: 'Jó napot kívánok! Anna vagyok, a Dent-AI fogászati asszisztens. A hívás rögzítésre kerül. Miben segíthetek ma?',
+              context: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.' + noRepeat
             },
             en: {
-              first_message: 'Hello! I\'m Anna, your dental AI assistant. How can I help you today?',
-              context: 'The user is visiting from an English-speaking country. Please conduct the entire conversation in English.'
+              first_message: 'Hello! I\'m Anna, your dental AI assistant. This call may be recorded. How can I help you today?',
+              context: 'The user is visiting from an English-speaking country. Please conduct the entire conversation in English.' + noRepeat
             },
             de: {
-              first_message: 'Guten Tag! Ich bin Anna, Ihre zahnärztliche KI-Assistentin. Wie kann ich Ihnen heute helfen?',
-              context: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.'
+              first_message: 'Guten Tag! Ich bin Anna, Ihre zahnärztliche KI-Assistentin. Dieses Gespräch wird aufgenommen. Wie kann ich Ihnen heute helfen?',
+              context: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.' + noRepeat
             },
             nl: {
-              first_message: 'Hallo! Ik ben Anna, uw tandheelkundige AI-assistente. Hoe kan ik u vandaag helpen?',
-              context: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.'
+              first_message: 'Hallo! Ik ben Anna, uw tandheelkundige AI-assistente. Dit gesprek wordt opgenomen. Hoe kan ik u vandaag helpen?',
+              context: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.' + noRepeat
             },
             fr: {
-              first_message: 'Bonjour! Je suis Anna, votre assistante dentaire IA. Comment puis-je vous aider aujourd\'hui?',
-              context: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français."
+              first_message: 'Bonjour! Je suis Anna, votre assistante dentaire IA. Cet appel peut être enregistré. Comment puis-je vous aider aujourd\'hui?',
+              context: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français." + noRepeat
             },
             it: {
-              first_message: 'Buongiorno! Sono Anna, la vostra assistente dentistica IA. Come posso aiutarvi oggi?',
-              context: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano."
+              first_message: 'Buongiorno! Sono Anna, la vostra assistente dentistica IA. Questa chiamata viene registrata. Come posso aiutarvi oggi?',
+              context: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano." + noRepeat
             },
             da: {
-              first_message: 'Goddag! Jeg er Anna, din tandlæge AI-assistent. Hvordan kan jeg hjælpe dig i dag?',
-              context: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.'
+              first_message: 'Goddag! Jeg er Anna, din tandlæge AI-assistent. Opkaldet optages. Hvordan kan jeg hjælpe dig i dag?',
+              context: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.' + noRepeat
             },
             no: {
-              first_message: 'Goddag! Jeg er Anna, din tannlege AI-assistent. Hvordan kan jeg hjelpe deg i dag?',
-              context: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.'
+              first_message: 'Goddag! Jeg er Anna, din tannlege AI-assistent. Samtalen blir tatt opp. Hvordan kan jeg hjelpe deg i dag?',
+              context: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.' + noRepeat
             },
             sv: {
-              first_message: 'God dag! Jag är Anna, din tandläkar-AI-assistent. Hur kan jag hjälpa dig idag?',
-              context: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.'
+              first_message: 'God dag! Jag är Anna, din tandläkar-AI-assistent. Samtalet spelas in. Hur kan jag hjälpa dig idag?',
+              context: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.' + noRepeat
             },
             fi: {
-              first_message: 'Hyvää päivää! Olen Anna, hammaslääkärin AI-assistenttisi. Miten voin auttaa sinua tänään?',
-              context: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.'
+              first_message: 'Hyvää päivää! Olen Anna, hammaslääkärin AI-assistenttisi. Puhelu tallennetaan. Miten voin auttaa sinua tänään?',
+              context: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.' + noRepeat
             },
             sk: {
-              first_message: 'Dobrý deň! Som Anna, váš zubný AI asistent. Ako vám môžeme dnes pomôcť?',
-              context: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.'
+              first_message: 'Dobrý deň! Som Anna, váš zubný AI asistent. Hovor sa nahráva. Ako vám môžeme dnes pomôcť?',
+              context: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.' + noRepeat
             }
           };
           const detectedLang = currentLang || 'en';
