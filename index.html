@@ -2491,6 +2491,7 @@
       }
     }
 
+    let preGrantedMicStream = null;
     async function requestMicrophonePermission() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -2501,14 +2502,15 @@
             channelCount: 1
           }
         });
-        stream.getTracks().forEach(t => t.stop());
-        logDebug('Microphone permission granted');
+        // Don't stop tracks — save stream for reuse in ws.onopen
+        preGrantedMicStream = stream;
+        logDebug('Microphone permission granted (stream saved)');
         return true;
       } catch (err) {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          stream.getTracks().forEach(t => t.stop());
-          logDebug('Microphone permission granted (fallback)');
+          preGrantedMicStream = stream;
+          logDebug('Microphone permission granted (fallback, stream saved)');
           return true;
         } catch (fallbackErr) {
           logDebug('Microphone permission denied: ' + fallbackErr.message);
@@ -2661,16 +2663,22 @@
             logDebug('Failed to send language context: ' + e.message);
           }
 
-          // Get microphone for real this time
+          // Reuse pre-granted mic stream, or request fresh one
           try {
-            callMediaStream = await navigator.mediaDevices.getUserMedia({
-              audio: {
-                sampleRate: 16000,
-                channelCount: 1,
-                echoCancellation: true,
-                noiseSuppression: true,
-              }
-            });
+            if (preGrantedMicStream && preGrantedMicStream.getAudioTracks().length > 0 && preGrantedMicStream.getAudioTracks()[0].readyState === 'live') {
+              callMediaStream = preGrantedMicStream;
+              preGrantedMicStream = null;
+              logDebug('Reusing pre-granted mic stream');
+            } else {
+              callMediaStream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                  sampleRate: 16000,
+                  channelCount: 1,
+                  echoCancellation: true,
+                  noiseSuppression: true,
+                }
+              });
+            }
           } catch (e) {
             logDebug('Microphone access denied during call');
             showToast(translations[currentLang || 'en']['error-mic'], 'warn', 7000);
