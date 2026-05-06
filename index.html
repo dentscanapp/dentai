@@ -2599,36 +2599,64 @@
         ws.onopen = async () => {
           logDebug('WebSocket connected — sending language context');
 
-          // Send only custom_llm_additional_context with the detected language
-          // so Anna speaks in the user's language throughout the conversation.
-          // NOTE: We do NOT override first_message here because the agent
-          // already has a configured greeting. Overriding it via WebSocket
-          // conversation_config_override causes a re-initialization that
-          // triggers the "technikai probléma" error.
-          // The language-specific greeting is handled by the agent's
-          // system prompt which reads the custom_llm_additional_context.
-          const langContexts = {
-            hu: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.',
-            en: 'The user is visiting the website from an English-speaking country. Please conduct the entire conversation in English.',
-            de: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.',
-            nl: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.',
-            fr: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français.",
-            it: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano.",
-            da: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.',
-            no: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.',
-            sv: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.',
-            fi: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.',
-            sk: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.'
+          // Send first_message + custom_llm_additional_context with the detected language
+          // so Anna greets and speaks in the user's language throughout the conversation.
+          const langData = {
+            hu: {
+              first_message: 'Jó napot kívánok! Anna vagyok, a Dent-AI fogászati asszisztens. Miben segíthetek ma?',
+              context: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.'
+            },
+            en: {
+              first_message: 'Hello! I\'m Anna, your dental AI assistant. How can I help you today?',
+              context: 'The user is visiting from an English-speaking country. Please conduct the entire conversation in English.'
+            },
+            de: {
+              first_message: 'Guten Tag! Ich bin Anna, Ihre zahnärztliche KI-Assistentin. Wie kann ich Ihnen heute helfen?',
+              context: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.'
+            },
+            nl: {
+              first_message: 'Hallo! Ik ben Anna, uw tandheelkundige AI-assistente. Hoe kan ik u vandaag helpen?',
+              context: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.'
+            },
+            fr: {
+              first_message: 'Bonjour! Je suis Anna, votre assistante dentaire IA. Comment puis-je vous aider aujourd\'hui?',
+              context: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français."
+            },
+            it: {
+              first_message: 'Buongiorno! Sono Anna, la vostra assistente dentistica IA. Come posso aiutarvi oggi?',
+              context: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano."
+            },
+            da: {
+              first_message: 'Goddag! Jeg er Anna, din tandlæge AI-assistent. Hvordan kan jeg hjælpe dig i dag?',
+              context: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.'
+            },
+            no: {
+              first_message: 'Goddag! Jeg er Anna, din tannlege AI-assistent. Hvordan kan jeg hjelpe deg i dag?',
+              context: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.'
+            },
+            sv: {
+              first_message: 'God dag! Jag är Anna, din tandläkar-AI-assistent. Hur kan jag hjälpa dig idag?',
+              context: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.'
+            },
+            fi: {
+              first_message: 'Hyvää päivää! Olen Anna, hammaslääkärin AI-assistenttisi. Miten voin auttaa sinua tänään?',
+              context: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.'
+            },
+            sk: {
+              first_message: 'Dobrý deň! Som Anna, váš zubný AI asistent. Ako vám môžeme dnes pomôcť?',
+              context: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.'
+            }
           };
           const detectedLang = currentLang || 'en';
-          const langContext = langContexts[detectedLang] || langContexts['en'];
+          const lang = langData[detectedLang] || langData['en'];
 
           try {
             ws.send(JSON.stringify({
               type: 'conversation_initiation_client_data',
-              custom_llm_additional_context: langContext
+              first_message: lang.first_message,
+              custom_llm_additional_context: lang.context
             }));
-            logDebug('Sent language context: ' + detectedLang);
+            logDebug('Sent language context + first_message: ' + detectedLang);
           } catch (e) {
             logDebug('Failed to send language context: ' + e.message);
           }
