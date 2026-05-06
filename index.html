@@ -633,27 +633,7 @@
               <a href="#calendar" class="block w-full text-center bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5">
                 <span data-i18n="roi-cta">Demót kérek →</span>
               </a>
-              <div id="roi-email-section" class="mt-5">
-                <button id="roi-email-toggle" type="button" class="w-full text-center bg-white hover:bg-slate-50 text-dental-600 hover:text-dental-700 border border-dental-200/60 font-semibold px-5 py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg>
-                  <span data-i18n="roi-email-btn">Megosztom email-ben</span>
-                </button>
-                <div id="roi-email-form" class="hidden mt-3 bg-white rounded-xl border border-dental-200/60 p-4 shadow-sm">
-                  <p class="text-sm font-semibold text-slate-700 mb-3" data-i18n="roi-email-prompt">Küldje el magának az eredményt!</p>
-                  <div class="flex gap-2">
-                    <input id="roi-name-input" type="text" placeholder="Név" class="flex-1 min-w-0 bg-slate-50 border border-slate-200/60 rounded-lg px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-dental-400 focus:border-dental-400 transition-all" data-i18n-placeholder="roi-name-placeholder"><input id="roi-email-input" type="email" placeholder="email@pelda.hu" data-i18n-placeholder="roi-email-placeholder" class="flex-1 min-w-0 bg-slate-50 border border-slate-200/60 rounded-lg px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-dental-400 focus:border-dental-400 transition-all">
-                    <button id="roi-email-submit" type="button" class="bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all text-sm whitespace-nowrap" data-i18n="roi-email-send">Küldés</button>
-                  </div>
-                  <div id="roi-email-success" class="hidden mt-3 flex items-center gap-2 text-sm text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200/60 rounded-lg px-3 py-2.5">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span data-i18n="roi-email-success">Elküldve! Ellenőrizze a postafókját.</span>
-                  </div>
-                  <div id="roi-email-error" class="hidden mt-3 flex items-center gap-2 text-sm text-red-700 font-semibold bg-red-50 border border-red-200/60 rounded-lg px-3 py-2.5">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
-                    <span data-i18n="roi-email-error">Hiba történt a küldés során. Próbálja újra!</span>
-                  </div>
-                </div>
-              </div>
+
               <p class="mt-3 text-[11px] text-slate-500 text-center leading-relaxed" data-i18n="roi-disclaimer">Becslés. Tényleges eredmény a praxis profiljától és kezelési arányaitól függ.</p>
             </div>
           </div>
@@ -6762,83 +6742,6 @@ fi: {
           }
         } catch (e) { /* ignore */ }
         switchLang('en'); // végső fallback
-      }
-    })();
-
-        // ROI Email sharing — sends localized results via sender.dentai.me
-    (function() {
-      var toggle = document.getElementById('roi-email-toggle');
-      var form = document.getElementById('roi-email-form');
-      var submit = document.getElementById('roi-email-submit');
-      var emailInput = document.getElementById('roi-email-input');
-      var nameInput = document.getElementById('roi-name-input');
-      var success = document.getElementById('roi-email-success');
-      var errorEl = document.getElementById('roi-email-error');
-      if (!toggle || !form) return;
-      toggle.addEventListener('click', function() {
-        form.classList.remove('hidden');
-        toggle.classList.add('hidden');
-        if (emailInput) emailInput.focus();
-      });
-      if (submit && emailInput && success) {
-        submit.addEventListener('click', function() {
-          var email = emailInput.value.trim();
-          if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-            emailInput.style.borderColor = '#ef4444';
-            emailInput.focus();
-            setTimeout(function() { emailInput.style.borderColor = ''; }, 2000);
-            return;
-          }
-          var name = nameInput ? nameInput.value.trim() : '';
-          submit.disabled = true;
-          var origText = submit.textContent;
-          submit.textContent = '...';
-          var lang = window.currentLang || document.documentElement.lang || 'hu';
-          var t = translations[lang] || translations['hu'];
-          var monthlyVal = document.getElementById('roi-monthly');
-          var monthlyCur = document.getElementById('roi-monthly-currency');
-          var yearlyEl = document.getElementById('roi-yearly');
-          var bookingsEl = document.getElementById('roi-bookings');
-          var monthly = monthlyVal ? monthlyVal.textContent : '';
-          var cur = monthlyCur ? monthlyCur.textContent : '';
-          var yearly = yearlyEl ? yearlyEl.textContent : '';
-          var bookings = bookingsEl ? bookingsEl.textContent : '';
-          var subject = t['roi-email-subject'] || 'ROI kalkulator eredmenye';
-          var greeting = t['roi-email-greeting'] || 'Tisztelt';
-          var closing = t['roi-email-closing'] || 'A DentAi csapata';
-          var disclaimer = t['roi-disclaimer'] || '';
-          var mLabel = t['roi-monthly-label'] || '';
-          var yLabel = t['roi-yearly-label'] || '';
-          var bLabel = t['roi-bookings-label'] || '';
-          var rTitle = t['roi-title'] || 'ROI Kalkulator';
-          var resultHtml = '<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:28px;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0"><h2 style="color:#1e40af;margin:0 0 20px;font-size:20px;font-weight:700">'+rTitle+'</h2><table style="width:100%;border-collapse:collapse"><tr style="border-bottom:1px solid #e2e8f0"><td style="padding:12px 8px;color:#64748b;font-size:14px">'+mLabel+'</td><td style="padding:12px 8px;font-size:20px;font-weight:700;color:#0f172a;text-align:right">'+monthly+' '+cur+'</td></tr><tr style="border-bottom:1px solid #e2e8f0"><td style="padding:12px 8px;color:#64748b;font-size:14px">'+yLabel+'</td><td style="padding:12px 8px;font-size:20px;font-weight:700;color:#0f172a;text-align:right">'+yearly+'</td></tr><tr><td style="padding:12px 8px;color:#64748b;font-size:14px">'+bLabel+'</td><td style="padding:12px 8px;font-size:20px;font-weight:700;color:#0f172a;text-align:right">'+bookings+'</td></tr></table><p style="margin:20px 0 0;font-size:12px;color:#94a3b8;line-height:1.5">'+disclaimer+'</p></div>';
-          var payload = {
-            email: email,
-            name: name || '',
-            lang: lang,
-            subject: subject,
-            greeting: greeting,
-            closing: closing,
-            resultContent: resultHtml
-          };
-          fetch('https://sender.dentai.me', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          }).then(function(resp) {
-            return resp.json();
-          }).then(function() {
-            success.classList.remove('hidden');
-            if (errorEl) errorEl.classList.add('hidden');
-            emailInput.disabled = true;
-            if (nameInput) nameInput.disabled = true;
-            submit.classList.add('hidden');
-          }).catch(function() {
-            submit.disabled = false;
-            submit.textContent = origText;
-            if (errorEl) errorEl.classList.remove('hidden');
-          });
-        });
       }
     })();
 
