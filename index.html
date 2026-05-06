@@ -2653,7 +2653,12 @@
           try {
             ws.send(JSON.stringify({
               type: 'conversation_initiation_client_data',
-              first_message: lang.first_message,
+              conversation_config_override: {
+                agent: {
+                  first_message: lang.first_message,
+                  language: detectedLang
+                }
+              },
               custom_llm_additional_context: lang.context
             }));
             logDebug('Sent language context + first_message: ' + detectedLang);
