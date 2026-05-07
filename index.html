@@ -2446,6 +2446,111 @@
     // ═══════════════════════════════════════════════════════════════
 
     const AnnaTextFilter = {
+      // ═══════════════════════════════════════════════════════════
+      // MAGYAR KIEJTÉSI SZÓTÁR — a Python scriptből konvertálva
+      // Számok 0-99, összetett számok, sorszámok, dátumok, időpontok
+      // ═══════════════════════════════════════════════════════════
+
+      // Magyar számok szótára (0-99)
+      hungarianNumbers: {
+        0:'nulla', 1:'egy', 2:'kettő', 3:'három', 4:'négy', 5:'öt',
+        6:'hat', 7:'hét', 8:'nyolc', 9:'kilenc',
+        10:'tíz', 11:'tizenegy', 12:'tizenkettő', 13:'tizenhárom',
+        14:'tizennégy', 15:'tizenöt', 16:'tizenhat', 17:'tizenhét',
+        18:'tizennyolc', 19:'tizenkilenc',
+        20:'húsz', 21:'huszonegy', 22:'huszonkettő', 23:'huszonhárom',
+        24:'huszonnégy', 25:'huszonöt', 26:'huszonhat', 27:'huszonhét',
+        28:'huszonnyolc', 29:'huszonkilenc',
+        30:'harminc', 40:'negyven', 50:'ötven', 60:'hatvan',
+        70:'hetven', 80:'nyolcvan', 90:'kilencven'
+      },
+
+      // Hónapok magyarul
+      hungarianMonths: {
+        1:'január', 2:'február', 3:'március', 4:'április',
+        5:'május', 6:'június', 7:'július', 8:'augusztus',
+        9:'szeptember', 10:'október', 11:'november', 12:'december'
+      },
+
+      // 7. MAGYAR SZÁM KIEJTÉS JAVÍTÁS — a leggyakoribb TTS hiba!
+      //    A TTS/LLM gyakran külön mondja: "tíz három" = "13" HELYES: "tizenhárom"
+      hungarianNumberFixes: [
+        // 10-19: "tíz X" → "tizenX"
+        { pattern: /\btíz egy\b/gi, replacement: 'tizenegy' },
+        { pattern: /\btíz kettő\b/gi, replacement: 'tizenkettő' },
+        { pattern: /\btíz három\b/gi, replacement: 'tizenhárom' },   // ← LEGGYAKORIBB!
+        { pattern: /\btíz négy\b/gi, replacement: 'tizennégy' },
+        { pattern: /\btíz öt\b/gi, replacement: 'tizenöt' },
+        { pattern: /\btíz hat\b/gi, replacement: 'tizenhat' },
+        { pattern: /\btíz hét\b/gi, replacement: 'tizenhét' },
+        { pattern: /\btíz nyolc\b/gi, replacement: 'tizennyolc' },
+        { pattern: /\btíz kilenc\b/gi, replacement: 'tizenkilenc' },
+        // 20-29: "húsz X" → "huszonX"
+        { pattern: /\bhúsz egy\b/gi, replacement: 'huszonegy' },
+        { pattern: /\bhúsz kettő\b/gi, replacement: 'huszonkettő' },
+        { pattern: /\bhúsz három\b/gi, replacement: 'huszonhárom' },
+        { pattern: /\bhúsz négy\b/gi, replacement: 'huszonnégy' },
+        { pattern: /\bhúsz öt\b/gi, replacement: 'huszonöt' },
+        { pattern: /\bhúsz hat\b/gi, replacement: 'huszonhat' },
+        { pattern: /\bhúsz hét\b/gi, replacement: 'huszonhét' },
+        { pattern: /\bhúsz nyolc\b/gi, replacement: 'huszonnyolc' },
+        { pattern: /\bhúsz kilenc\b/gi, replacement: 'huszonkilenc' },
+        // 30-asok: "harminc X" → "harmincX" (összetett szó)
+        { pattern: /\bharminc egy\b/gi, replacement: 'harmincegy' },
+        { pattern: /\bharminc kettő\b/gi, replacement: 'harminckettő' },
+        { pattern: /\bharminc három\b/gi, replacement: 'harmincharom' },
+        { pattern: /\bharminc négy\b/gi, replacement: 'harmincnégy' },
+        { pattern: /\bharminc öt\b/gi, replacement: 'harmincöt' },
+        { pattern: /\bharminc hat\b/gi, replacement: 'harminchat' },
+        { pattern: /\bharminc hét\b/gi, replacement: 'harminchét' },
+        { pattern: /\bharminc nyolc\b/gi, replacement: 'harmincnyolc' },
+        { pattern: /\bharminc kilenc\b/gi, replacement: 'harminckilenc' },
+        // 60-asok: "hatvan X" → "hatvanX"
+        { pattern: /\bhatvan három\b/gi, replacement: 'hatvanhárom' },
+        { pattern: /\bhatvan hat\b/gi, replacement: 'hatvanhat' },
+        // Szolgáltatókód javítás: "három nulla" → "harminc" (telefonszámban)
+        // Csak telefonszám kontextusban, nem általános
+      ],
+
+      // 8. MAGYAR DÁTUM KIEJTÉS JAVÍTÁS
+      //    "május egy egy" → "május tizenegy"
+      //    "május kettő öt" → "május huszonöt"
+      hungarianDateFixes: [
+        // Napok: számjegyenként mondott → helyes magyar
+        { pattern: /május egy egy/gi, replacement: 'május tizenegy' },
+        { pattern: /május egy kettő/gi, replacement: 'május tizenkettő' },
+        { pattern: /május egy három/gi, replacement: 'május tizenhárom' },
+        { pattern: /május kettő egy/gi, replacement: 'május huszonegy' },
+        { pattern: /május kettő kettő/gi, replacement: 'május huszonkettő' },
+        { pattern: /május kettő három/gi, replacement: 'május huszonhárom' },
+        { pattern: /május kettő öt/gi, replacement: 'május huszonöt' },
+        { pattern: /május kettő hat/gi, replacement: 'május huszonhat' },
+        { pattern: /május kettő nyolc/gi, replacement: 'május huszonnyolc' },
+        { pattern: /május kettő kilenc/gi, replacement: 'május huszonkilenc' },
+        { pattern: /május három egy/gi, replacement: 'május harmincegy' },
+        // Általános: bármelyik hónap + számjegyenkénti nap
+        { pattern: /(január|február|március|április|május|június|július|augusztus|szeptember|október|november|december) egy egy/gi, replacement: '$1 tizenegy' },
+        { pattern: /(január|február|március|április|május|június|július|augusztus|szeptember|október|november|december) egy három/gi, replacement: '$1 tizenhárom' },
+        { pattern: /(január|február|március|április|május|június|július|augusztus|szeptember|október|november|december) kettő öt/gi, replacement: '$1 huszonöt' },
+        { pattern: /(január|február|március|április|május|június|július|augusztus|szeptember|október|november|december) kettő hat/gi, replacement: '$1 huszonhat' },
+      ],
+
+      // 9. IDŐPONT KIEJTÉS JAVÍTÁS
+      //    "egy három óra" → "tizenhárom óra"
+      //    "egy három harminc" → "tizenhárom harminc"
+      hungarianTimeFixes: [
+        { pattern: /\bég egy óra\b/gi, replacement: 'tizenegy óra' },   // ha rosszul hallja
+        { pattern: /\bég három óra\b/gi, replacement: 'tizenhárom óra' },
+        { pattern: /\bég négy óra\b/gi, replacement: 'tizennégy óra' },
+        { pattern: /\bég öt óra\b/gi, replacement: 'tizenöt óra' },
+        { pattern: /\bég hat óra\b/gi, replacement: 'tizenhat óra' },
+        { pattern: /\bég hét óra\b/gi, replacement: 'tizenhét óra' },
+        { pattern: /\bég nyolc óra\b/gi, replacement: 'tizennyolc óra' },
+        { pattern: /\bég kilenc óra\b/gi, replacement: 'tizenkilenc óra' },
+        // "nulla null-null" → "óra" (9:00 = "kilenc null-null" hiba)
+        { pattern: /(\b(?:egy|kettő|három|négy|öt|hat|hét|nyolc|kilenc|tíz|tizenegy|tizenkettő|tizenhárom|tizennégy|tizenöt|tizenhat|tizenhét|tizennyolc|tizenkilenc|húsz|huszonegy|huszonkettő|huszonhárom|huszonnégy)) null\s*[-/]?\s*null\b/gi, replacement: '$1 óra' },
+      ],
+
       // 1. Szögletes zárójelek — #1 páciens panasz (TTS felolvassa)
       bracketPattern: /\[[^\]]*\]/g,
 
@@ -2478,56 +2583,88 @@
         { pattern: /^\s*Absolutely\b[,.]?\s*/gi, replacement: '' },
       ],
 
-      // 3. Töltelékszavak — TTS rosszul kezeli
+      // 3. Töltelékszavak — TTS rosszul kezeli (KIBŐVÍTETT a Python szűrőből)
       fillerPatterns: [
+        // "Ahhh, értem" → "Értem" (LEGGYAKORIBB PROBLÉMA!)
+        { pattern: /\b[Aa]hh+[,.]?\s*értem/gi, replacement: 'Értem' },
+        // Magyar kitöltőszavak
         { pattern: /\bMm-?hmm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bHmm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bMmm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bMhm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bAhh\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bÖhm\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bÖöö\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bÖö\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bUh\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bUhm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bUm\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bAha\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bHát\b[,.]?\s*/g, replacement: '' },
+        // Német
         { pattern: /\bÄhm\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bNaja\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bAlso\b[,.]?\s*/g, replacement: '' },  // német töltelékszó
+        { pattern: /\bAlso\b[,.]?\s*/g, replacement: '' },
+        // Francia / olasz / holland
         { pattern: /\bEuh\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bAlors\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bEhm\b[,.]?\s*/g, replacement: '' },
         { pattern: /\bAllora\b[,.]?\s*/g, replacement: '' },
-        // Huh / Huhhh — sóhaj, megkönnyebbülés (pl. "Huhhh... Jó hír!")
+        // Sóhajok, megkönnyebbülések
         { pattern: /\bHuh+\b[,.]?\s*/gi, replacement: '' },
-        // Ehh / Ehhh — habozás, sóhaj (pl. "Ehhh... Rendben")
         { pattern: /\bEhh+\b[,.]?\s*/gi, replacement: '' },
-        // Hosszú magánhangzók (sóhaj stb.)
         { pattern: /\bAhhh+\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bOhhh+\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bUhhh+\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bWhew+\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bPhew+\b[,.]?\s*/gi, replacement: '' },
         { pattern: /\bOof+\b[,.]?\s*/gi, replacement: '' },
+        // "Irány" — felesleges indulószó (az LLM gyakran ezt generálja)
+        { pattern: /\bIrány\.{3}\s*/g, replacement: '' },
+        { pattern: /\bIrány[,]\s*/g, replacement: '' },
       ],
 
       // 4. Telefonszám kötőjel → szóköz (számjegyek szótagsorban)
-      //    Megjegyzés: \b nem működik magyar ékezetekkel (ö,á,stb),
-      //    ezért boundary nélküli mintát használunk
-      phoneHyphenPattern: /(?:(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy)-)+(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy)/gi,
+      phoneHyphenPattern: /(?:(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy|harminc|hatvan|hetven|tizen|huszon|harmincharom|hatvanhárom|hetvenhat)-)+(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy|harminc|hatvan|hetven)/gi,
+
+      // 10. TELEFONSZÁM KIEJTÉS JAVÍTÁS
+      //    "három nulla" → "harminc" (szolgáltatókód kontextusban)
+      //    Csak ha "nulla hat" után jön (telefonszám eleje)
+      phoneFixes: [
+        // "nulla hat, három nulla" → "nulla hat, harminc" (szolgáltatókód)
+        { pattern: /(nulla\s*hat\s*[,.]?\s*)három\s*nulla/gi, replacement: '$1harminc' },
+        { pattern: /(nulla\s*hat\s*[,.]?\s*)kettő\s*nulla/gi, replacement: '$1húsz' },
+        { pattern: /(nulla\s*hat\s*[,.]?\s*)hét\s*nulla/gi, replacement: '$1hetven' },
+        { pattern: /(nulla\s*hat\s*[,.]?\s*)öt\s*nulla/gi, replacement: '$1ötven' },
+        // "+36 harminchat" után is
+        { pattern: /(plusz\s*harminchat\s*[,.]?\s*)három\s*nulla/gi, replacement: '$1harminc' },
+        { pattern: /(plusz\s*harminchat\s*[,.]?\s*)kettő\s*nulla/gi, replacement: '$1húsz' },
+        { pattern: /(plusz\s*harminchat\s*[,.]?\s*)hét\s*nulla/gi, replacement: '$1hetven' },
+      ],
 
       // 5. "Sajnos nem" tiltás pozitív kéréseknél
       sajnosNemPattern: /\bSajnos nem\b[,.]?\s*/g,
 
-      // 6. Hallucinált technikai probléma észlelés (NEM törli — csak LOG + TOAST,
-      //    mert ha TÉNYLEG van tool-fail, akkor helyes a szöveg)
+      // 6. Hallucinált technikai probléma észlelés (NEM törli — csak LOG,
+      //    NEM dob fel ablakot — csendes naplózás)
       hallucinatedTechProblemPatterns: [
-        { pattern: /technikai problémánk van/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "technikai problémánk van" — csak tool-fail után szabad!' },
-        { pattern: /technikai probléma van/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "technikai probléma van" — csak tool-fail után szabad!' },
-        { pattern: /rendszerhiba/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "rendszerhiba" — csak tool-fail után szabad!' },
-        { pattern: /szerverprobléma/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "szerverprobléma" — csak tool-fail után szabad!' },
-        { pattern: /technical problem/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "technical problem" — csak tool-fail után szabad!' },
-        { pattern: /system error/gi, label: '⚠️ HALLUCINÁLT TECH PROBLÉMA: "system error" — csak tool-fail után szabad!' },
+        { pattern: /technikai problémánk van/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "technikai problémánk van"' },
+        { pattern: /technikai probléma van/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "technikai probléma van"' },
+        { pattern: /rendszerhiba/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "rendszerhiba"' },
+        { pattern: /szerverprobléma/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "szerverprobléma"' },
+        { pattern: /technical problem/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "technical problem"' },
+        { pattern: /system error/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "system error"' },
+      ],
+
+      // 11. TILTOTT KIFEJEZÉSEK — CSENDES SZŰRÉS (Python szűrőből)
+      //     Ezek sosem jelenhetnek meg — csendesen törölve, NEM dob fel ablakot
+      forbiddenPatterns: [
+        // Felesleges kötőjelek
+        { pattern: /\s*-{2,}\s*/g, replacement: ' ' },
+        // Túl sok pont (4+)
+        { pattern: /\s*\.{4,}\s*/g, replacement: '... ' },
+        // "törölve" felesleges megjegyzés
+        { pattern: /\b[tT]örölve\b/g, replacement: '' },
       ],
 
       /**
@@ -2541,6 +2678,66 @@
         const changes = [];
         let result = text;
 
+        // ═══ 7. MAGYAR SZÁM KIEJTÉS JAVÍTÁS (ELSŐ! — más szűrők előtt) ═══
+        // "tíz három" → "tizenhárom", "húsz egy" → "huszonegy" stb.
+        if (lang === 'hu') {
+          this.hungarianNumberFixes.forEach(({ pattern, replacement }) => {
+            pattern.lastIndex = 0;
+            const matches = result.match(pattern);
+            if (matches) {
+              matches.forEach(m => {
+                changes.push({ type: 'hungarian_number_fixed', original: m.trim(), fixed: replacement });
+              });
+              result = result.replace(pattern, replacement);
+            }
+          });
+        }
+
+        // ═══ 8. MAGYAR DÁTUM KIEJTÉS JAVÍTÁS ═══
+        // "május egy egy" → "május tizenegy"
+        if (lang === 'hu') {
+          this.hungarianDateFixes.forEach(({ pattern, replacement }) => {
+            pattern.lastIndex = 0;
+            const matches = result.match(pattern);
+            if (matches) {
+              matches.forEach(m => {
+                changes.push({ type: 'hungarian_date_fixed', original: m.trim() });
+              });
+              result = result.replace(pattern, replacement);
+            }
+          });
+        }
+
+        // ═══ 9. IDŐPONT KIEJTÉS JAVÍTÁS ═══
+        // "nulla null-null" → "óra", "tizenhárom óra" javítás
+        if (lang === 'hu') {
+          this.hungarianTimeFixes.forEach(({ pattern, replacement }) => {
+            pattern.lastIndex = 0;
+            const matches = result.match(pattern);
+            if (matches) {
+              matches.forEach(m => {
+                changes.push({ type: 'hungarian_time_fixed', original: m.trim() });
+              });
+              result = result.replace(pattern, replacement);
+            }
+          });
+        }
+
+        // ═══ 10. TELEFONSZÁM KIEJTÉS JAVÍTÁS ═══
+        // "nulla hat, három nulla" → "nulla hat, harminc"
+        if (lang === 'hu') {
+          this.phoneFixes.forEach(({ pattern, replacement }) => {
+            pattern.lastIndex = 0;
+            const matches = result.match(pattern);
+            if (matches) {
+              matches.forEach(m => {
+                changes.push({ type: 'phone_pronunciation_fixed', original: m.trim() });
+              });
+              result = result.replace(pattern, replacement);
+            }
+          });
+        }
+
         // 1. Szögletes zárójelek eltávolítása
         const bracketMatches = result.match(this.bracketPattern);
         if (bracketMatches) {
@@ -2553,7 +2750,6 @@
         // 2. Angol kifejezések eltávolítása (csak nem-angol beszélgetésben)
         if (lang !== 'en') {
           this.englishLeakPatterns.forEach(({ pattern, replacement }) => {
-            // Reset regex lastIndex
             pattern.lastIndex = 0;
             const matches = result.match(pattern);
             if (matches) {
@@ -2565,7 +2761,7 @@
           });
         }
 
-        // 3. Töltelékszavak eltávolítása
+        // 3. Töltelékszavak eltávolítása (KIBŐVÍTETT — "Ahhh, értem" → "Értem")
         this.fillerPatterns.forEach(({ pattern, replacement }) => {
           pattern.lastIndex = 0;
           const matches = result.match(pattern);
@@ -2597,21 +2793,34 @@
           result = result.replace(this.sajnosNemPattern, '');
         }
 
-        // 6. Hallucinált technikai probléma ÉSZLELÉS (nem törlés!)
-        //    Ha a tool TÉNYLEGESEN fail-t adott, akkor a szöveg helyes —
-        //    ezért csak LOG-oljuk és TOAST-oljuk, nem módosítjuk a szöveget.
+        // 6. Hallucinált technikai probléma ÉSZLELÉS (csendes — NEM dob fel ablakot!)
+        //    Csak LOG-oljuk a konzolra, NEM jelenítünk meg toast-ot.
         this.hallucinatedTechProblemPatterns.forEach(({ pattern, label }) => {
           pattern.lastIndex = 0;
           const matches = result.match(pattern);
           if (matches) {
             matches.forEach(m => {
               changes.push({ type: 'hallucinated_tech_problem_detected', original: m.trim(), warning: label });
-              console.warn('[Anna Filter] ' + label);
+              // CSENDES naplózás — NEM console.warn, NEM toast
+              console.log('[Anna Filter] ⚠️ ' + label);
             });
           }
         });
 
-        // 7. Takarítás: felesleges szóközök, pontok
+        // ═══ 11. TILTOTT KIFEJEZÉSEK — CSENDES SZŰRÉS ═══
+        // Ezeket csendesen töröljük, NEM dobunk fel ablakot
+        this.forbiddenPatterns.forEach(({ pattern, replacement }) => {
+          pattern.lastIndex = 0;
+          const matches = result.match(pattern);
+          if (matches) {
+            matches.forEach(m => {
+              changes.push({ type: 'forbidden_removed', original: m.trim() });
+            });
+            result = result.replace(pattern, replacement);
+          }
+        });
+
+        // 12. Takarítás: felesleges szóközök, pontok
         result = result.replace(/\s{2,}/g, ' ');   // Több szóköz → egy
         result = result.replace(/\.\s*\./g, '.'); // Dupla pont → egyszeres
         result = result.replace(/^\s*[,.]?\s*/, ''); // Szóköz/vessző a mondat elején
@@ -2622,10 +2831,16 @@
           result = 'Értem.';
         }
 
+        // Nagybetűsítés mondat elején (ha a szűrés kisbetűvel hagyta)
+        if (result && result[0] === result[0].toLowerCase() && result[0] !== result[0].toUpperCase()) {
+          result = result[0].toUpperCase() + result.slice(1);
+        }
+
         return {
           filtered: result,
           changes: changes,
-          hasViolations: changes.length > 0
+          hasViolations: changes.some(c => c.type !== 'hungarian_number_fixed' && c.type !== 'hungarian_date_fixed' && c.type !== 'hungarian_time_fixed' && c.type !== 'phone_pronunciation_fixed'),
+          hasCorrections: changes.length > 0
         };
       },
 
@@ -2634,29 +2849,45 @@
        */
       runTests() {
         const tests = [
+          // ─── Alap szűrők ───
           ['[Professional] Üdvözlöm!', 'hu', 'Üdvözlöm!'],
           ['[Warmly] Rendben, foglaltam.', 'hu', 'Rendben, foglaltam.'],
           ['I see... Köszönöm.', 'hu', 'Köszönöm.'],
-          ['I see, rendben.', 'hu', 'rendben.'],
+          ['I see, rendben.', 'hu', 'Rendben.'],
           ['Okay... Danke.', 'de', 'Danke.'],
           ['Mm-hmm... Verstanden.', 'de', 'Verstanden.'],
           ['Hmm. Értem.', 'hu', 'Értem.'],
           ['nulla-hat-három-nulla-öt-kilenc', 'hu', 'nulla hat három nulla öt kilenc'],
           ['Sajnos nem. Természetesen segítek.', 'hu', 'Természetesen segítek.'],
           ['Got it. Rendben.', 'hu', 'Rendben.'],
-          ['Well, lássuk.', 'hu', 'lássuk.'],
+          ['Well, lássuk.', 'hu', 'Lássuk.'],
           ['[Professional] I see... [Warmly] Rendben.', 'hu', 'Rendben.'],
           ['Huhhh... Jó hír!', 'hu', 'Jó hír!'],
           ['Huh... Rendben.', 'hu', 'Rendben.'],
-          ['Huhhh... Jó hír! Holnap délelőtt több szabad időpont is van.', 'hu', 'Jó hír! Holnap délelőtt több szabad időpont is van.'],
-          ['Phew, sikerült.', 'hu', 'sikerült.'],
+          ['Phew, sikerült.', 'hu', 'Sikerült.'],
           ['Whew... Déjà vu.', 'en', 'Déjà vu.'],
           ['Ehhh... Rendben, akkor 13:30-ra foglalok.', 'hu', 'Rendben, akkor 13:30-ra foglalok.'],
-          ['Ehh... Jó hír!', 'hu', 'Jó hír!'],
           ['I hear you... Remek hír!', 'hu', 'Remek hír!'],
-          // Hallucinált technikai probléma — NEM töröljük, csak észleljük (changes-ben jelenik meg)
+          // ─── MAGYAR SZÁM KIEJTÉS ───
+          ['tíz három', 'hu', 'tizenhárom'],          // ← LEGGYAKORIBB HIBA!
+          ['húsz egy', 'hu', 'huszonegy'],
+          ['húsz három', 'hu', 'huszonhárom'],
+          ['harminc három', 'hu', 'harmincharom'],
+          ['hatvan három', 'hu', 'hatvanhárom'],
+          // ─── MAGYAR DÁTUM KIEJTÉS ───
+          ['május egy egy', 'hu', 'május tizenegy'],
+          ['május kettő öt', 'hu', 'május huszonöt'],
+          ['április egy három', 'hu', 'április tizenhárom'],
+          // ─── TELEFONSZÁM KIEJTÉS ───
+          ['nulla hat, három nulla', 'hu', 'nulla hat, harminc'],
+          ['nulla hat, hét nulla', 'hu', 'nulla hat, hetven'],
+          // ─── KITÖLTŐSZÓ + ÉRTEM ───
+          ['Ahhh, értem... Rendben.', 'hu', 'Értem. Rendben.'],
+          ['Ahh, értem.', 'hu', 'Értem.'],
+          // ─── TILTOTT KIFEJEZÉSEK ───
+          ['Rendben -- törölve', 'hu', 'Rendben'],
+          ['Köszönöm....', 'hu', 'Köszönöm...'],
         ];
-        // Külön teszt: hallucinált tech probléma észlelés (nem módosítja a szöveget!)
         const techTests = [
           { input: 'Elnézést kérek, egy pillanat technikai problémánk van.', lang: 'hu', expectedDetection: 'hallucinated_tech_problem_detected' },
           { input: 'Rendben, sikeresen foglaltam.', lang: 'hu', expectedDetection: null },
@@ -2668,8 +2899,7 @@
           if (ok) passed++; else failed++;
           console.log(`[Anna Filter] Test #${i+1}: ${ok ? 'PASS' : 'FAIL'} | Input: ${input} | Expected: ...${expected}... | Got: ${filtered}`);
         });
-        console.log(`[Anna Filter] Results: ${passed} passed, ${failed} failed, ${tests.length} total`);
-        // Hallucinált tech probléma tesztek
+        console.log(`[Anna Filter] Basic Results: ${passed} passed, ${failed} failed, ${tests.length} total`);
         techTests.forEach(({ input, lang, expectedDetection }, i) => {
           const { changes } = this.filter(input, lang);
           const detected = changes.find(c => c.type === expectedDetection);
@@ -2684,7 +2914,7 @@
 
     // Globális hozzáférés a konzolhoz: AnnaTextFilter.runTests()
     window.AnnaTextFilter = AnnaTextFilter;
-    logDebug('Anna Text Filter v1.1 loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
+    logDebug('Anna Text Filter v2.0 (Hungarian+) loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
 
 
     // === Vanilla WebSocket Voice Call (replaces @elevenlabs/client SDK) ===
@@ -3084,22 +3314,20 @@
               // === ANNA TEXT FILTER — Szűrés és szabályszegés naplózás ===
               const filterResult = AnnaTextFilter.filter(rawAgentText, currentLang || 'hu');
               if (filterResult.hasViolations) {
-                // Szabályszegés észlelve — a prompt tiltás ellenére kiszivárogott
-                console.warn('[Anna Filter] ⚠️ VIOLATION DETECTED! Raw text had issues:', filterResult.changes);
-                console.warn('[Anna Filter] Raw:     ' + rawAgentText.substring(0, 200));
-                console.warn('[Anna Filter] Filtered: ' + filterResult.filtered.substring(0, 200));
-                logDebug('⚠️ FILTER VIOLATION: ' + filterResult.changes.map(c => c.original).join(', '));
-                // Debug toast — csak ha aktív a hívás
-                if (active) {
-                  // Külön figyelmeztetés hallucinált technikai problémára
-                  const techHalluc = filterResult.changes.find(c => c.type === 'hallucinated_tech_problem_detected');
-                  if (techHalluc) {
-                    showToast('🔴 HALLUCINÁLT TECH PROBLÉMA! "' + techHalluc.original + '" — nincs valódi hiba!', 'error', 8000);
-                  }
-                  const otherViolations = filterResult.changes.filter(c => c.type !== 'hallucinated_tech_problem_detected');
-                  if (otherViolations.length > 0) {
-                    showToast('Filter: ' + otherViolations.map(c => `"${c.original}" → törölve`).join(', '), 'warn', 5000);
-                  }
+                // Szabályszegés észlelve — de NEM dobunk fel idegesítő ablakot!
+                // Csak a konzolba naplózunk, csendesen.
+                console.log('[Anna Filter] Violations: ' + filterResult.changes.filter(c => c.type !== 'hungarian_number_fixed' && c.type !== 'hungarian_date_fixed' && c.type !== 'hungarian_time_fixed' && c.type !== 'phone_pronunciation_fixed').map(c => c.original).join(', '));
+                // Hallucinált tech probléma — csendes figyelmeztetés, NEM dob fel ablakot!
+                const techHalluc = filterResult.changes.find(c => c.type === 'hallucinated_tech_problem_detected');
+                if (techHalluc) {
+                  console.log('[Anna Filter] ⚠️ HALLUCINÁLT TECH: ' + techHalluc.original);
+                }
+              }
+              // Magyar kiejtés javítások naplózása (csendes)
+              if (filterResult.hasCorrections) {
+                const corrections = filterResult.changes.filter(c => c.type === 'hungarian_number_fixed' || c.type === 'hungarian_date_fixed' || c.type === 'hungarian_time_fixed' || c.type === 'phone_pronunciation_fixed');
+                if (corrections.length > 0) {
+                  console.log('[Anna Filter] 🇭🇺 Kiejtés javítva: ' + corrections.map(c => `"${c.original}"`).join(', '));
                 }
               }
               logDebug('Agent: ' + filterResult.filtered.substring(0, 80));
