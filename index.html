@@ -2554,92 +2554,88 @@
       // 1. Szögletes zárójelek — #1 páciens panasz (TTS felolvassa)
       bracketPattern: /\[[^\]]*\]/g,
 
-      // 2. Angol kifejezések nem-angol beszélgetésben — #2 hiba
+      // 2. Angol kifejezések — v3: [.,]*\s* elkapja a "..." -ot is!
       englishLeakPatterns: [
-        // "I see..." — a LEGGYAKORIBB angol kiszivárgás
-        { pattern: /\bI see\b[,.]?\s*/gi, replacement: '' },
-        // "I hear you..."
-        { pattern: /\bI hear you\b[,.]?\s*/gi, replacement: '' },
-        // "Okay..." / "OK..."
-        { pattern: /\bOkay\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bOK\b[,.]?\s*/gi, replacement: '' },
-        // "Got it..."
-        { pattern: /\bGot it\b[,.]?\s*/gi, replacement: '' },
-        // "Well..." mondat elején
-        { pattern: /^\s*Well\b[,.]?\s*/gi, replacement: '' },
-        // "Alright..."
-        { pattern: /\bAlright\b[,.]?\s*/gi, replacement: '' },
-        // "Sure..." mondat elején
-        { pattern: /^\s*Sure\b[,.]?\s*/gi, replacement: '' },
-        // "Duly noted..."
-        { pattern: /\bDuly noted\b[,.]?\s*/gi, replacement: '' },
-        // "I understand..."
-        { pattern: /\bI understand\b[,.]?\s*/gi, replacement: '' },
-        // "Right..." mondat elején
-        { pattern: /^\s*Right\b[,.]?\s*/gi, replacement: '' },
-        // "Of course..." mondat elején
-        { pattern: /^\s*Of course\b[,.]?\s*/gi, replacement: '' },
-        // "Absolutely..." mondat elején
-        { pattern: /^\s*Absolutely\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bI see[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bI hear you[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bOkay[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bOK[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bGot it[.,]*\s*/gi, replacement: '' },
+        { pattern: /^\s*Well[.,]*\s*/gim, replacement: '' },
+        { pattern: /\bAlright[.,]*\s*/gi, replacement: '' },
+        { pattern: /^\s*Sure[.,]*\s*/gim, replacement: '' },
+        { pattern: /\bDuly noted[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bI understand[.,]*\s*/gi, replacement: '' },
+        { pattern: /^\s*Right[.,]*\s*/gim, replacement: '' },
+        { pattern: /^\s*Of course[.,]*\s*/gim, replacement: '' },
+        { pattern: /^\s*Absolutely[.,]*\s*/gim, replacement: '' },
+        // v3 ÚJ: további angol kiszivárgások
+        { pattern: /\bNo problem[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bNo worries[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bJust a moment[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bYou're welcome[.,]*\s*/gi, replacement: '' },
       ],
 
-      // 3. Töltelékszavak — TTS rosszul kezeli (KIBŐVÍTETT a Python szűrőből)
+      // 3. Töltelékszavak — v3 JAVÍTOTT: [.,]*\s* a [,.]?\s* helyett — elkapja a "..." -ot!
       fillerPatterns: [
-        // "Ahhh, értem" → "Értem" (LEGGYAKORIBB PROBLÉMA!)
-        { pattern: /\b[Aa]hh+[,.]?\s*értem/gi, replacement: 'Értem' },
-        // Magyar kitöltőszavak
-        { pattern: /\bMm-?hmm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bHmm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bMmm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bMhm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bAhh\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bÖhm\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bÖöö\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bÖö\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bUh\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bUhm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bUm\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bAha\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bHát\b[,.]?\s*/g, replacement: '' },
+        // "Ahhh, értem" / "Ahhh... értem" → "Értem" (LEGGYAKORIBB PROBLÉMA!)
+        { pattern: /\b[Aa]hh+[.,]*\s*értem/gi, replacement: 'Értem' },
+        { pattern: /\b[Aa]hh+[.,]*\s*Értem/gi, replacement: 'Értem' },
+        // Magyar kitöltőszavak — MINDEN variáció (pontok, vesszők, szóközök)
+        { pattern: /\bMm-?hmm\b[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bHmm[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bMmm[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bMhm[.,]*\s*/gi, replacement: '' },
+        // "Ahh" / "Ahhh" — MINDEN hossz, MINDEN írásjel utána
+        { pattern: /\b[Aa]h+[.,]*\s*/g, replacement: '' },
+        { pattern: /\bÖhm[.,]*\s*/g, replacement: '' },
+        { pattern: /\bÖö+[.,]*\s*/g, replacement: '' },
+        { pattern: /\bUh[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bUhm[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bUm[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bAha[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bHát[.,]*\s*/g, replacement: '' },
         // Német
-        { pattern: /\bÄhm\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bNaja\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bAlso\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bÄhm[.,]*\s*/g, replacement: '' },
+        { pattern: /\bNaja[.,]*\s*/g, replacement: '' },
+        { pattern: /\bAlso[.,]*\s*/g, replacement: '' },
         // Francia / olasz / holland
-        { pattern: /\bEuh\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bAlors\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bEhm\b[,.]?\s*/g, replacement: '' },
-        { pattern: /\bAllora\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bEuh[.,]*\s*/g, replacement: '' },
+        { pattern: /\bAlors[.,]*\s*/g, replacement: '' },
+        { pattern: /\bEhm[.,]*\s*/g, replacement: '' },
+        { pattern: /\bAllora[.,]*\s*/g, replacement: '' },
         // Sóhajok, megkönnyebbülések
-        { pattern: /\bHuh+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bEhh+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bAhhh+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bOhhh+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bUhhh+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bWhew+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bPhew+\b[,.]?\s*/gi, replacement: '' },
-        { pattern: /\bOof+\b[,.]?\s*/gi, replacement: '' },
-        // "Irány" — felesleges indulószó (az LLM gyakran ezt generálja)
-        { pattern: /\bIrány\.{3}\s*/g, replacement: '' },
-        { pattern: /\bIrány[,]\s*/g, replacement: '' },
+        { pattern: /\bHuh+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bEhh+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bOhh+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bUhh+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bWhew+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bPhew+[.,]*\s*/gi, replacement: '' },
+        { pattern: /\bOof+[.,]*\s*/gi, replacement: '' },
+        // "Irány" — felesleges indulószó
+        { pattern: /\bIrány[.,]*\s*/g, replacement: '' },
+        // v3 ÚJ: felesleges hárompont gyakori szavak után
+        { pattern: /Rendben\.{3,}\s*/g, replacement: 'Rendben. ' },
+        { pattern: /Értem\.{3,}\s*/g, replacement: 'Értem. ' },
       ],
 
       // 4. Telefonszám kötőjel → szóköz (számjegyek szótagsorban)
       phoneHyphenPattern: /(?:(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy|harminc|hatvan|hetven|tizen|huszon|harmincharom|hatvanhárom|hetvenhat)-)+(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy|harminc|hatvan|hetven)/gi,
 
-      // 10. TELEFONSZÁM KIEJTÉS JAVÍTÁS
-      //    "három nulla" → "harminc" (szolgáltatókód kontextusban)
-      //    Csak ha "nulla hat" után jön (telefonszám eleje)
+      // 10. TELEFONSZÁM KIEJTÉS JAVÍTÁS (v3 — bővített)
       phoneFixes: [
-        // "nulla hat, három nulla" → "nulla hat, harminc" (szolgáltatókód)
+        // "nulla hat, három nulla" → "nulla hat, harminc"
         { pattern: /(nulla\s*hat\s*[,.]?\s*)három\s*nulla/gi, replacement: '$1harminc' },
         { pattern: /(nulla\s*hat\s*[,.]?\s*)kettő\s*nulla/gi, replacement: '$1húsz' },
         { pattern: /(nulla\s*hat\s*[,.]?\s*)hét\s*nulla/gi, replacement: '$1hetven' },
         { pattern: /(nulla\s*hat\s*[,.]?\s*)öt\s*nulla/gi, replacement: '$1ötven' },
-        // "+36 harminchat" után is
         { pattern: /(plusz\s*harminchat\s*[,.]?\s*)három\s*nulla/gi, replacement: '$1harminc' },
         { pattern: /(plusz\s*harminchat\s*[,.]?\s*)kettő\s*nulla/gi, replacement: '$1húsz' },
         { pattern: /(plusz\s*harminchat\s*[,.]?\s*)hét\s*nulla/gi, replacement: '$1hetven' },
+        // v3 ÚJ: "öt kilenc kettő nyolc" páros javítás telefonszám kontextusban
+        { pattern: /(telefonszám[áo][kt]?:?\s*[^\d]*\d?\s*)öt\s*kilenc/gi, replacement: '$1ötvenkilenc' },
+        { pattern: /(telefonszám[áo][kt]?:?\s*[^\d]*\d?\s*)nyolc\s*kettő/gi, replacement: '$1nyolcvankettő' },
+        { pattern: /(telefonszám[áo][kt]?:?\s*[^\d]*\d?\s*)hat\s*öt/gi, replacement: '$1hatvanöt' },
       ],
 
       // 5. "Sajnos nem" tiltás pozitív kéréseknél
@@ -2656,15 +2652,16 @@
         { pattern: /system error/gi, label: 'HALLUCINÁLT TECH PROBLÉMA: "system error"' },
       ],
 
-      // 11. TILTOTT KIFEJEZÉSEK — CSENDES SZŰRÉS (Python szűrőből)
-      //     Ezek sosem jelenhetnek meg — csendesen törölve, NEM dob fel ablakot
+      // 11. TILTOTT KIFEJEZÉSEK — v3 CSENDES SZŰRÉS (bővített)
       forbiddenPatterns: [
-        // Felesleges kötőjelek
         { pattern: /\s*-{2,}\s*/g, replacement: ' ' },
-        // Túl sok pont (4+)
         { pattern: /\s*\.{4,}\s*/g, replacement: '... ' },
-        // "törölve" felesleges megjegyzés
         { pattern: /\b[tT]örölve\b/g, replacement: '' },
+        // v3 ÚJ: téves kifejezések csendes cseréje
+        { pattern: /technikai problémával/gi, replacement: 'technikai okból' },
+        { pattern: /technikai hibával/gi, replacement: 'technikai okból' },
+        // v3 ÚJ: "órára" → "órakor" (helyes magyar foglalásnál)
+        { pattern: /órá-ra/g, replacement: 'órakor' },
       ],
 
       /**
@@ -2689,6 +2686,39 @@
                 changes.push({ type: 'hungarian_number_fixed', original: m.trim(), fixed: replacement });
               });
               result = result.replace(pattern, replacement);
+            }
+          });
+
+          // ═══ v3 ÚJ: Számjegyes időpont javítás ═══
+          // "13:00" → "tizenhárom óra" (NE: "egy három null-null")
+          // "17:00" → "tizenhét óra"
+          const huNums10_19 = {10:'tíz',11:'tizenegy',12:'tizenkettő',13:'tizenhárom',14:'tizennégy',15:'tizenöt',16:'tizenhat',17:'tizenhét',18:'tizennyolc',19:'tizenkilenc'};
+          const timeDigitRe = /\b(1[0-9]):(00|30)\b/g;
+          let timeMatch;
+          while ((timeMatch = timeDigitRe.exec(result)) !== null) {
+            const h = parseInt(timeMatch[1]);
+            const mins = timeMatch[2];
+            const huH = huNums10_19[h] || String(h);
+            const huTime = mins === '00' ? huH + ' óra' : huH + ' óra harminc';
+            changes.push({ type: 'hungarian_time_fixed', original: timeMatch[0] });
+            result = result.replace(timeMatch[0], huTime);
+            timeDigitRe.lastIndex = 0; // reset after modification
+          }
+
+          // ═══ v3 ÚJ: Dátum számjegy javítás ═══
+          // "május 8-án" → "május nyolcadikán"
+          const dateDigitFixes = [
+            { pattern: /\bmájus\s+8\b/g, replacement: 'május nyolcadikán' },
+            { pattern: /\bmájus\s+11\b/g, replacement: 'május tizenegyedikén' },
+            { pattern: /\bmájus\s+13\b/g, replacement: 'május tizenharmadikán' },
+            { pattern: /\bmájus\s+25\b/g, replacement: 'május huszonötödikén' },
+          ];
+          dateDigitFixes.forEach(({ pattern, replacement: rep }) => {
+            pattern.lastIndex = 0;
+            const dm = result.match(pattern);
+            if (dm) {
+              dm.forEach(m => changes.push({ type: 'hungarian_date_fixed', original: m.trim() }));
+              result = result.replace(pattern, rep);
             }
           });
         }
@@ -2887,6 +2917,12 @@
           // ─── TILTOTT KIFEJEZÉSEK ───
           ['Rendben -- törölve', 'hu', 'Rendben'],
           ['Köszönöm....', 'hu', 'Köszönöm...'],
+          // ─── v3 ÚJ TESZTEK ───
+          ['Ahhh... Köszönöm az adatokat.', 'hu', 'Köszönöm az adatokat.'],
+          ['I hear you... Rendben, akkor foglalom.', 'hu', 'Rendben, akkor foglalom.'],
+          ['Ahh... Értem, rendben.', 'hu', 'Értem, rendben.'],
+          ['Hmm... Pillanat.', 'hu', 'Pillanat.'],
+          ['Okay... Verstanden.', 'de', 'Verstanden.'],
         ];
         const techTests = [
           { input: 'Elnézést kérek, egy pillanat technikai problémánk van.', lang: 'hu', expectedDetection: 'hallucinated_tech_problem_detected' },
@@ -2914,7 +2950,7 @@
 
     // Globális hozzáférés a konzolhoz: AnnaTextFilter.runTests()
     window.AnnaTextFilter = AnnaTextFilter;
-    logDebug('Anna Text Filter v2.0 (Hungarian+) loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
+    logDebug('Anna Text Filter v3.0 (Smart Hungarian+) loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
 
 
     // === Vanilla WebSocket Voice Call (replaces @elevenlabs/client SDK) ===
