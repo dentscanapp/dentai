@@ -2667,51 +2667,61 @@
 
           // Send first_message + custom_llm_additional_context with the detected language
           // so Anna greets and speaks in the user's language throughout the conversation.
-          const noRepeat = ' CRITICAL RULES: 1) You already introduced yourself in the first message. Do NOT repeat your name, introduction, or call recording notice. Respond directly. 2) NEVER start with filler sounds: no "Ahh", "Uhh", "Hmm", "Ööö", "Mm-hmm", "Hát". Start immediately with your actual response word. 3) NEVER use bracketed stage directions like [Professional], [warmly], [smiling] — these get read aloud by TTS and sound unprofessional. Just speak naturally without any brackets.';
+          //
+          // IMPORTANT — ELEVENLABS DASHBOARD FIX REQUIRED:
+          // The "[Professional]" / "[Warmly]" markers being read aloud by TTS is caused by
+          // the "Suggested audio tags" feature in the ElevenLabs Conversational AI agent config.
+          // To fully fix this: go to ElevenLabs Dashboard → Agent → Voice → "Suggested audio tags"
+          // and REMOVE "Professional" from the tags list. Keep only tags that don't interfere
+          // (like "Sighs", "Chuckles" which the TTS interprets as sounds, not words).
+          // The prompt-level prohibition below is a safety net, but the dashboard setting is the root cause.
+          //
+          const criticalRules = ' \n\nABSOLUTE RULES — VIOLATION CAUSES PATIENT COMPLAINTS:\n\n1) You already introduced yourself in the first message. Do NOT repeat your name, introduction, or call recording notice. Respond directly.\n\n2) NEVER start with filler sounds: no "Ahh", "Uhh", "Hmm", "Ööö", "Mm-hmm", "Hát", "Well", "Okay". Start immediately with your actual response word.\n\n3) ABSOLUTE BAN ON BRACKETED MARKERS — THIS IS THE #1 PATIENT COMPLAINT:\nNEVER write words in square brackets. The text-to-speech engine READS THEM ALOUD as words, so patients hear "Professional" or "Warmly" spoken — this is extremely annoying.\nFORBIDDEN: [Professional] [Warmly] [Calm] [Empathetic] [Smiling] [Confident] [Patient] [Warm] [Helpful] [Enthusiastic] [Excited] [Seriously] or ANY other word in brackets.\nBAD OUTPUT: "[Professional] Üdvözlöm, Kovács Péter!" → Patient hears: "Professional. Üdvözlöm Kovács Péter!"\nGOOD OUTPUT: "Üdvözlöm, Kovács Péter!" → Patient hears: "Üdvözlöm Kovács Péter!"\nBAD OUTPUT: "[Warmly] Rendben, foglaltam." → Patient hears: "Warmly. Rendben foglaltam."\nGOOD OUTPUT: "Rendben, foglaltam." → Patient hears: "Rendben foglaltam."\nNEVER use square brackets for ANY purpose. No exceptions. No stage directions. No tone indicators. No parenthetical notes. Just speak naturally.\n\n4) READ-BACK RULES — MINIMIZE ANNOYING REPETITION:\n- EMAIL: If you heard the email clearly, confirm BRIEFLY: "A petor1987@gmail.com címre küldjük?" Do NOT spell it character by character every time. Only spell character by character if: (a) the patient previously said your confirmation was WRONG, or (b) the audio was clearly garbled. First attempt = brief confirmation. Character-by-character ONLY on second attempt after a correction.\n- PHONE: If you heard the phone clearly, confirm BRIEFLY with last digits: "A ...8265-ös számra?" Full digit-by-digit read-back ONLY if the patient says your confirmation was wrong. First attempt = brief. Detailed ONLY after correction.\n- The goal: patients find full read-back annoying and time-wasting. Only read back in full when there is genuine doubt or a previous error.';
+
           const langData = {
             hu: {
               first_message: 'Üdvözlöm! Anna vagyok, a Dent-AI fogászati asszisztens. A hívás rögzítésre kerül. Miben segíthetek?',
-              context: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.' + noRepeat
+              context: 'A felhasználó Magyarországról látogatja az oldalt. Kérjük, magyarul folytassa a teljes beszélgetést.' + criticalRules
             },
             en: {
               first_message: 'Hello! I\'m Anna, your dental AI assistant. This call may be recorded. How can I help you today?',
-              context: 'The user is visiting from an English-speaking country. Please conduct the entire conversation in English.' + noRepeat
+              context: 'The user is visiting from an English-speaking country. Please conduct the entire conversation in English.' + criticalRules
             },
             de: {
               first_message: 'Hallo! Ich bin Anna, Ihre zahnärztliche KI-Assistentin. Dieses Gespräch wird aufgenommen. Wie kann ich Ihnen helfen?',
-              context: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.' + noRepeat
+              context: 'Der Benutzer besucht die Website aus einem deutschsprachigen Land. Bitte führen Sie das gesamte Gespräch auf Deutsch.' + criticalRules
             },
             nl: {
               first_message: 'Hallo! Ik ben Anna, uw tandheelkundige AI-assistente. Dit gesprek wordt opgenomen. Hoe kan ik u vandaag helpen?',
-              context: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.' + noRepeat
+              context: 'De gebruiker bezoekt de website vanuit Nederland of Vlaanderen. Voer het hele gesprek in het Nederlands.' + criticalRules
             },
             fr: {
               first_message: 'Bienvenue! Je suis Anna, votre assistante dentaire IA. Cet appel peut être enregistré. Comment puis-je vous aider?',
-              context: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français." + noRepeat
+              context: "L'utilisateur visite le site depuis un pays francophone. Veuillez mener toute la conversation en français." + criticalRules
             },
             it: {
               first_message: 'Salve! Sono Anna, la vostra assistente dentistica IA. Questa chiamata viene registrata. Come posso aiutarvi?',
-              context: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano." + noRepeat
+              context: "L'utente visita il sito da un paese italofono. Si prega di condurre l'intera conversazione in italiano." + criticalRules
             },
             da: {
               first_message: 'Velkommen! Jeg er Anna, din tandlæge AI-assistent. Opkaldet optages. Hvordan kan jeg hjælpe dig?',
-              context: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.' + noRepeat
+              context: 'Brugeren besøger hjemmesiden fra Danmark. Før hele samtalen på dansk.' + criticalRules
             },
             no: {
               first_message: 'Velkommen! Jeg er Anna, din tannlege AI-assistent. Samtalen blir tatt opp. Hvordan kan jeg hjelpe deg?',
-              context: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.' + noRepeat
+              context: 'Brukeren besøker nettsiden fra Norge. Før hele samtalen på norsk.' + criticalRules
             },
             sv: {
               first_message: 'Välkommen! Jag är Anna, din tandläkar-AI-assistent. Samtalet spelas in. Hur kan jag hjälpa dig?',
-              context: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.' + noRepeat
+              context: 'Användaren besöker webbplatsen från Sverige. För hela samtalet på svenska.' + criticalRules
             },
             fi: {
               first_message: 'Tervetuloa! Olen Anna, hammaslääkärin AI-assistenttisi. Puhelu tallennetaan. Miten voin auttaa sinua?',
-              context: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.' + noRepeat
+              context: 'Käyttäjä vierailee sivustolta Suomesta. Käy koko keskustelu suomeksi.' + criticalRules
             },
             sk: {
               first_message: 'Vitajte! Som Anna, váš zubný AI asistent. Hovor sa nahráva. Ako vám môžeme pomôcť?',
-              context: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.' + noRepeat
+              context: 'Používateľ navštevuje stránku zo Slovenska. Prosím, vedte celý rozhovor po slovensky.' + criticalRules
             }
           };
           const detectedLang = currentLang || 'en';
