@@ -94,7 +94,20 @@
     .toast .toast-close{flex-shrink:0;background:none;border:none;color:#94a3b8;cursor:pointer;padding:2px;margin:-2px -4px -2px 4px;border-radius:4px;line-height:0}
     .toast .toast-close:hover{color:#f1f5f9;background:rgba(255,255,255,.08)}
     @media (max-width:480px){#toast-container{left:16px;right:16px;transform:none;width:auto}.toast{min-width:0;width:100%}}
-    .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#0f172a;border-radius:0 0 18px 18px;z-index:10}.phone-notch::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:50px;height:6px;border-radius:3px;background:#1e293b}
+    /* === Dynamic Island (iPhone 14+ stílusú) — modernebb mint a 2017-es notch === */
+    .phone-notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:90px;height:26px;background:#000;border-radius:14px;z-index:10;box-shadow:0 0 0 0.5px rgba(255,255,255,.04) inset, 0 1px 2px rgba(0,0,0,.6);transition:width .35s cubic-bezier(.4,.2,.2,1), height .35s cubic-bezier(.4,.2,.2,1)}
+    .phone-notch::before{content:'';position:absolute;top:50%;right:8px;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #1a2540 0%, #0a0f1a 70%);box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+    .phone-notch::after{content:'';position:absolute;top:50%;right:9.5px;transform:translateY(-50%);width:2px;height:2px;border-radius:50%;background:rgba(120,180,255,.35);box-shadow:0 0 4px rgba(120,180,255,.5)}
+    /* Live activity állapot — szélesedés, mintha hívás futna */
+    .phone-frame.is-live .phone-notch{width:160px;height:32px;border-radius:18px}
+    .di-live{position:absolute;inset:0;display:none;align-items:center;justify-content:space-between;padding:0 12px 0 14px;color:#fff;font-size:10px;font-weight:600;letter-spacing:.01em;font-family:Inter,-apple-system,sans-serif}
+    .phone-frame.is-live .di-live{display:flex}
+    .di-live .di-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:pulse-ring 1.4s ease-out infinite}
+    .di-live .di-bars{display:flex;align-items:center;gap:2px;height:14px}
+    .di-live .di-bars span{width:2px;border-radius:1px;background:#10b981;animation:wave-bar .6s ease-in-out infinite}
+    .di-live .di-bars span:nth-child(2){animation-delay:.1s}
+    .di-live .di-bars span:nth-child(3){animation-delay:.2s}
+    .di-live .di-bars span:nth-child(4){animation-delay:.15s}
     @keyframes chat-appear{0%{opacity:0;transform:translateY(12px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
     .chat-bubble{animation:chat-appear .5s ease forwards;opacity:0}.chat-bubble:nth-child(1){animation-delay:.2s}.chat-bubble:nth-child(2){animation-delay:.8s}.chat-bubble:nth-child(3){animation-delay:1.4s}.chat-bubble:nth-child(4){animation-delay:2.0s}
     @keyframes typing-dot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
@@ -108,7 +121,42 @@
     @keyframes ring-pulse-2{0%{transform:scale(1);opacity:.3}100%{transform:scale(2.2);opacity:0}}.call-ring-2{animation:ring-pulse-2 2s ease-out infinite .5s}
     @keyframes wave-bar{0%,100%{height:4px}50%{height:18px}}.voice-wave-bar{width:3px;border-radius:2px;background:currentColor;animation:wave-bar .6s ease-in-out infinite}.voice-wave-bar:nth-child(1){animation-delay:0s}.voice-wave-bar:nth-child(2){animation-delay:.1s}.voice-wave-bar:nth-child(3){animation-delay:.2s}.voice-wave-bar:nth-child(4){animation-delay:.3s}.voice-wave-bar:nth-child(5){animation-delay:.15s}
     @keyframes glow-breathe{0%,100%{box-shadow:0 0 20px rgba(59,130,246,.3),0 0 60px rgba(59,130,246,.1)}50%{box-shadow:0 0 30px rgba(59,130,246,.5),0 0 80px rgba(59,130,246,.2)}}.call-active-glow{animation:glow-breathe 1.5s ease-in-out infinite}
-    /* === Language badge styles === */
+    /* === Language demo === */
+    .lang-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .85rem;border-radius:.75rem;background:#fff;border:1px solid rgba(226,232,240,.9);box-shadow:0 1px 2px rgba(15,23,42,.04);transition:all .2s ease;font-size:.8125rem;font-weight:600;color:#334155;white-space:nowrap;cursor:pointer;user-select:none}
+    .lang-chip:hover{transform:translateY(-2px);border-color:rgba(96,165,250,.55);box-shadow:0 6px 16px rgba(37,99,235,.12);color:#1e40af}
+    .lang-chip.is-active{background:linear-gradient(180deg,#2563eb,#1d4ed8);border-color:#1e40af;color:#fff;box-shadow:0 8px 22px rgba(37,99,235,.35);transform:translateY(-2px)}
+    .lang-chip.is-active svg{filter:drop-shadow(0 0 0 #fff)}
+    .lang-chip svg{display:inline-block;border-radius:2px;flex-shrink:0}
+
+    .lang-stage{position:relative;background:radial-gradient(circle at 30% 20%, rgba(59,130,246,.08), transparent 60%), linear-gradient(180deg,#f8fafc,#fff);border:1px solid rgba(226,232,240,.8);border-radius:1.25rem;padding:1.5rem;overflow:hidden}
+    .lang-stage::before{content:'';position:absolute;inset:-1px;border-radius:inherit;background:linear-gradient(120deg,transparent 30%,rgba(59,130,246,.15),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+    .lang-stage.is-playing::before{opacity:1;animation:lang-sweep 2.4s ease-in-out infinite}
+    @keyframes lang-sweep{0%,100%{transform:translateX(-30%)}50%{transform:translateX(30%)}}
+
+    .lang-avatar{position:relative;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.125rem;flex-shrink:0;box-shadow:0 8px 22px rgba(37,99,235,.25)}
+    .lang-avatar::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(59,130,246,.4);opacity:0}
+    .lang-stage.is-playing .lang-avatar::after{animation:ring-pulse-1 1.6s ease-out infinite;opacity:1}
+
+    .lang-waveform{display:flex;align-items:center;gap:3px;height:40px}
+    .lang-waveform span{width:3px;border-radius:2px;background:linear-gradient(180deg,#60a5fa,#2563eb);height:6px;transition:height .3s ease}
+    .lang-stage.is-playing .lang-waveform span{animation:wave-bar .6s ease-in-out infinite}
+    .lang-stage.is-playing .lang-waveform span:nth-child(2){animation-delay:.08s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(3){animation-delay:.16s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(4){animation-delay:.24s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(5){animation-delay:.12s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(6){animation-delay:.2s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(7){animation-delay:.06s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(8){animation-delay:.14s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(9){animation-delay:.22s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(10){animation-delay:.18s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(11){animation-delay:.1s}
+    .lang-stage.is-playing .lang-waveform span:nth-child(12){animation-delay:.26s}
+
+    .lang-quote{font-size:1.0625rem;line-height:1.5;font-weight:500;color:#0f172a;letter-spacing:-.01em;min-height:3.2em;transition:opacity .25s ease}
+    .lang-quote.is-fading{opacity:0}
+    .lang-translit{font-size:.8125rem;color:#64748b;margin-top:.35rem;font-style:italic}
+
+    /* === Language badge styles (kept for compat) === */
     .lang-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .75rem;border-radius:.75rem;background:#fff;border:1px solid rgba(226,232,240,.7);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all .25s ease;font-size:.8125rem;font-weight:600;color:#334155;white-space:nowrap}
     .lang-badge:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.12);border-color:rgba(191,219,254,.7)}
     .lang-badge svg{display:inline-block;border-radius:2px;vertical-align:middle}
@@ -218,10 +266,6 @@
             <div class="pulse-dot flex-shrink-0"></div>
             <span id="header-status-text" class="text-xs font-semibold text-emerald-700" data-i18n="header-available">Anna elérhető</span>
           </div>
-          <button id="header-call-btn" class="inline-flex items-center gap-1.5 bg-dental-600 hover:bg-dental-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm shadow-dental-600/20 whitespace-nowrap flex-shrink-0 transition-all hover:shadow-lg hover:shadow-dental-600/25 hover:-translate-y-0.5">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"></path></svg>
-            <span data-i18n="hero-call">Beszéljen Annával</span>
-          </button>
         </div>
         <!-- Animált Hamburger Menü Gomb -->
         <button id="menu-toggle" class="md:hidden relative w-10 h-10 flex items-center justify-center text-slate-800 hover:text-slate-900 focus:outline-none -mr-2" aria-label="Menü">
@@ -340,7 +384,12 @@
             <div class="absolute -bottom-10 -right-10 w-56 h-56 bg-blue-200/20 rounded-full blur-3xl float-med"></div>
             <div class="phone-frame relative z-10">
               <div class="phone-screen">
-                <div class="phone-notch"></div>
+                <div class="phone-notch">
+                  <div class="di-live">
+                    <span class="flex items-center gap-1.5"><span class="di-dot"></span>Anna</span>
+                    <span class="di-bars"><span style="height:6px"></span><span style="height:12px"></span><span style="height:8px"></span><span style="height:14px"></span></span>
+                  </div>
+                </div>
                 <div class="flex flex-col h-full bg-slate-50">
                   <div class="bg-white border-b border-slate-100 px-4 pt-9 pb-3 flex items-center gap-3">
                     <div class="relative"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-dental-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-dental-500/30">A</div><div class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white"></div></div>
@@ -1103,19 +1152,40 @@
         </div>
         <!-- Language grid -->
         <div class="p-7">
-          <p class="text-sm text-slate-500 leading-relaxed mb-6" data-i18n="lang-desc">Anna automatikusan felismeri a páciens nyelvét a hívás elején, és azon a nyelven folytatja a beszélgetést. Az SMS-ek, e-mailek és naptárbejegyzések is a páciens anyanyelvén készülnek — így a külföldi páciensek is otthon érzik magukat a praxisban, és sosem maradnak kommunikációs hátrányban.</p>
-          <div class="flex flex-wrap items-center justify-center gap-3">
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"></rect><rect y="4.7" width="20" height="4.7" fill="#fff"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"></rect></svg><span>Magyar</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"></rect><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"></path><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"></path><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"></path><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"></path></svg><span>English</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"></rect><rect y="4.7" width="20" height="4.7" fill="#DD0000"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"></rect></svg><span>Deutsch</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"></rect><rect x="6.7" width="6.6" height="14" fill="#fff"></rect><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"></rect></svg><span>Français</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"></rect><rect x="6.7" width="6.6" height="14" fill="#fff"></rect><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"></rect></svg><span>Italiano</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"></rect><rect y="4.7" width="20" height="4.6" fill="#fff"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"></rect></svg><span>Nederlands</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"></rect><rect x="6" width="2.5" height="14" fill="#fff"></rect><rect y="5.75" width="20" height="2.5" fill="#fff"></rect></svg><span>Dansk</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"></rect><rect x="6" width="3" height="14" fill="#fff"></rect><rect y="5.5" width="20" height="3" fill="#fff"></rect><rect x="7" width="1.5" height="14" fill="#002868"></rect><rect y="6.25" width="20" height="1.5" fill="#002868"></rect></svg><span>Norsk</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"></rect><rect x="5.5" width="2.5" height="14" fill="#FECC02"></rect><rect y="5.75" width="20" height="2.5" fill="#FECC02"></rect></svg><span>Svenska</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"></rect><rect x="5.5" width="2.5" height="14" fill="#003580"></rect><rect y="5.75" width="20" height="2.5" fill="#003580"></rect></svg><span>Suomi</span></div>
-            <div class="lang-badge"><svg class="w-5 h-3.5 flex-shrink-0" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"></rect><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"></rect></svg><span>Slovenčina</span></div>
+          <p class="text-sm text-slate-500 leading-relaxed mb-6" data-i18n="lang-desc">Anna automatikusan felismeri a páciens nyelvét a hívás elején, és azon a nyelven folytatja a beszélgetést. Az SMS-ek, e-mailek és naptárbejegyzések is a páciens anyanyelvén készülnek — így a külföldi páciensek is otthon érzik magukat a praxisban.</p>
+
+          <!-- Interaktív nyelvi demo: kattintásra Anna üdvözli a pácienst az adott nyelven -->
+          <div class="lang-stage mb-6" id="lang-stage">
+            <div class="flex items-center gap-4">
+              <div class="lang-avatar">A</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-dental-600" id="lang-stage-label">Magyar</span>
+                  <span class="text-[11px] text-slate-400">•</span>
+                  <span class="text-[11px] text-slate-500" data-i18n="lang-voice-label">Anna élő hangon válaszol</span>
+                </div>
+                <p class="lang-quote" id="lang-quote" data-i18n="lang-greeting">„Jó napot, Anna vagyok a fogorvosi rendelő asszisztense. Miben segíthetek?"</p>
+                <p class="lang-translit" id="lang-translit"></p>
+              </div>
+              <div class="lang-waveform hidden sm:flex" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <p class="mt-3 text-[11px] text-slate-400 text-center sm:text-left" data-i18n="lang-click-hint">Kattintson egy zászlóra — Anna automatikusan vált.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2.5" id="lang-chips">
+            <button type="button" class="lang-chip is-active" data-lang="hu" data-label="Magyar"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"/><rect y="4.7" width="20" height="4.7" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"/></svg><span>Magyar</span></button>
+            <button type="button" class="lang-chip" data-lang="en" data-label="English"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"/><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"/><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg><span>English</span></button>
+            <button type="button" class="lang-chip" data-lang="de" data-label="Deutsch"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"/><rect y="4.7" width="20" height="4.7" fill="#DD0000"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"/></svg><span>Deutsch</span></button>
+            <button type="button" class="lang-chip" data-lang="fr" data-label="Français"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"/></svg><span>Français</span></button>
+            <button type="button" class="lang-chip" data-lang="it" data-label="Italiano"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"/><rect x="6.7" width="6.6" height="14" fill="#fff"/><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"/></svg><span>Italiano</span></button>
+            <button type="button" class="lang-chip" data-lang="nl" data-label="Nederlands"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"/><rect y="4.7" width="20" height="4.6" fill="#fff"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"/></svg><span>Nederlands</span></button>
+            <button type="button" class="lang-chip" data-lang="da" data-label="Dansk"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"/><rect x="6" width="2.5" height="14" fill="#fff"/><rect y="5.75" width="20" height="2.5" fill="#fff"/></svg><span>Dansk</span></button>
+            <button type="button" class="lang-chip" data-lang="no" data-label="Norsk"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"/><rect x="6" width="3" height="14" fill="#fff"/><rect y="5.5" width="20" height="3" fill="#fff"/><rect x="7" width="1.5" height="14" fill="#002868"/><rect y="6.25" width="20" height="1.5" fill="#002868"/></svg><span>Norsk</span></button>
+            <button type="button" class="lang-chip" data-lang="sv" data-label="Svenska"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"/><rect x="5.5" width="2.5" height="14" fill="#FECC02"/><rect y="5.75" width="20" height="2.5" fill="#FECC02"/></svg><span>Svenska</span></button>
+            <button type="button" class="lang-chip" data-lang="fi" data-label="Suomi"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect x="5.5" width="2.5" height="14" fill="#003580"/><rect y="5.75" width="20" height="2.5" fill="#003580"/></svg><span>Suomi</span></button>
+            <button type="button" class="lang-chip" data-lang="sk" data-label="Slovenčina"><svg class="w-5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"/><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"/><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"/></svg><span>Slovenčina</span></button>
           </div>
           <!-- Under-banner: key language features -->
           <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1351,7 +1421,7 @@
                   </div>
                   <div>
                     <p class="text-[11px] font-semibold text-slate-800" data-i18n="care2-email-from">DentAi asszisztens</p>
-                    <p class="text-[10px] text-slate-400" data-i18n="care2-email-to">→ <a href="mailto:info@dentai.me" class="hover:text-dental-600 transition-colors">info@dentai.me</a></p>
+                    <p class="text-[10px] text-slate-400" data-i18n="care2-email-to">→ <a href="/cdn-cgi/l/email-protection#355c5b535a7551505b41545c1b5850" class="hover:text-dental-600 transition-colors"><span class="__cf_email__" data-cfemail="355c5b535a7551505b41545c1b5850">[email&#160;protected]</span></a></p>
                   </div>
                 </div>
                 <div class="bg-white rounded-xl border border-slate-200/60 p-3">
@@ -1855,7 +1925,7 @@
           <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             <div class="px-6 pb-5 pt-0">
               <div class="pl-[52px]">
-                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a <a href="mailto:info@dentai.me" class="text-dental-600 hover:underline">info@dentai.me</a> címen.</p>
+                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a <a href="/cdn-cgi/l/email-protection#d1b8bfb7be91b5b4bfa5b0b8ffbcb4" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="88e1e6eee7c8ecede6fce9e1a6e5ed">[email&#160;protected]</span></a> címen.</p>
               </div>
             </div>
           </div>
@@ -1878,7 +1948,7 @@
           <h4 class="font-semibold text-white mb-3" data-i18n="footer-contact">Kapcsolat</h4>
           <ul class="space-y-2 text-sm">
             <li class="flex items-center gap-2 justify-center md:justify-start">
-              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg><a href="mailto:info@dentai.me" class="hover:text-white transition-colors">info@dentai.me</a>
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg><a href="/cdn-cgi/l/email-protection#523b3c343d1236373c26333b7c3f37" class="hover:text-white transition-colors"><span class="__cf_email__" data-cfemail="7e171018113e1a1b100a1f1750131b">[email&#160;protected]</span></a>
             </li>
           </ul>
           <div class="flex items-center gap-3 mt-4 justify-center md:justify-start">
@@ -1927,7 +1997,7 @@
           <p data-i18n="imp-intro">Jelen weboldal egy portfolió bemutató, melyet az alábbi természetes személy üzemeltet. A weboldal nem nyújt valós egészségügyi szolgáltatást.</p>
           <div class="space-y-1.5">
             <p><span class="font-semibold" data-i18n="imp-name-label">Üzemeltető neve:</span> <span data-i18n="imp-name-value">Petor Péter (természetes személy)</span></p>
-            <p><span class="font-semibold" data-i18n="imp-email-label">E-mail cím:</span> <a href="mailto:info@dentai.me" class="text-dental-600 hover:underline">info@dentai.me</a></p>
+            <p><span class="font-semibold" data-i18n="imp-email-label">E-mail cím:</span> <a href="/cdn-cgi/l/email-protection#fe97909891be9a9b908a9f97d0939b" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="3e575058517e5a5b504a5f5710535b">[email&#160;protected]</span></a></p>
             <p><span class="font-semibold" data-i18n="imp-purpose-label">Oldal célja:</span> <span data-i18n="imp-purpose-value">Portfolió / technológiai demó (nem kereskedelmi szolgáltatás)</span></p>
             <p><span class="font-semibold" data-i18n="imp-host-label">Tárhelyszolgáltató:</span> <span data-i18n="imp-host-value">Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA)</span></p>
           </div>
@@ -1938,7 +2008,7 @@
           <p data-i18n="priv-intro">Jelen tájékoztató a weboldal látogatása során történő adatkezelésről nyújt információt a GDPR (EU 2016/679 rendelet) és a 2011. évi CXII. törvény (Infotv.) alapján.</p>
           <div>
             <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h1">1. Adatkezelő</h4>
-            <p data-i18n="priv-p1">Petor Péter természetes személy, kapcsolat: <a href="mailto:info@dentai.me" class="text-dental-600 hover:underline">info@dentai.me</a>. Az oldal portfolió demó, valós egészségügyi adatkezelés nem történik.</p>
+            <p data-i18n="priv-p1">Petor Péter természetes személy, kapcsolat: <a href="/cdn-cgi/l/email-protection#a3cacdc5cce3c7c6cdd7c2ca8dcec6" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="92fbfcf4fdd2f6f7fce6f3fbbcfff7">[email&#160;protected]</span></a>. Az oldal portfolió demó, valós egészségügyi adatkezelés nem történik.</p>
           </div>
           <div>
             <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h2">2. Kezelt adatok és célok</h4>
@@ -1965,7 +2035,7 @@
           </div>
           <div>
             <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h5">5. Az Ön jogai</h4>
-            <p data-i18n="priv-p5">Ön jogosult tájékoztatást kérni, helyesbítést, törlést és tiltakozást kezdeményezni adatai kezelésével kapcsolatban. Kérelmét a <a href="mailto:info@dentai.me" class="text-dental-600 hover:underline">info@dentai.me</a> e-mail címre küldheti. Panaszt a Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH, www.naih.hu) tehet.</p>
+            <p data-i18n="priv-p5">Ön jogosult tájékoztatást kérni, helyesbítést, törlést és tiltakozást kezdeményezni adatai kezelésével kapcsolatban. Kérelmét a <a href="/cdn-cgi/l/email-protection#630a0d050c2307060d17020a4d0e06" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="fb92959d94bb9f9e958f9a92d5969e">[email&#160;protected]</span></a> e-mail címre küldheti. Panaszt a Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH, www.naih.hu) tehet.</p>
           </div>
           <div>
             <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h6">6. Felelősségkizárás</h4>
@@ -1976,7 +2046,7 @@
       </div>
       <!-- OK gomb -->
       <div class="mt-3 pt-3 border-t border-slate-100 flex justify-end flex-shrink-0">
-        <button type="button" id="legal-ok-btn" class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-dental-600 hover:bg-dental-700 transition-colors">OK</button>
+        <button type="button" id="legal-ok-btn" class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-dental-600 hover:bg-dental-700 transition-colors" data-i18n="legal-ok">OK</button>
       </div>
     </div>
   </div>
@@ -2010,7 +2080,7 @@
   </div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
     // === Toast notification system ===
     const toastContainer = document.getElementById('toast-container');
@@ -3043,6 +3113,7 @@
         'legal-tab-impressum': 'Impresszum',
         'legal-tab-privacy': 'Adatkezelési Tájékoztató',
         'legal-close': 'Bezárás',
+        'legal-ok': 'OK',
         'imp-intro': 'Jelen weboldal egy portfolió bemutató, melyet az alábbi természetes személy üzemeltet. A weboldal nem nyújt valós egészségügyi szolgáltatást.',
         'imp-name-label': 'Üzemeltető neve:',
         'imp-name-value': 'Petor Péter (természetes személy)',
@@ -3126,6 +3197,9 @@
         'lang-feat2-desc': 'Visszaigazolás a páciens nyelvén',
         'lang-feat3-title': 'Többnyelvű e-mail',
         'lang-feat3-desc': 'Naptárleírás 11 nyelven, automatikusan generált',
+        'lang-voice-label': 'Anna élő hangon válaszol',
+        'lang-greeting': '„Jó napot, Anna vagyok a fogorvosi rendelő asszisztense. Miben segíthetek?"',
+        'lang-click-hint': 'Kattintson egy zászlóra — Anna automatikusan vált.',
         'roi-email-btn': 'Megosztom email-ben',
         'roi-email-prompt': 'Küldje el magának az eredményt!',
         'roi-email-send': 'Küldés',
@@ -3389,6 +3463,7 @@
         'legal-tab-impressum': 'Imprint',
         'legal-tab-privacy': 'Privacy Policy',
         'legal-close': 'Close',
+        'legal-ok': 'OK',
         'imp-intro': 'This website is a portfolio demonstration operated by the natural person below. The site does not provide any real healthcare service.',
         'imp-name-label': 'Site owner:',
         'imp-name-value': 'Peter Petor (private individual)',
@@ -3472,6 +3547,9 @@
         'lang-feat2-desc': 'Confirmation in the patient\'s language',
         'lang-feat3-title': 'Multilingual e-mail',
         'lang-feat3-desc': 'Calendar description in 11 languages, generated automatically',
+        'lang-voice-label': 'Anna responds in live voice',
+        'lang-greeting': '"Hello, this is Anna from the dental clinic. How may I help you today?"',
+        'lang-click-hint': 'Click a flag — Anna switches automatically.',
         'roi-email-btn': 'Share by email',
         'roi-email-prompt': 'Send the result to yourself!',
         'roi-email-send': 'Send',
@@ -3735,6 +3813,7 @@
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Datenschutzerklärung',
         'legal-close': 'Schließen',
+        'legal-ok': 'OK',
         'imp-intro': 'Diese Website ist eine Portfolio-Demonstration, betrieben von der unten genannten Privatperson. Es werden keine echten Gesundheitsdienstleistungen angeboten.',
         'imp-name-label': 'Betreiber:',
         'imp-name-value': 'Peter Petor (Privatperson)',
@@ -3818,6 +3897,9 @@
         'lang-feat2-desc': 'Bestätigung in der Sprache des Patienten',
         'lang-feat3-title': 'Mehrsprachige E-Mail',
         'lang-feat3-desc': 'Kalenderbeschreibung in 11 Sprachen, automatisch generiert',
+        'lang-voice-label': 'Anna antwortet mit lebendiger Stimme',
+        'lang-greeting': '„Guten Tag, hier ist Anna von der Zahnarztpraxis. Wie kann ich Ihnen helfen?"',
+        'lang-click-hint': 'Klicken Sie auf eine Flagge — Anna schaltet automatisch um.',
         'roi-email-btn': 'Per E-Mail teilen',
         'roi-email-prompt': 'Senden Sie sich das Ergebnis!',
         'roi-email-send': 'Senden',
@@ -4081,6 +4163,7 @@ nl: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Privacyverklaring',
         'legal-close': 'Sluiten',
+        'legal-ok': 'OK',
         'imp-intro': 'Deze website is een portfoliodemonstratie, beheerd door de hieronder vermelde particuliere persoon. Er worden geen echte gezondheidsdiensten aangeboden.',
         'imp-name-label': 'Beheerder:',
         'imp-name-value': 'Peter Petor (particulier)',
@@ -4164,6 +4247,9 @@ nl: {
         'lang-feat2-desc': 'Bevestiging in de taal van de patiënt',
         'lang-feat3-title': 'Meertalige e-mail',
         'lang-feat3-desc': 'Agendabeschrijving in 11 talen, automatisch gegenereerd',
+        'lang-voice-label': 'Anna antwoordt met levende stem',
+        'lang-greeting': '„Goedendag, met Anna van de tandartspraktijk. Waarmee kan ik u helpen?"',
+        'lang-click-hint': 'Klik op een vlag — Anna schakelt automatisch om.',
         'roi-email-btn': 'Deel per e-mail',
         'roi-email-prompt': 'Stuur het resultaat naar uzelf!',
         'roi-email-send': 'Verzenden',
@@ -4428,6 +4514,7 @@ nl: {
         'legal-tab-impressum': 'Mentions légales',
         'legal-tab-privacy': 'Politique de confidentialité',
         'legal-close': 'Fermer',
+        'legal-ok': 'OK',
         'imp-intro': 'Ce site web est une démonstration de portfolio gérée par la personne physique ci-dessous. Le site ne fournit aucun service de santé réel.',
         'imp-name-label': 'Nom de l\'exploitant :',
         'imp-name-value': 'Peter Petor (particulier)',
@@ -4511,6 +4598,9 @@ nl: {
         'lang-feat2-desc': 'Confirmation dans la langue du patient',
         'lang-feat3-title': 'E-mail multilingue',
         'lang-feat3-desc': 'Description de l\'agenda en 11 langues, générée automatiquement',
+        'lang-voice-label': 'Anna répond en voix directe',
+        'lang-greeting': '« Bonjour, je suis Anna, l\'assistante du cabinet dentaire. Comment puis-je vous aider ? »',
+        'lang-click-hint': 'Cliquez sur un drapeau — Anna bascule automatiquement.',
         'roi-email-btn': 'Partager par e-mail',
         'roi-email-prompt': 'Envoyez-vous le résultat !',
         'roi-email-send': 'Envoyer',
@@ -4774,6 +4864,7 @@ nl: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Informativa sulla privacy',
         'legal-close': 'Chiudi',
+        'legal-ok': 'OK',
         'imp-intro': 'Questo sito web è una dimostrazione portfolio gestita dalla persona fisica sotto indicata. Il sito non fornisce alcun servizio sanitario reale.',
         'imp-name-label': 'Responsabile del sito:',
         'imp-name-value': 'Peter Petor (persona fisica)',
@@ -4857,6 +4948,9 @@ nl: {
         'lang-feat2-desc': 'Conferma nella lingua del paziente',
         'lang-feat3-title': 'E-mail multilingue',
         'lang-feat3-desc': 'Descrizione del calendario in 11 lingue, generata automaticamente',
+        'lang-voice-label': 'Anna risponde con voce dal vivo',
+        'lang-greeting': '«Buongiorno, sono Anna, l\'assistente dello studio dentistico. Come posso aiutarla?»',
+        'lang-click-hint': 'Clicca su una bandiera — Anna cambia automaticamente.',
         'roi-email-btn': 'Condividi via email',
         'roi-email-prompt': 'Invia il risultato a te stesso!',
         'roi-email-send': 'Invia',
@@ -5119,6 +5213,7 @@ da: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Privatlivspolitik',
         'legal-close': 'Luk',
+        'legal-ok': 'OK',
         'imp-intro': 'Denne hjemmeside er en porteføljepresentation drevet af den nedenfor opførte fysiske person. Hjemmesiden tilbyder ikke reelle sundhedstjenester.',
         'imp-name-label': 'Den dataansvarlige:',
         'imp-name-value': 'Peter Petor (privatperson)',
@@ -5202,6 +5297,9 @@ da: {
         'lang-feat2-desc': 'Bekræftelse på patientens sprog',
         'lang-feat3-title': 'Flersproget e-mail',
         'lang-feat3-desc': 'Kalenderbeskrivelse på 11 sprog, automatisk genereret',
+        'lang-voice-label': 'Anna svarer med levende stemme',
+        'lang-greeting': '„Goddag, det er Anna fra tandlægeklinikken. Hvordan kan jeg hjælpe dig?"',
+        'lang-click-hint': 'Klik på et flag — Anna skifter automatisk.',
         'roi-email-btn': 'Del via e-mail',
         'roi-email-prompt': 'Send resultatet til dig selv!',
         'roi-email-send': 'Send',
@@ -5465,6 +5563,7 @@ da: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Personvernerklæring',
         'legal-close': 'Lukk',
+        'legal-ok': 'OK',
         'imp-intro': 'Denne nettsiden er en porteføljepresentasjon drevet av den nedenfor oppførte fysiske personen. Nettsiden tilbyr ikke reelle helsetjenester.',
         'imp-name-label': 'Innehaver:',
         'imp-name-value': 'Peter Petor (privatperson)',
@@ -5548,6 +5647,9 @@ da: {
         'lang-feat2-desc': 'Bekreftelse på pasientens språk',
         'lang-feat3-title': 'Flerspråklig e-post',
         'lang-feat3-desc': 'Kalenderbeskrivelse på 11 språk, automatisk generert',
+        'lang-voice-label': 'Anna svarer med levende stemme',
+        'lang-greeting': '«God dag, dette er Anna fra tannlegekontoret. Hvordan kan jeg hjelpe deg?»',
+        'lang-click-hint': 'Klikk på et flagg — Anna bytter automatisk.',
         'roi-email-btn': 'Del via e-post',
         'roi-email-prompt': 'Send resultatet til deg selv!',
         'roi-email-send': 'Send',
@@ -5810,6 +5912,7 @@ sv: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Integritetspolicy',
         'legal-close': 'Stäng',
+        'legal-ok': 'OK',
         'imp-intro': 'Denna webbplats är en portföljpresentation driven av den nedan uppräknade fysiska personen. Webbplatsen erbjuder inte verkliga hälso- och sjukvårdstjänster.',
         'imp-name-label': 'Webbplatsansvarig:',
         'imp-name-value': 'Peter Petor (privatperson)',
@@ -5893,6 +5996,9 @@ sv: {
         'lang-feat2-desc': 'Bekräftelse på patientens språk',
         'lang-feat3-title': 'Flerspråkig e-post',
         'lang-feat3-desc': 'Kalenderbeskrivning på 11 språk, automatiskt genererad',
+        'lang-voice-label': 'Anna svarar med levande röst',
+        'lang-greeting': '„Hej, det här är Anna från tandvårdskliniken. Hur kan jag hjälpa dig?"',
+        'lang-click-hint': 'Klicka på en flagga — Anna byter automatiskt.',
         'roi-email-btn': 'Dela via e-post',
         'roi-email-prompt': 'Skicka resultatet till dig själv!',
         'roi-email-send': 'Skicka',
@@ -6155,6 +6261,7 @@ fi: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Tietosuojaseloste',
         'legal-close': 'Sulje',
+        'legal-ok': 'OK',
         'imp-intro': 'Tämä verkkosivusto on portfolioiden esittely, jota pyörittää alla lueteltu yksityishenkilö. Verkkosivusto ei tarjoa todellisia terveydenhuoltopalveluita.',
         'imp-name-label': 'Ylläpitäjän nimi:',
         'imp-name-value': 'Peter Petor (yksityishenkilö)',
@@ -6238,6 +6345,9 @@ fi: {
         'lang-feat2-desc': 'Vahvistus potilaan kielellä',
         'lang-feat3-title': 'Monikielinen sähköposti',
         'lang-feat3-desc': 'Kalenderikuvaus 11 kielellä, automaattisesti generoitu',
+        'lang-voice-label': 'Anna vastaa elävällä äänellä',
+        'lang-greeting': '„Hyvää päivää, olen Anna hammaslääkäriasemalta. Kuinka voin auttaa?”',
+        'lang-click-hint': 'Klikkaa lippua — Anna vaihtaa automaattisesti.',
         'roi-email-btn': 'Jaa sähköpostitse',
         'roi-email-prompt': 'Lähetä tulos itsellesi!',
         'roi-email-send': 'Lähetä',
@@ -6502,6 +6612,7 @@ fi: {
         'legal-tab-impressum': 'Impressum',
         'legal-tab-privacy': 'Oznámenie o ochrane údajov',
         'legal-close': 'Zavrieť',
+        'legal-ok': 'OK',
         'imp-intro': 'Táto webová stránka je portfóliová prezentácia prevádzkovaná nižšie uvedenou fyzickou osobou. Webová stránka neposkytuje skutočné zdravotnícke služby.',
         'imp-name-label': 'Meno prevádzkovateľa:',
         'imp-name-value': 'Peter Petor (súkromná osoba)',
@@ -6585,6 +6696,9 @@ fi: {
         'lang-feat2-desc': 'Potvrdenie v jazyku pacienta',
         'lang-feat3-title': 'Viacjazyčný e-mail',
         'lang-feat3-desc': 'Popis kalendára v 11 jazykoch, automaticky generovaný',
+        'lang-voice-label': 'Anna odpovedá živým hlasom',
+        'lang-greeting': '„Dobrý deň, som Anna zo zubnej ambulancie. Ako vám môžem pomôcť?”',
+        'lang-click-hint': 'Kliknite na vlajku — Anna prepne automaticky.',
         'roi-email-btn': 'Zdieľať e-mailom',
         'roi-email-prompt': 'Pošlite si výsledok!',
         'roi-email-send': 'Odoslať',
@@ -7046,5 +7160,61 @@ fi: {
 
 </script>
 
+
+<script>
+(function(){
+  const PHRASES = {
+    hu:{label:'Magyar',quote:'„Jó napot, Anna vagyok a fogorvosi rendelő asszisztense. Miben segíthetek?"'},
+    en:{label:'English',quote:'"Hello, this is Anna from the dental clinic. How may I help you today?"'},
+    de:{label:'Deutsch',quote:'„Guten Tag, hier ist Anna von der Zahnarztpraxis. Wie kann ich Ihnen helfen?"'},
+    fr:{label:'Français',quote:'« Bonjour, je suis Anna, l\'assistante du cabinet dentaire. Comment puis-je vous aider ? »'},
+    it:{label:'Italiano',quote:'«Buongiorno, sono Anna, l\'assistente dello studio dentistico. Come posso aiutarla?»'},
+    nl:{label:'Nederlands',quote:'„Goedendag, met Anna van de tandartspraktijk. Waarmee kan ik u helpen?"'},
+    da:{label:'Dansk',quote:'„Goddag, det er Anna fra tandlægeklinikken. Hvordan kan jeg hjælpe dig?"'},
+    no:{label:'Norsk',quote:'«God dag, dette er Anna fra tannlegekontoret. Hvordan kan jeg hjelpe deg?»'},
+    sv:{label:'Svenska',quote:'„Hej, det här är Anna från tandvårdskliniken. Hur kan jag hjälpa dig?"'},
+    fi:{label:'Suomi',quote:'„Hyvää päivää, olen Anna hammaslääkäriasemalta. Kuinka voin auttaa?"'},
+    sk:{label:'Slovenčina',quote:'„Dobrý deň, som Anna zo zubnej ambulancie. Ako vám môžem pomôcť?"'}
+  };
+  const stage = document.getElementById('lang-stage');
+  const quote = document.getElementById('lang-quote');
+  const labelEl = document.getElementById('lang-stage-label');
+  const chips = document.querySelectorAll('.lang-chip');
+  let timer;
+  function play(code){
+    const data = PHRASES[code]; if(!data) return;
+    chips.forEach(c=>c.classList.toggle('is-active', c.dataset.lang===code));
+    quote.classList.add('is-fading');
+    clearTimeout(timer);
+    timer = setTimeout(()=>{
+      quote.textContent = data.quote;
+      labelEl.textContent = data.label;
+      quote.classList.remove('is-fading');
+      stage.classList.add('is-playing');
+      clearTimeout(timer);
+      timer = setTimeout(()=>stage.classList.remove('is-playing'), 2400);
+    }, 220);
+  }
+  chips.forEach(c=>c.addEventListener('click', ()=>play(c.dataset.lang)));
+  // Auto-cycle on first view
+  if(chips.length){
+    const seq = ['en','de','fr','it','sv','hu'];
+    let i=0;
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          obs.disconnect();
+          const cycle = setInterval(()=>{
+            if(document.hidden) return;
+            play(seq[i % seq.length]); i++;
+            if(i>=seq.length){ clearInterval(cycle); }
+          }, 2800);
+        }
+      });
+    },{threshold:0.4});
+    obs.observe(stage);
+  }
+})();
+</script>
 </body>
 </html>
