@@ -2430,6 +2430,208 @@
     }
 
 
+    // ═══════════════════════════════════════════════════════════════
+    // ANNA TEXT FILTER — JavaScript (converted from anna_text_filter.py)
+    // ═══════════════════════════════════════════════════════════════
+    // Ez a szűrő az ElevenLabs agent LLM kimenetét tisztítja MIELŐTT
+    // megjelenne a chat/felirat nézetben, és LOGOLJA ha a prompt
+    // szintű tiltás ellenére is kiszivárogott valami.
+    //
+    // Fontos: A TTS szerveroldalon történik (ElevenLabs), ezért a
+    // kliensoldali szűrés NEM tudja megakadályozni, hogy a TTS
+    // felolvassa a [Professional] marker-t. Ez a szűrő:
+    //   1) LOGOLJA a szabályszegéseket (console + toast debug)
+    //   2) TISZTÍTJA a szöveget ha chat transzkriptet lenne
+    //   3) HATÉKONYABB prompt-szabályokat küld a szervernek
+    // ═══════════════════════════════════════════════════════════════
+
+    const AnnaTextFilter = {
+      // 1. Szögletes zárójelek — #1 páciens panasz (TTS felolvassa)
+      bracketPattern: /\[[^\]]*\]/g,
+
+      // 2. Angol kifejezések nem-angol beszélgetésben — #2 hiba
+      englishLeakPatterns: [
+        // "I see..." — a LEGGYAKORIBB angol kiszivárgás
+        { pattern: /\bI see\b[,.]?\s*/gi, replacement: '' },
+        // "I hear you..."
+        { pattern: /\bI hear you\b[,.]?\s*/gi, replacement: '' },
+        // "Okay..." / "OK..."
+        { pattern: /\bOkay\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bOK\b[,.]?\s*/gi, replacement: '' },
+        // "Got it..."
+        { pattern: /\bGot it\b[,.]?\s*/gi, replacement: '' },
+        // "Well..." mondat elején
+        { pattern: /^\s*Well\b[,.]?\s*/gi, replacement: '' },
+        // "Alright..."
+        { pattern: /\bAlright\b[,.]?\s*/gi, replacement: '' },
+        // "Sure..." mondat elején
+        { pattern: /^\s*Sure\b[,.]?\s*/gi, replacement: '' },
+        // "Duly noted..."
+        { pattern: /\bDuly noted\b[,.]?\s*/gi, replacement: '' },
+        // "I understand..."
+        { pattern: /\bI understand\b[,.]?\s*/gi, replacement: '' },
+        // "Right..." mondat elején
+        { pattern: /^\s*Right\b[,.]?\s*/gi, replacement: '' },
+        // "Of course..." mondat elején
+        { pattern: /^\s*Of course\b[,.]?\s*/gi, replacement: '' },
+        // "Absolutely..." mondat elején
+        { pattern: /^\s*Absolutely\b[,.]?\s*/gi, replacement: '' },
+      ],
+
+      // 3. Töltelékszavak — TTS rosszul kezeli
+      fillerPatterns: [
+        { pattern: /\bMm-?hmm\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bHmm\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bMmm\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bMhm\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bAhh\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bÖöö\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bÖö\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bUh\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bUm\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bAha\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bHát\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bÄhm\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bNaja\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bAlso\b[,.]?\s*/g, replacement: '' },  // német töltelékszó
+        { pattern: /\bEuh\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bAlors\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bEhm\b[,.]?\s*/g, replacement: '' },
+        { pattern: /\bAllora\b[,.]?\s*/g, replacement: '' },
+        // Hosszú magánhangzók (sóhaj stb.)
+        { pattern: /\bAhhh+\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bOhhh+\b[,.]?\s*/gi, replacement: '' },
+        { pattern: /\bUhhh+\b[,.]?\s*/gi, replacement: '' },
+      ],
+
+      // 4. Telefonszám kötőjel → szóköz (számjegyek szótagsorban)
+      //    Megjegyzés: \b nem működik magyar ékezetekkel (ö,á,stb),
+      //    ezért boundary nélküli mintát használunk
+      phoneHyphenPattern: /(?:(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy)-)+(?:nulla|hat|három|kettő|négy|öt|hét|nyolc|kilenc|egy)/gi,
+
+      // 5. "Sajnos nem" tiltás pozitív kéréseknél
+      sajnosNemPattern: /\bSajnos nem\b[,.]?\s*/g,
+
+      /**
+       * Fő szűrő függvény
+       * @param {string} text - Az LLM kimeneti szöveg
+       * @param {string} lang - A beszélgetés nyelve (hu, de, en, fr, it)
+       * @returns {{filtered: string, changes: Array, hasViolations: boolean}}
+       */
+      filter(text, lang) {
+        if (lang === undefined || lang === null) lang = 'hu';
+        const changes = [];
+        let result = text;
+
+        // 1. Szögletes zárójelek eltávolítása
+        const bracketMatches = result.match(this.bracketPattern);
+        if (bracketMatches) {
+          bracketMatches.forEach(m => {
+            changes.push({ type: 'bracket_removed', original: m });
+          });
+          result = result.replace(this.bracketPattern, '');
+        }
+
+        // 2. Angol kifejezések eltávolítása (csak nem-angol beszélgetésben)
+        if (lang !== 'en') {
+          this.englishLeakPatterns.forEach(({ pattern, replacement }) => {
+            // Reset regex lastIndex
+            pattern.lastIndex = 0;
+            const matches = result.match(pattern);
+            if (matches) {
+              matches.forEach(m => {
+                changes.push({ type: 'english_leak_removed', original: m.trim() });
+              });
+              result = result.replace(pattern, replacement);
+            }
+          });
+        }
+
+        // 3. Töltelékszavak eltávolítása
+        this.fillerPatterns.forEach(({ pattern, replacement }) => {
+          pattern.lastIndex = 0;
+          const matches = result.match(pattern);
+          if (matches) {
+            matches.forEach(m => {
+              changes.push({ type: 'filler_removed', original: m.trim() });
+            });
+            result = result.replace(pattern, replacement);
+          }
+        });
+
+        // 4. Telefonszám kötőjel → szóköz
+        this.phoneHyphenPattern.lastIndex = 0;
+        const phoneMatches = result.match(this.phoneHyphenPattern);
+        if (phoneMatches) {
+          phoneMatches.forEach(m => {
+            changes.push({ type: 'phone_hyphen_to_space', original: m });
+          });
+          result = result.replace(this.phoneHyphenPattern, (match) => match.replace(/-/g, ' '));
+        }
+
+        // 5. "Sajnos nem" eltávolítása pozitív kérések elől
+        this.sajnosNemPattern.lastIndex = 0;
+        const sajnosMatches = result.match(this.sajnosNemPattern);
+        if (sajnosMatches) {
+          sajnosMatches.forEach(m => {
+            changes.push({ type: 'sajnos_nem_removed', original: m.trim() });
+          });
+          result = result.replace(this.sajnosNemPattern, '');
+        }
+
+        // 6. Takarítás: felesleges szóközök, pontok
+        result = result.replace(/\s{2,}/g, ' ');   // Több szóköz → egy
+        result = result.replace(/\.\s*\./g, '.'); // Dupla pont → egyszeres
+        result = result.replace(/^\s*[,.]?\s*/, ''); // Szóköz/vessző a mondat elején
+        result = result.trim();
+
+        // Ha üres maradt
+        if (!result) {
+          result = 'Értem.';
+        }
+
+        return {
+          filtered: result,
+          changes: changes,
+          hasViolations: changes.length > 0
+        };
+      },
+
+      /**
+       * Rövid teszt — Ctrl+Shift+F a konzolban
+       */
+      runTests() {
+        const tests = [
+          ['[Professional] Üdvözlöm!', 'hu', 'Üdvözlöm!'],
+          ['[Warmly] Rendben, foglaltam.', 'hu', 'Rendben, foglaltam.'],
+          ['I see... Köszönöm.', 'hu', 'Köszönöm.'],
+          ['I see, rendben.', 'hu', 'rendben.'],
+          ['Okay... Danke.', 'de', 'Danke.'],
+          ['Mm-hmm... Verstanden.', 'de', 'Verstanden.'],
+          ['Hmm. Értem.', 'hu', 'Értem.'],
+          ['nulla-hat-három-nulla-öt-kilenc', 'hu', 'nulla hat három nulla öt kilenc'],
+          ['Sajnos nem. Természetesen segítek.', 'hu', 'Természetesen segítek.'],
+          ['Got it. Rendben.', 'hu', 'Rendben.'],
+          ['Well, lássuk.', 'hu', 'lássuk.'],
+          ['[Professional] I see... [Warmly] Rendben.', 'hu', 'Rendben.'],
+        ];
+        let passed = 0, failed = 0;
+        tests.forEach(([input, lang, expected], i) => {
+          const { filtered } = this.filter(input, lang);
+          const ok = filtered.includes(expected);
+          if (ok) passed++; else failed++;
+          console.log(`[Anna Filter] Test #${i+1}: ${ok ? 'PASS' : 'FAIL'} | Input: ${input} | Expected: ...${expected}... | Got: ${filtered}`);
+        });
+        console.log(`[Anna Filter] Results: ${passed} passed, ${failed} failed, ${tests.length} total`);
+        return failed === 0;
+      }
+    };
+
+    // Globális hozzáférés a konzolhoz: AnnaTextFilter.runTests()
+    window.AnnaTextFilter = AnnaTextFilter;
+    logDebug('Anna Text Filter v1.0 loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
+
+
     // === Vanilla WebSocket Voice Call (replaces @elevenlabs/client SDK) ===
     const AGENT_ID = 'agent_2301kq22b6v9f04sr88gmbtksw04';
     const API_BASE = 'https://api.dentai.me';
@@ -2676,7 +2878,7 @@
           // (like "Sighs", "Chuckles" which the TTS interprets as sounds, not words).
           // The prompt-level prohibition below is a safety net, but the dashboard setting is the root cause.
           //
-          const criticalRules = ' \n\nABSOLUTE RULES — VIOLATION CAUSES PATIENT COMPLAINTS:\n\n1) You already introduced yourself in the first message. Do NOT repeat your name, introduction, or call recording notice. Respond directly.\n\n2) NEVER start with filler sounds: no "Ahh", "Uhh", "Hmm", "Ööö", "Mm-hmm", "Hát", "Well", "Okay". Start immediately with your actual response word.\n\n3) ABSOLUTE BAN ON BRACKETED MARKERS — THIS IS THE #1 PATIENT COMPLAINT:\nNEVER write words in square brackets. The text-to-speech engine READS THEM ALOUD as words, so patients hear "Professional" or "Warmly" spoken — this is extremely annoying.\nFORBIDDEN: [Professional] [Warmly] [Calm] [Empathetic] [Smiling] [Confident] [Patient] [Warm] [Helpful] [Enthusiastic] [Excited] [Seriously] or ANY other word in brackets.\nBAD OUTPUT: "[Professional] Üdvözlöm, Kovács Péter!" → Patient hears: "Professional. Üdvözlöm Kovács Péter!"\nGOOD OUTPUT: "Üdvözlöm, Kovács Péter!" → Patient hears: "Üdvözlöm Kovács Péter!"\nBAD OUTPUT: "[Warmly] Rendben, foglaltam." → Patient hears: "Warmly. Rendben foglaltam."\nGOOD OUTPUT: "Rendben, foglaltam." → Patient hears: "Rendben foglaltam."\nNEVER use square brackets for ANY purpose. No exceptions. No stage directions. No tone indicators. No parenthetical notes. Just speak naturally.\n\n4) READ-BACK RULES — MINIMIZE ANNOYING REPETITION:\n- EMAIL: If you heard the email clearly, confirm BRIEFLY: "A petor1987@gmail.com címre küldjük?" Do NOT spell it character by character every time. Only spell character by character if: (a) the patient previously said your confirmation was WRONG, or (b) the audio was clearly garbled. First attempt = brief confirmation. Character-by-character ONLY on second attempt after a correction.\n- PHONE: If you heard the phone clearly, confirm BRIEFLY with last digits: "A ...8265-ös számra?" Full digit-by-digit read-back ONLY if the patient says your confirmation was wrong. First attempt = brief. Detailed ONLY after correction.\n- The goal: patients find full read-back annoying and time-wasting. Only read back in full when there is genuine doubt or a previous error.';
+          const criticalRules = ' \n\nABSOLUTE RULES — VIOLATION CAUSES PATIENT COMPLAINTS:\n\n1) You already introduced yourself in the first message. Do NOT repeat your name, introduction, or call recording notice. Respond directly.\n\n2) NEVER start with filler sounds: no "Ahh", "Uhh", "Hmm", "Ööö", "Mm-hmm", "Hát", "Well", "Okay". Start immediately with your actual response word.\n\n3) ABSOLUTE BAN ON BRACKETED MARKERS — THIS IS THE #1 PATIENT COMPLAINT:\nNEVER write words in square brackets. The text-to-speech engine READS THEM ALOUD as words, so patients hear "Professional" or "Warmly" spoken — this is extremely annoying.\nFORBIDDEN: [Professional] [Warmly] [Calm] [Empathetic] [Smiling] [Confident] [Patient] [Warm] [Helpful] [Enthusiastic] [Excited] [Seriously] or ANY other word in brackets.\nBAD OUTPUT: "[Professional] Üdvözlöm, Kovács Péter!" → Patient hears: "Professional. Üdvözlöm Kovács Péter!"\nGOOD OUTPUT: "Üdvözlöm, Kovács Péter!" → Patient hears: "Üdvözlöm Kovács Péter!"\nBAD OUTPUT: "[Warmly] Rendben, foglaltam." → Patient hears: "Warmly. Rendben foglaltam."\nGOOD OUTPUT: "Rendben, foglaltam." → Patient hears: "Rendben foglaltam."\nNEVER use square brackets for ANY purpose. No exceptions. No stage directions. No tone indicators. No parenthetical notes. Just speak naturally.\n\n4) ABSOLUTE BAN ON ENGLISH PHRASES IN NON-ENGLISH CONVERSATION:\nNEVER use English phrases like "I see", "I understand", "Right", "Of course", "Okay", "Alright", "Got it", "Well", "Sure", "Absolutely", "Duly noted", "I hear you" when speaking a non-English language. This is a RECURRING bug. The patient speaks Hungarian/German/French/etc — respond ONLY in their language. "I see" is the #1 most common English leak — FORBIDDEN in any non-English conversation. Use the patient language equivalent instead (Hungarian: "Értem", German: "Verstanden", French: "Je comprends", etc).\n\n5) READ-BACK RULES — MINIMIZE ANNOYING REPETITION:\n- EMAIL: If you heard the email clearly, confirm BRIEFLY: "A petor1987@gmail.com címre küldjük?" Do NOT spell it character by character every time. Only spell character by character if: (a) the patient previously said your confirmation was WRONG, or (b) the audio was clearly garbled. First attempt = brief confirmation. Character-by-character ONLY on second attempt after a correction.\n- PHONE: If you heard the phone clearly, confirm BRIEFLY with last digits: "A ...8265-ös számra?" Full digit-by-digit read-back ONLY if the patient says your confirmation was wrong. First attempt = brief. Detailed ONLY after correction.\n- The goal: patients find full read-back annoying and time-wasting. Only read back in full when there is genuine doubt or a previous error.\n\n6) PHONE NUMBER FORMAT — ALWAYS USE SPACES, NEVER HYPHENS:\nWhen saying a phone number digit by digit, use SPACES between digits, never hyphens. Hyphens cause the TTS to mumble digits together.\nBAD: "nulla-hat-három-nulla-öt-kilenc" → TTS mumbles it as one word\nGOOD: "nulla hat három nulla öt kilenc" → TTS reads each digit clearly\nSame for numeric format: use "0 6 3 0 5 9" not "06-30-59" or "063059".';
 
           const langData = {
             hu: {
@@ -2823,7 +3025,21 @@
             }
 
             if (msg.type === 'agent_response' && msg.agent_response_event?.agent_response) {
-              logDebug('Agent: ' + msg.agent_response_event.agent_response.substring(0, 80));
+              const rawAgentText = msg.agent_response_event.agent_response;
+              // === ANNA TEXT FILTER — Szűrés és szabályszegés naplózás ===
+              const filterResult = AnnaTextFilter.filter(rawAgentText, currentLang || 'hu');
+              if (filterResult.hasViolations) {
+                // Szabályszegés észlelve — a prompt tiltás ellenére kiszivárogott
+                console.warn('[Anna Filter] ⚠️ VIOLATION DETECTED! Raw text had issues:', filterResult.changes);
+                console.warn('[Anna Filter] Raw:     ' + rawAgentText.substring(0, 200));
+                console.warn('[Anna Filter] Filtered: ' + filterResult.filtered.substring(0, 200));
+                logDebug('⚠️ FILTER VIOLATION: ' + filterResult.changes.map(c => c.original).join(', '));
+                // Debug toast — csak ha aktív a hívás
+                if (active) {
+                  showToast('Filter: ' + filterResult.changes.map(c => `"${c.original}" → törölve`).join(', '), 'warn', 5000);
+                }
+              }
+              logDebug('Agent: ' + filterResult.filtered.substring(0, 80));
             }
 
             // Handle conversation end events
