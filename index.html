@@ -2574,6 +2574,38 @@
         { pattern: /\bNo worries[.,]*\s*/gi, replacement: '' },
         { pattern: /\bJust a moment[.,]*\s*/gi, replacement: '' },
         { pattern: /\bYou're welcome[.,]*\s*/gi, replacement: '' },
+        // v4 ÚJ: a "[Anna2]Ahhh, understood..." beszélgetésből kiderült leakage-ek
+        { pattern: /\bUnderstood[.,]*\s*/gi, replacement: '' },          // "understood" — leggyakoribb új leak!
+        { pattern: /\bMakes? sense[.,]*\s*/gi, replacement: '' },        // "makes sense" / "make sense"
+        { pattern: /\bGotcha[.,]*\s*/gi, replacement: '' },              // "gotcha"
+        { pattern: /\bYeah[.,]*\s*/gi, replacement: '' },                // "yeah" — magyarban TILOS
+        { pattern: /\bYep[.,]*\s*/gi, replacement: '' },                 // "yep"
+        { pattern: /\bNope[.,]*\s*/gi, replacement: '' },                // "nope"
+        { pattern: /\bPerfect[.,]*\s*/gi, replacement: '' },             // "perfect"
+        { pattern: /\bAwesome[.,]*\s*/gi, replacement: '' },             // "awesome"
+        { pattern: /\bGreat[.,]*\s*/gi, replacement: '' },               // "great" — magyar válaszban felesleges
+        { pattern: /\bExcellent[.,]*\s*/gi, replacement: '' },           // "excellent"
+        { pattern: /\bWonderful[.,]*\s*/gi, replacement: '' },           // "wonderful"
+        { pattern: /\bAmazing[.,]*\s*/gi, replacement: '' },             // "amazing"
+        { pattern: /\bFine[.,]*\s+/gi, replacement: '' },                // "fine, " (csak vesszővel — egyébként magyar szó is)
+        { pattern: /\bIndeed[.,]*\s*/gi, replacement: '' },              // "indeed"
+        { pattern: /\bCertainly[.,]*\s*/gi, replacement: '' },           // "certainly"
+        { pattern: /\bAlrighty[.,]*\s*/gi, replacement: '' },            // "alrighty"
+        { pattern: /\bRoger that[.,]*\s*/gi, replacement: '' },          // "roger that"
+        { pattern: /\bFor sure[.,]*\s*/gi, replacement: '' },            // "for sure"
+        { pattern: /\bAbsolutely[.,]*\s*/gi, replacement: '' },          // "absolutely" mondat közepén is
+        { pattern: /\bOf course[.,]*\s*/gi, replacement: '' },           // "of course" mondat közepén is (nem csak ^)
+        { pattern: /\bSure thing[.,]*\s*/gi, replacement: '' },          // "sure thing"
+        { pattern: /\bAlright then[.,]*\s*/gi, replacement: '' },        // "alright then"
+        { pattern: /\bHold on[.,]*\s*/gi, replacement: '' },             // "hold on"
+        { pattern: /\bOne sec(ond)?[.,]*\s*/gi, replacement: '' },       // "one sec" / "one second"
+        { pattern: /\bGive me a (sec|moment|minute)[.,]*\s*/gi, replacement: '' }, // "give me a sec/moment"
+        { pattern: /\bLet me check[.,]*\s*/gi, replacement: '' },        // "let me check"
+        { pattern: /\bLet me see[.,]*\s*/gi, replacement: '' },          // "let me see"
+        { pattern: /\bBy the way[.,]*\s*/gi, replacement: '' },          // "by the way"
+        { pattern: /\bAnyway[.,]*\s*/gi, replacement: '' },              // "anyway"
+        { pattern: /\bActually[.,]*\s*/gi, replacement: '' },            // "actually"
+        { pattern: /\bBasically[.,]*\s*/gi, replacement: '' },           // "basically"
       ],
 
       // 3. Töltelékszavak — v3 JAVÍTOTT: [.,]*\s* a [,.]?\s* helyett — elkapja a "..." -ot!
@@ -2923,6 +2955,17 @@
           ['Ahh... Értem, rendben.', 'hu', 'Értem, rendben.'],
           ['Hmm... Pillanat.', 'hu', 'Pillanat.'],
           ['Okay... Verstanden.', 'de', 'Verstanden.'],
+          // ─── v4 ÚJ TESZTEK — a [Anna2] beszélgetésből ───
+          ['Ahhh, understood... Köszönöm a hívást. Szép napot kívánok!', 'hu', 'Köszönöm a hívást. Szép napot kívánok!'],
+          ['Understood. Megnézem.', 'hu', 'Megnézem.'],
+          ['Yeah, rendben.', 'hu', 'Rendben.'],
+          ['Perfect, foglalom.', 'hu', 'Foglalom.'],
+          ['Great! Köszönöm.', 'hu', 'Köszönöm.'],
+          ['Makes sense, megértettem.', 'hu', 'Megértettem.'],
+          ['Of course, természetesen.', 'hu', 'Természetesen.'],         // "Of course" mondat közepén is
+          ['Sure thing! Foglalom.', 'hu', 'Foglalom.'],
+          ['Let me check, pillanat.', 'hu', 'Pillanat.'],
+          ['Actually, megnézem.', 'hu', 'Megnézem.'],
         ];
         const techTests = [
           { input: 'Elnézést kérek, egy pillanat technikai problémánk van.', lang: 'hu', expectedDetection: 'hallucinated_tech_problem_detected' },
@@ -2950,7 +2993,7 @@
 
     // Globális hozzáférés a konzolhoz: AnnaTextFilter.runTests()
     window.AnnaTextFilter = AnnaTextFilter;
-    logDebug('Anna Text Filter v3.0 (Smart Hungarian+) loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
+    logDebug('Anna Text Filter v4.0 (English-leak hardened) loaded — ' + AnnaTextFilter.runTests() + ' (all tests passed)');
 
 
     // === Vanilla WebSocket Voice Call (replaces @elevenlabs/client SDK) ===
