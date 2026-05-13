@@ -673,8 +673,8 @@
                 </div>
               </div>
 
-              <a href="#calendar" class="block w-full text-center bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5">
-                <span data-i18n="roi-cta">Demót kérek →</span>
+              <a href="#pilot-form" class="block w-full text-center bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5">
+                <span data-i18n="roi-cta">Ingyenes próbát kérek →</span>
               </a>
 
               <p class="mt-3 text-[11px] text-slate-500 text-center leading-relaxed" data-i18n="roi-disclaimer">Becslés. Tényleges eredmény a praxis profiljától és kezelési arányaitól függ.</p>
@@ -1735,6 +1735,60 @@
     </div>
   </section>
 
+  <!-- Pilot Signup Section -->
+  <section id="pilot-form" class="py-16 lg:py-24 bg-gradient-to-b from-white via-dental-50/30 to-white relative overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-dental-100/30 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-emerald-100/20 rounded-full blur-3xl"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-10">
+          <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wide uppercase px-3.5 py-1.5 rounded-full border border-emerald-200/60 mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span data-i18n="pilot-badge">Korlátozott helyekkel</span>
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight" data-i18n="pilot-title">Próbálja ki Annát az Ön rendelőjében — ingyen</h2>
+          <p class="mt-4 text-base text-slate-500 leading-relaxed" data-i18n="pilot-desc">Korlátozott számú fogászati rendelő számára ingyenes pilot programot indítunk. Jelentkezzen, és személyesen bemutatjuk, hogyan illeszthető Anna az Ön praxisába.</p>
+        </div>
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl p-7 sm:p-8">
+          <div class="space-y-5" id="pilot-fields">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" data-i18n="pilot-name-label">Név *</label>
+              <input id="pilot-name" type="text" data-i18n-placeholder="pilot-name-ph" placeholder="Dr. Kovács Péter" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-dental-400 focus:ring-2 focus:ring-dental-400/20 transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" data-i18n="pilot-clinic-label">Rendelő neve</label>
+              <input id="pilot-clinic" type="text" data-i18n-placeholder="pilot-clinic-ph" placeholder="Mosoly Fogászat" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-dental-400 focus:ring-2 focus:ring-dental-400/20 transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" data-i18n="pilot-email-label">E-mail *</label>
+              <input id="pilot-email" type="email" data-i18n-placeholder="pilot-email-ph" placeholder="info@rendelo.hu" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-dental-400 focus:ring-2 focus:ring-dental-400/20 transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" data-i18n="pilot-phone-label">Telefonszám</label>
+              <input id="pilot-phone" type="tel" data-i18n-placeholder="pilot-phone-ph" placeholder="+36 30 123 4567" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-dental-400 focus:ring-2 focus:ring-dental-400/20 transition-all">
+            </div>
+            <button id="pilot-submit" onclick="submitPilotForm()" class="w-full inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-dental-600 to-blue-600 hover:from-dental-700 hover:to-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-dental-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md text-base">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path></svg>
+              <span data-i18n="pilot-submit">Jelentkezem a pilot programra</span>
+            </button>
+          </div>
+          <div id="pilot-success" class="hidden text-center py-8">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="pilot-success-title">Köszönjük a jelentkezést!</h3>
+            <p class="text-sm text-slate-500" data-i18n="pilot-success-desc">24 órán belül felvesszük Önnel a kapcsolatot a megadott elérhetőségen.</p>
+          </div>
+          <div class="mt-5 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-400">
+            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span data-i18n="pilot-check1">Teljesen ingyenes</span></span>
+            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span data-i18n="pilot-check2">Kötelezettségmentes</span></span>
+            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span data-i18n="pilot-check3">Rövid időn belül</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ Section -->
   <section id="faq" class="bg-gradient-to-b from-white via-slate-50/60 to-white relative overflow-hidden" style="padding-top:5rem;padding-bottom:5rem;">
     <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -1906,7 +1960,7 @@
           <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             <div class="px-6 pb-5 pt-0">
               <div class="pl-[52px]">
-                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a <a href="/cdn-cgi/l/email-protection#d1b8bfb7be91b5b4bfa5b0b8ffbcb4" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="88e1e6eee7c8ecede6fce9e1a6e5ed">[email&#160;protected]</span></a> címen.</p>
+                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Anna jelenleg ingyenes pilot programban érhető el korlátozott számú fogászati rendelő számára. A rendszert Petor Péter fejlesztette, és a cél az, hogy valós praxiskörnyezetben teszteljük a működést. Ha érdekli a pilot program, töltse ki a jelentkezési űrlapot az oldalon, vagy írjon a <a href="/cdn-cgi/l/email-protection#d1b8bfb7be91b5b4bfa5b0b8ffbcb4" class="text-dental-600 hover:underline"><span class="__cf_email__" data-cfemail="88e1e6eee7c8ecede6fce9e1a6e5ed">[email&#160;protected]</span></a> címre.</p>
               </div>
             </div>
           </div>
@@ -1946,12 +2000,12 @@
         <!-- Új Információk szekció a footerben -->
         <div class="text-center md:text-left">
           <h4 class="font-semibold text-white mb-3" data-i18n="footer-info-title">Információk</h4>
-          <p class="text-sm font-medium text-slate-300" data-i18n="footer-portfolio">Portfólió demo<br>Készítette: Petor Péter</p>
+          <p class="text-sm font-medium text-slate-300" data-i18n="footer-portfolio">Pilot program elérhető<br>Fejlesztette: Petor Péter</p>
           <ul class="mt-3 space-y-1.5 text-sm">
             <li><button type="button" data-legal-open="impressum" class="text-slate-300 hover:text-white hover:underline transition-colors text-left" data-i18n="footer-impressum">Impresszum</button></li>
             <li><button type="button" data-legal-open="privacy" class="text-slate-300 hover:text-white hover:underline transition-colors text-left" data-i18n="footer-privacy">Adatkezelési Tájékoztató</button></li>
           </ul>
-          <p class="text-[11px] text-slate-500 mt-3 leading-relaxed" data-i18n="footer-gdpr">Jogi nyilatkozat: Ez egy portfolió demo. Kérem, ne adjon meg valós adatokat! Az AI válaszaiért felelősséget nem vállalok.</p>
+          <p class="text-[11px] text-slate-500 mt-3 leading-relaxed" data-i18n="footer-gdpr">Az élő demóban megadott adatokat nem tároljuk. Az AI válaszai tájékoztató jellegűek, nem minősülnek orvosi tanácsadásnak.</p>
         </div>
       </div>
       <div class="mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500" data-i18n="footer-copy">© 2026 DentAi asszisztens. Minden jog fenntartva. Anna AI által működtetve.</div>
@@ -2187,6 +2241,76 @@
     // Make globally accessible for onclick attributes in HTML
     window.retryCalendar = retryCalendar;
     window.refreshCalendar = refreshCalendar;
+
+    // Pilot form submission via Web3Forms
+    window.submitPilotForm = function() {
+      const name = document.getElementById('pilot-name').value.trim();
+      const email = document.getElementById('pilot-email').value.trim();
+      const clinic = document.getElementById('pilot-clinic').value.trim();
+      const phone = document.getElementById('pilot-phone').value.trim();
+
+      const btn = document.getElementById('pilot-submit');
+      const btnSpan = btn.querySelector('span');
+      const t = translations[currentLang || 'hu'] || {};
+
+      if (!name || !email) {
+        btn.style.background = '#ef4444';
+        btnSpan.textContent = t['pilot-err-required'] || 'Kérjük, töltse ki a nevet és e-mailt!';
+        setTimeout(() => {
+          btn.style.background = '';
+          btnSpan.textContent = t['pilot-submit'] || 'Jelentkezem a pilot programra';
+        }, 2000);
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        btn.style.background = '#ef4444';
+        btnSpan.textContent = t['pilot-err-email'] || 'Érvénytelen e-mail cím!';
+        setTimeout(() => {
+          btn.style.background = '';
+          btnSpan.textContent = t['pilot-submit'] || 'Jelentkezem a pilot programra';
+        }, 2000);
+        return;
+      }
+
+      const originalText = btnSpan.textContent;
+      btnSpan.textContent = t['pilot-sending'] || 'Küldés folyamatban...';
+      btn.style.opacity = '0.7';
+      btn.style.pointerEvents = 'none';
+
+      const formData = new FormData();
+      formData.append("access_key", "3a8c873c-1611-4a65-83f7-e9fbc2399c6e");
+      formData.append("subject", "Új Dent-AI Pilot Jelentkezés");
+      formData.append("From Name", "Dent-AI Weboldal");
+      formData.append("Név", name);
+      formData.append("E-mail", email);
+      formData.append("Rendelő/Klinika", clinic || "Nincs megadva");
+      formData.append("Telefonszám", phone || "Nincs megadva");
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      })
+      .then(async (response) => {
+        const result = await response.json();
+        if (result.success) {
+          document.getElementById('pilot-fields').classList.add('hidden');
+          document.getElementById('pilot-success').classList.remove('hidden');
+        } else {
+          throw new Error("Hiba a küldés során");
+        }
+      })
+      .catch(error => {
+        btn.style.background = '#ef4444';
+        btnSpan.textContent = t['pilot-err-general'] || 'Hiba történt. Próbálja újra!';
+        setTimeout(() => {
+          btn.style.background = '';
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = 'auto';
+          btnSpan.textContent = originalText;
+        }, 3000);
+      });
+    };
 
     // IntersectionObserver: amikor az iframe legalább 25%-ban látszik, indítjuk a timert.
     // Amikor teljesen kívül kerül, leállítjuk és resetelünk.
@@ -3632,7 +3756,7 @@
         'faq2-q': 'Mi van, ha az AI nem tud válaszolni?',
         'faq2-a': 'Ha Anna olyan kérdést kap, amelyre nincs felkészítve (pl. egyedi orvosi kérdés, panaszkezelés, komplex árajánlat), automatikusan értesíti a rendelő recepcióját a visszahívásról — feljegyzi a páciens adatait és a kérés részleteit, hogy a recepciós a lehető leghamarabb visszakeresi a pácienst. Ha a rendelő zárva van, Anna jegyzetet készít a kérésről, és a következő munkanapon a recepciós felkeresi a pácienst. A páciens sosem marad válasz nélkül.',
         'faq3-q': 'Hogyan érhető el a rendszer?',
-        'faq3-a': 'Anna jelenleg portfólió-demóként érhető el — természetes személyként, Petor Péter által fejlesztve; kereskedelmi forgalomban még nem érhető el. Az oldal és a beszélgetés-demo bárki számára kipróbálható, így rendelőként, fejlesztőként vagy üzleti érdeklődőként is áttekintést kaphat a működésről. Ha élesítésre vagy egyedi együttműködésre gondolna (pilot program, integráció), kérem, vegye fel velem a kapcsolatot a info@dentai.me címen.',
+        'faq3-a': 'Anna jelenleg ingyenes pilot programban érhető el korlátozott számú fogászati rendelő számára. A rendszert Petor Péter fejlesztette, és a cél az, hogy valós praxiskörnyezetben teszteljük a működést. Ha érdekli a pilot program, töltse ki a jelentkezési űrlapot az oldalon, vagy írjon az info@dentai.me címre.',
         'faq4-q': 'Milyen nyelveken beszél?',
         'faq4-a': 'Jelenleg tizenegy nyelven kommunikál folyékonyan: magyarul, angolul, németül, hollandul, franciául, olaszul, dánul, norvégul, svédül, finnül és szlovákul. A nyelvválasztás automatikus — Anna felismeri a páciens nyelvét, és azon válaszol. Ez különösen értékes a turisztikailag frekventált régiókban, ahol külföldi páciensek is gyakran hívják a rendelőt.',
         'faq5-q': 'Hogyan kezeli a sürgős eseteket?',
@@ -3672,10 +3796,10 @@
         'footer-desc': 'Anna — a DentAi Senior Asszisztense. 0–24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.',
         'footer-langs': 'Nyelvek',
         'footer-info-title': 'Információk',
-        'footer-portfolio': 'Portfólió demo Készítette: Petor Péter',
+        'footer-portfolio': 'Pilot program elérhető — Fejlesztette: Petor Péter',
         'footer-impressum': 'Impresszum',
         'footer-privacy': 'Adatkezelési Tájékoztató',
-        'footer-gdpr': 'Jogi nyilatkozat: Ez egy portfolió demo. Kérem, ne adjon meg valós adatokat! Az AI válaszaiért felelősséget nem vállalok.',
+        'footer-gdpr': 'Az élő demóban megadott adatokat nem tároljuk. Az AI válaszai tájékoztató jellegűek, nem minősülnek orvosi tanácsadásnak.',
         'footer-copy': '© 2026 DentAi asszisztens. Minden jog fenntartva. Anna AI által működtetve.',
         'time-past': 'A kért időpont már elmúlt. Kérem válasszon egy jövőbeli időpontot.',
         'time-too-close': 'Túl közeli időpont — minimum 2 órával előre lehet foglalni.',
@@ -3807,9 +3931,30 @@
         'roi-yearly-label': 'Évente',
         'roi-bookings-label': 'Plusz foglalás/hó',
         'roi-monthly-sub': '',
-        'roi-cta': 'Demót kérek →',
+        'roi-cta': 'Ingyenes próbát kérek →',
         'roi-disclaimer': 'Becslés. Tényleges eredmény a praxis profiljától és kezelési arányaitól függ.',
-        'roi-value-currency': 'Ft'},
+        'roi-value-currency': 'Ft',
+        'pilot-badge': 'Korlátozott helyekkel',
+        'pilot-title': 'Próbálja ki Annát az Ön rendelőjében — ingyen',
+        'pilot-desc': 'Korlátozott számú fogászati rendelő számára ingyenes pilot programot indítunk. Jelentkezzen, és személyesen bemutatjuk, hogyan illeszthető Anna az Ön praxisába.',
+        'pilot-name-label': 'Név *',
+        'pilot-clinic-label': 'Rendelő neve',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Telefonszám',
+        'pilot-submit': 'Jelentkezem a pilot programra',
+        'pilot-success-title': 'Köszönjük a jelentkezést!',
+        'pilot-success-desc': '24 órán belül felvesszük Önnel a kapcsolatot a megadott elérhetőségen.',
+        'pilot-check1': 'Teljesen ingyenes',
+        'pilot-check2': 'Kötelezettségmentes',
+        'pilot-check3': 'Rövid időn belül',
+        'pilot-err-required': 'Kérjük, töltse ki a nevet és e-mailt!',
+        'pilot-err-email': 'Érvénytelen e-mail cím!',
+        'pilot-sending': 'Küldés folyamatban...',
+        'pilot-err-general': 'Hiba történt. Próbálja újra!',
+        'pilot-name-ph': 'Dr. Kovács Péter',
+        'pilot-clinic-ph': 'Mosoly Fogászat',
+        'pilot-email-ph': 'info@rendelo.hu',
+        'pilot-phone-ph': '+36 30 123 4567'},
       en: {
         'page-title': 'Anna — DentAi Senior Assistant | 24/7 Call Handling & Booking',
         'brand-suffix': '-AI',
@@ -3980,7 +4125,7 @@
         'faq2-q': 'What happens if the AI can\'t answer?',
         'faq2-a': 'If Anna receives a question she isn\'t prepared for (e.g. specific medical questions, complaint handling, complex quotes), she automatically notifies the practice reception for a callback — she records the patient\'s details and the request so the receptionist can get back to the patient as soon as possible. If the practice is closed, Anna takes a note of the request, and the receptionist will call the patient back on the next working day. The patient is never left without a response.',
         'faq3-q': 'How is the system available?',
-        'faq3-a': 'Anna is currently available as a proof-of-concept — developed by Peter Petor as a private individual, not yet commercially available. The website and the conversation demo are open to anyone, so practices, developers, or business prospects can all get an overview of how it works. If you\'re interested in production deployment or a custom collaboration (pilot program, integration), please contact me at info@dentai.me.',
+        'faq3-a': 'Anna is currently available through a free pilot program for a limited number of dental practices. The system was developed by Peter Petor, and the goal is to test it in real practice environments. If you\'re interested in the pilot program, fill out the signup form on this page, or contact me at info@dentai.me.',
         'faq4-q': 'What languages does she speak?',
         'faq4-a': 'She currently communicates fluently in eleven languages: Hungarian, English, German, Dutch, French, Italian, Danish, Norwegian, Swedish, Finnish and Slovak. Language selection is automatic — Anna recognizes the patient\'s language and responds in it. This is especially valuable in tourist-frequented regions where international patients often call the practice.',
         'faq5-q': 'How does she handle emergencies?',
@@ -4020,10 +4165,10 @@
         'footer-desc': 'Anna — the DentAi Senior Assistant. 24/7 call handling, online booking, and automatic confirmation, so your practice always runs smoothly.',
         'footer-langs': 'Languages',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'Proof-of-Concept by: Peter Petor',
+        'footer-portfolio': 'Pilot program available — Developed by: Peter Petor',
         'footer-impressum': 'Imprint',
         'footer-privacy': 'Privacy Policy',
-        'footer-gdpr': 'Disclaimer: This is a portfolio demo. Please do not provide real data! I assume no liability for AI responses.',
+        'footer-gdpr': 'Data entered in the live demo is not stored. AI responses are for informational purposes only and do not constitute medical advice.',
         'footer-copy': '© 2026 DentAi Assistant. All rights reserved. Powered by Anna AI.',
         'time-past': 'The requested time has already passed. Please choose a future time slot.',
         'time-too-close': 'Too soon — bookings must be at least 2 hours in advance.',
@@ -4155,9 +4300,30 @@
         'roi-yearly-label': 'Per year',
         'roi-bookings-label': 'Extra bookings/month',
         'roi-monthly-sub': '',
-        'roi-cta': 'Request demo →',
+        'roi-cta': 'Get free pilot →',
         'roi-disclaimer': 'Estimate. Actual results depend on practice profile and treatment ratios.',
-        'roi-value-currency': '$'},
+        'roi-value-currency': '$',
+        'pilot-badge': 'Limited spots',
+        'pilot-title': 'Try Anna in your practice — for free',
+        'pilot-desc': 'We are launching a free pilot program for a limited number of dental practices. Sign up and we will personally show you how Anna fits into your practice.',
+        'pilot-name-label': 'Name *',
+        'pilot-clinic-label': 'Practice name',
+        'pilot-email-label': 'Email *',
+        'pilot-phone-label': 'Phone number',
+        'pilot-submit': 'Sign up for the pilot program',
+        'pilot-success-title': 'Thank you for signing up!',
+        'pilot-success-desc': 'We will contact you within 24 hours at the provided details.',
+        'pilot-check1': 'Completely free',
+        'pilot-check2': 'No obligation',
+        'pilot-check3': 'Quick response',
+        'pilot-err-required': 'Please fill in your name and email!',
+        'pilot-err-email': 'Invalid email address!',
+        'pilot-sending': 'Sending...',
+        'pilot-err-general': 'An error occurred. Please try again!',
+        'pilot-name-ph': 'Dr. John Smith',
+        'pilot-clinic-ph': 'Smile Dental',
+        'pilot-email-ph': 'info@practice.com',
+        'pilot-phone-ph': '+1 555 123 4567'},
       de: {
         'page-title': 'Anna — DentAi Senior Assistentin | 24/7 Anrufbearbeitung & Terminbuchung',
         'brand-suffix': '-AI',
@@ -4328,7 +4494,7 @@
         'faq2-q': 'Was passiert, wenn die KI nicht antworten kann?',
         'faq2-a': 'Wenn Anna eine Frage erhält, auf die sie nicht vorbereitet ist (z. B. spezifische medizinische Fragen, Beschwerdemanagement, komplexe Angebote), benachrichtigt sie automatisch die Praxisrezeption für einen Rückruf — sie notiert die Patientendaten und die Anfrage, damit die Rezeption den Patienten so schnell wie möglich zurückrufen kann. Ist die Praxis geschlossen, notiert Anna das Anliegen, und die Rezeption ruft den Patienten am nächsten Werktag zurück. Der Patient bleibt niemals ohne Antwort.',
         'faq3-q': 'Wie ist das System verfügbar?',
-        'faq3-a': 'Anna ist derzeit als Portfolio-Demo verfügbar — entwickelt von Peter Petor als Privatperson, kommerziell noch nicht im Vertrieb. Die Website und die Gesprächs-Demo können von jedem getestet werden, sodass Praxen, Entwickler oder Geschäftsinteressenten einen Überblick über die Funktionsweise erhalten. Bei Interesse an einer Produktiveinführung oder einer individuellen Zusammenarbeit (Pilotprogramm, Integration) kontaktieren Sie mich bitte unter info@dentai.me.',
+        'faq3-a': 'Anna ist derzeit im Rahmen eines kostenlosen Pilotprogramms für eine begrenzte Anzahl von Zahnarztpraxen verfügbar. Das System wurde von Peter Petor entwickelt und soll in realen Praxisumgebungen getestet werden. Wenn Sie am Pilotprogramm interessiert sind, füllen Sie das Anmeldeformular auf dieser Seite aus oder schreiben Sie an info@dentai.me.',
         'faq4-q': 'Welche Sprachen spricht sie?',
         'faq4-a': 'Sie kommuniziert derzeit fließend in elf Sprachen: Ungarisch, Englisch, Deutsch, Niederländisch, Französisch, Italienisch, Dänisch, Norwegisch, Schwedisch, Finnisch und Slowakisch. Die Sprachauswahl erfolgt automatisch — Anna erkennt die Sprache des Patienten und antwortet in dieser. Dies ist besonders wertvoll in tourismusstarken Regionen, in denen internationale Patienten häufig die Praxis anrufen.',
         'faq5-q': 'Wie geht sie mit Notfällen um?',
@@ -4368,10 +4534,10 @@
         'footer-desc': 'Anna — die DentAi Senior Assistentin. 24/7 Anrufbearbeitung, Online-Buchung und automatische Bestätigung, damit Ihre Praxis immer reibungslos läuft.',
         'footer-langs': 'Sprachen',
         'footer-info-title': 'Informationen',
-        'footer-portfolio': 'Portfolio Demo erstellt von: Peter Petor',
+        'footer-portfolio': 'Pilotprogramm verfügbar — Entwickelt von: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Datenschutzerklärung',
-        'footer-gdpr': 'Haftungsausschluss: Dies ist eine Portfolio-Demo. Bitte geben Sie keine echten Daten an! Ich übernehme keine Haftung für KI-Antworten.',
+        'footer-gdpr': 'In der Live-Demo eingegebene Daten werden nicht gespeichert. KI-Antworten dienen nur zu Informationszwecken und stellen keine medizinische Beratung dar.',
         'footer-copy': '© 2026 DentAi Assistentin. Alle Rechte vorbehalten. Betrieben von Anna KI.',
         'time-past': 'Der gewünschte Zeitpunkt liegt in der Vergangenheit. Bitte wählen Sie einen zukünftigen Termin.',
         'time-too-close': 'Zu kurzfristig — Buchungen müssen mindestens 2 Stunden im Voraus erfolgen.',
@@ -4503,9 +4669,30 @@
         'roi-yearly-label': 'Pro Jahr',
         'roi-bookings-label': 'Zusätzliche Buchungen/Monat',
         'roi-monthly-sub': '',
-        'roi-cta': 'Demo anfordern →',
+        'roi-cta': 'Kostenlos testen →',
         'roi-disclaimer': 'Schätzung. Tatsächliche Ergebnisse hängen vom Praxisprofil und den Behandlungsverhältnissen ab.',
-        'roi-value-currency': '€'},
+        'roi-value-currency': '€',
+        'pilot-badge': 'Begrenzte Plätze',
+        'pilot-title': 'Testen Sie Anna in Ihrer Praxis — kostenlos',
+        'pilot-desc': 'Wir starten ein kostenloses Pilotprogramm für eine begrenzte Anzahl von Zahnarztpraxen. Melden Sie sich an und wir zeigen Ihnen persönlich, wie Anna in Ihre Praxis passt.',
+        'pilot-name-label': 'Name *',
+        'pilot-clinic-label': 'Praxisname',
+        'pilot-email-label': 'E-Mail *',
+        'pilot-phone-label': 'Telefonnummer',
+        'pilot-submit': 'Für das Pilotprogramm anmelden',
+        'pilot-success-title': 'Vielen Dank für Ihre Anmeldung!',
+        'pilot-success-desc': 'Wir werden Sie innerhalb von 24 Stunden unter den angegebenen Kontaktdaten erreichen.',
+        'pilot-check1': 'Vollständig kostenlos',
+        'pilot-check2': 'Ohne Verpflichtung',
+        'pilot-check3': 'Schnelle Rückmeldung',
+        'pilot-err-required': 'Bitte füllen Sie Name und E-Mail aus!',
+        'pilot-err-email': 'Ungültige E-Mail-Adresse!',
+        'pilot-sending': 'Wird gesendet...',
+        'pilot-err-general': 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut!',
+        'pilot-name-ph': 'Dr. Thomas Müller',
+        'pilot-clinic-ph': 'Lächeln Zahnarztpraxis',
+        'pilot-email-ph': 'info@praxis.de',
+        'pilot-phone-ph': '+49 30 123 4567'},
 nl: {
         'page-title': 'Anna — DentAi Senior Assistente | 24/7 Oproepafhandeling & Afspraakboeking',
         'brand-suffix': '-AI',
@@ -4676,7 +4863,7 @@ nl: {
         'faq2-q': 'Wat als de AI niet kan antwoorden?',
         'faq2-a': 'Als Anna een vraag krijgt waarop ze niet voorbereid is (bijv. specifieke medische vragen, klachtenbeheer, complexe offertes), stelt ze automatisch de receptie van de praktijk op de hoogte voor een terugbelverzoek — ze noteert de patiëntgegevens en het verzoek, zodat de receptie de patiënt zo snel mogelijk kan terugbellen. Is de praktijk gesloten, dan noteert Anna het verzoek en belt de receptie de patiënt terug op de volgende werkdag. De patiënt blijft nooit zonder antwoord.',
         'faq3-q': 'Hoe is het systeem beschikbaar?',
-        'faq3-a': 'Anna is momenteel beschikbaar als portfoliodemo — ontwikkeld door Peter Petor als particulier, commercieel nog niet in de verkoop. De website en de gespreksdemo kunnen door iedereen worden getest, zodat praktijken, ontwikkelaars of geïnteresseerden een overzicht krijgen van de werking. Bij interesse in een productielancering of een individuele samenwerking (pilotprogramma, integratie) kunt u contact opnemen via info@dentai.me.',
+        'faq3-a': 'Anna is momenteel beschikbaar via een gratis pilotprogramma voor een beperkt aantal tandartspraktijken. Het systeem is ontwikkeld door Peter Petor en het doel is om het te testen in echte praktijkomgevingen. Als u geïnteresseerd bent in het pilotprogramma, vul dan het aanmeldformulier op deze pagina in of neem contact op via info@dentai.me.',
         'faq4-q': 'Welke talen spreekt ze?',
         'faq4-a': 'Ze communiceert momenteel vloeiend in elf talen: Nederlands, Hongaars, Engels, Duits, Frans, Italiaans, Deens, Noors, Zweeds, Fins en Slowaaks. De taalkeuze gebeurt automatisch — Anna herkent de taal van de patiënt en antwoordt in die taal. Dit is vooral waardevol in toeristische regio\'s waar internationale patiënten vaak de praktijk bellen.',
         'faq5-q': 'Hoe gaat ze om met noodgevallen?',
@@ -4716,10 +4903,10 @@ nl: {
         'footer-desc': 'Anna — de DentAi Senior Assistente. 24/7 oproepafhandeling, online boeking en automatische bevestiging, zodat uw praktijk altijd soepel draait.',
         'footer-langs': 'Talen',
         'footer-info-title': 'Informatie',
-        'footer-portfolio': 'Portfolio-demo Gemaakt door: Peter Petor',
+        'footer-portfolio': 'Pilotprogramma beschikbaar — Ontwikkeld door: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privacyverklaring',
-        'footer-gdpr': 'Juridische disclaimer: Dit is een portfolio-demo. Geef alstublieft geen echte gegevens! Ik aanvaard geen aansprakelijkheid voor AI-antwoorden.',
+        'footer-gdpr': 'Gegevens ingevoerd in de live demo worden niet opgeslagen. AI-antwoorden zijn uitsluitend informatief en vormen geen medisch advies.',
         'footer-copy': '© 2026 DentAi Assistente. Alle rechten voorbehouden. Aangedreven door Anna AI.',
         'time-past': 'Het gekozen tijdstip ligt in het verleden. Kies alstublieft een toekomstig tijdstip.',
         'time-too-close': 'Te kort dag — boekingen moeten minimaal 2 uur van tevoren worden gedaan.',
@@ -4851,9 +5038,30 @@ nl: {
         'roi-yearly-label': 'Per jaar',
         'roi-bookings-label': 'Extra boekingen/maand',
         'roi-monthly-sub': '',
-        'roi-cta': 'Demo aanvragen →',
+        'roi-cta': 'Gratis uitproberen →',
         'roi-disclaimer': 'Schatting. Werkelijke resultaten zijn afhankelijk van praktijkprofiel en behandelverhoudingen.',
-        'roi-value-currency': '€'},
+        'roi-value-currency': '€',
+        'pilot-badge': 'Beperkte plekken',
+        'pilot-title': 'Probeer Anna in uw praktijk — gratis',
+        'pilot-desc': 'We starten een gratis pilotprogramma voor een beperkt aantal tandartspraktijken. Meld u aan en we laten u persoonlijk zien hoe Anna in uw praktijk past.',
+        'pilot-name-label': 'Naam *',
+        'pilot-clinic-label': 'Praktijknaam',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Telefoonnummer',
+        'pilot-submit': 'Aanmelden voor het pilotprogramma',
+        'pilot-success-title': 'Bedankt voor uw aanmelding!',
+        'pilot-success-desc': 'We nemen binnen 24 uur contact met u op via de opgegeven gegevens.',
+        'pilot-check1': 'Volledig gratis',
+        'pilot-check2': 'Zonder verplichting',
+        'pilot-check3': 'Snelle reactie',
+        'pilot-err-required': 'Vul alstublieft uw naam en e-mail in!',
+        'pilot-err-email': 'Ongeldig e-mailadres!',
+        'pilot-sending': 'Bezig met verzenden...',
+        'pilot-err-general': 'Er is een fout opgetreden. Probeer het opnieuw!',
+        'pilot-name-ph': 'Dr. Jan de Vries',
+        'pilot-clinic-ph': 'Lach Tandartspraktijk',
+        'pilot-email-ph': 'info@praktijk.nl',
+        'pilot-phone-ph': '+31 20 123 4567'},
 
       fr: {
         'page-title': 'Anna — DentAi Assistante Senior | Gestion d\'appels 24/7 & Prise de rendez-vous',
@@ -5025,7 +5233,7 @@ nl: {
         'faq2-q': 'Que se passe-t-il si l\'IA ne peut pas répondre ?',
         'faq2-a': 'Si Anna reçoit une question à laquelle elle n\'est pas préparée (par ex. une question médicale spécifique, la gestion d\'une réclamation, un devis complexe), elle informe automatiquement la réception du cabinet pour un rappel — elle note les données du patient et les détails de la demande, afin que la réceptionniste puisse rappeler le patient dès que possible. Si le cabinet est fermé, Anna prend note de la demande, et la réceptionniste rappellera le patient le jour ouvrable suivant. Le patient n\'est jamais laissé sans réponse.',
         'faq3-q': 'Comment le système est-il accessible ?',
-        'faq3-a': 'Anna est actuellement disponible en tant que démo de portfolio — développée par Peter Petor à titre privé, pas encore commercialisée. Le site et la démo conversationnelle sont ouverts à tous, afin que cabinets, développeurs ou prospects puissent avoir un aperçu du fonctionnement. Pour un déploiement en production ou une collaboration sur mesure (programme pilote, intégration), veuillez me contacter à info@dentai.me.',
+        'faq3-a': 'Anna est actuellement disponible dans le cadre d\'un programme pilote gratuit pour un nombre limité de cabinets dentaires. Le système a été développé par Peter Petor et l\'objectif est de le tester dans des environnements réels. Si le programme pilote vous intéresse, remplissez le formulaire d\'inscription sur cette page ou contactez-moi à info@dentai.me.',
         'faq4-q': 'Quelles langues parle-t-elle ?',
         'faq4-a': 'Elle communique actuellement couramment en onze langues : hongrois, anglais, allemand, néerlandais, français, italien, danois, norvégien, suédois, finnois et slovaque. La sélection de la langue est automatique — Anna reconnaît la langue du patient et répond dans cette langue. C\'est particulièrement précieux dans les régions touristiques où les patients internationaux appellent souvent le cabinet.',
         'faq5-q': 'Comment gère-t-elle les urgences ?',
@@ -5065,10 +5273,10 @@ nl: {
         'footer-desc': 'Anna — l\'Assistante Senior DentAi. Gestion d\'appels 24/7, réservation en ligne et confirmation automatique, pour que votre cabinet fonctionne toujours sereinement.',
         'footer-langs': 'Langues',
         'footer-info-title': 'Informations',
-        'footer-portfolio': 'Démo Portfolio par : Peter Petor',
+        'footer-portfolio': 'Programme pilote disponible — Développé par : Peter Petor',
         'footer-impressum': 'Mentions légales',
         'footer-privacy': 'Politique de confidentialité',
-        'footer-gdpr': 'Avertissement : Ceci est une démo portfolio. Veuillez ne pas fournir de données réelles ! Je décline toute responsabilité pour les réponses de l\'IA.',
+        'footer-gdpr': 'Les données saisies dans la démo ne sont pas stockées. Les réponses de l\'IA sont à titre informatif et ne constituent pas un avis médical.',
         'footer-copy': '© 2026 DentAi Assistante. Tous droits réservés. Propulsé par Anna IA.',
         'time-past': 'Le créneau demandé est déjà passé. Veuillez choisir un créneau futur.',
         'time-too-close': 'Trop tard — les réservations doivent être faites au moins 2 heures à l\'avance.',
@@ -5200,9 +5408,30 @@ nl: {
         'roi-yearly-label': 'Par an',
         'roi-bookings-label': 'Réservations supplémentaires/mois',
         'roi-monthly-sub': '',
-        'roi-cta': 'Demander une démo →',
+        'roi-cta': 'Essai gratuit →',
         'roi-disclaimer': 'Estimation. Les résultats réels dépendent du profil du cabinet et des ratios de traitement.',
-        'roi-value-currency': '€'},
+        'roi-value-currency': '€',
+        'pilot-badge': 'Places limitées',
+        'pilot-title': 'Essayez Anna dans votre cabinet — gratuitement',
+        'pilot-desc': 'Nous lançons un programme pilote gratuit pour un nombre limité de cabinets dentaires. Inscrivez-vous et nous vous montrerons personnellement comment Anna s\'intègre dans votre cabinet.',
+        'pilot-name-label': 'Nom *',
+        'pilot-clinic-label': 'Nom du cabinet',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Numéro de téléphone',
+        'pilot-submit': 'S\'inscrire au programme pilote',
+        'pilot-success-title': 'Merci pour votre inscription !',
+        'pilot-success-desc': 'Nous vous contacterons dans les 24 heures aux coordonnées indiquées.',
+        'pilot-check1': 'Entièrement gratuit',
+        'pilot-check2': 'Sans engagement',
+        'pilot-check3': 'Réponse rapide',
+        'pilot-err-required': 'Veuillez remplir votre nom et votre e-mail !',
+        'pilot-err-email': 'Adresse e-mail invalide !',
+        'pilot-sending': 'Envoi en cours...',
+        'pilot-err-general': 'Une erreur s\'est produite. Veuillez réessayer !',
+        'pilot-name-ph': 'Dr. Jean Dupont',
+        'pilot-clinic-ph': 'Cabinet Dentaire Sourire',
+        'pilot-email-ph': 'info@cabinet.fr',
+        'pilot-phone-ph': '+33 1 23 45 67 89'},
       it: {
         'page-title': 'Anna — DentAi Assistente Senior | Gestione chiamate 24/7 & Prenotazione',
         'brand-suffix': '-AI',
@@ -5373,7 +5602,7 @@ nl: {
         'faq2-q': 'Cosa succede se l\'IA non sa rispondere?',
         'faq2-a': 'Se Anna riceve una domanda a cui non è preparata (ad es. domande mediche specifiche, gestione reclami, preventivi complessi), notifica automaticamente la reception dello studio per una richiamata — registra i dati del paziente e i dettagli della richiesta affinché la receptionist possa richiamare il paziente il prima possibile. Se lo studio è chiuso, Anna prende nota della richiesta, e la receptionist richiama il paziente il giorno lavorativo successivo. Il paziente non resta mai senza risposta.',
         'faq3-q': 'Come è disponibile il sistema?',
-        'faq3-a': 'Anna è attualmente disponibile come demo di portfolio — sviluppata da Peter Petor come privato, non ancora commercializzata. Il sito e la demo conversazionale sono aperti a tutti, così studi, sviluppatori o potenziali clienti commerciali possono avere una panoramica del funzionamento. Per un\'implementazione in produzione o una collaborazione personalizzata (programma pilota, integrazione), si prega di contattarmi all\'indirizzo info@dentai.me.',
+        'faq3-a': 'Anna è attualmente disponibile tramite un programma pilota gratuito per un numero limitato di studi dentistici. Il sistema è stato sviluppato da Peter Petor e l\'obiettivo è testarlo in ambienti reali. Se siete interessati al programma pilota, compilate il modulo di iscrizione su questa pagina o contattatemi a info@dentai.me.',
         'faq4-q': 'In quali lingue parla?',
         'faq4-a': 'Attualmente comunica scorrevolmente in undici lingue: ungherese, inglese, tedesco, olandese, francese, italiano, danese, norvegese, svedese, finlandese e slovacco. La selezione della lingua è automatica — Anna riconosce la lingua del paziente e risponde in quella lingua. Questo è particolarmente prezioso nelle regioni turistiche dove i pazienti internazionali chiamano spesso lo studio.',
         'faq5-q': 'Come gestisce le emergenze?',
@@ -5413,10 +5642,10 @@ nl: {
         'footer-desc': 'Anna — l\'Assistente Senior DentAi. Gestione chiamate 24/7, prenotazione online e conferma automatica, affinché il Suo studio funzioni sempre senza intoppi.',
         'footer-langs': 'Lingue',
         'footer-info-title': 'Informazioni',
-        'footer-portfolio': 'Demo Portfolio di: Peter Petor',
+        'footer-portfolio': 'Programma pilota disponibile — Sviluppato da: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Informativa sulla privacy',
-        'footer-gdpr': 'Avvertenza: Questa è una demo portfolio. Non fornisca dati reali! Non assumo responsabilità per le risposte dell\'IA.',
+        'footer-gdpr': 'I dati inseriti nella demo non vengono archiviati. Le risposte dell\'IA sono solo a scopo informativo e non costituiscono consulenza medica.',
         'footer-copy': '© 2026 DentAi Assistente. Tutti i diritti riservati. Powered by Anna IA.',
         'time-past': 'L\'orario richiesto è già passato. La preghiamo di scegliere un orario futuro.',
         'time-too-close': 'Troppo vicino — le prenotazioni devono essere effettuate almeno 2 ore prima.',
@@ -5548,9 +5777,30 @@ nl: {
         'roi-yearly-label': 'All\'anno',
         'roi-bookings-label': 'Prenotazioni extra/mese',
         'roi-monthly-sub': '',
-        'roi-cta': 'Richiedi demo →',
+        'roi-cta': 'Prova gratuita →',
         'roi-disclaimer': 'Stima. I risultati effettivi dipendono dal profilo dello studio e dai rapporti di trattamento.',
-        'roi-value-currency': '€'},
+        'roi-value-currency': '€',
+        'pilot-badge': 'Posti limitati',
+        'pilot-title': 'Provi Anna nel Suo studio — gratuitamente',
+        'pilot-desc': 'Lanciamo un programma pilota gratuito per un numero limitato di studi dentistici. Iscrivetevi e vi mostreremo personalmente come Anna si integra nel vostro studio.',
+        'pilot-name-label': 'Nome *',
+        'pilot-clinic-label': 'Nome dello studio',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Numero di telefono',
+        'pilot-submit': 'Iscriviti al programma pilota',
+        'pilot-success-title': 'Grazie per la Sua iscrizione!',
+        'pilot-success-desc': 'Vi contatteremo entro 24 ore ai recapiti forniti.',
+        'pilot-check1': 'Completamente gratuito',
+        'pilot-check2': 'Senza impegno',
+        'pilot-check3': 'Risposta rapida',
+        'pilot-err-required': 'Compilare nome ed e-mail!',
+        'pilot-err-email': 'Indirizzo e-mail non valido!',
+        'pilot-sending': 'Invio in corso...',
+        'pilot-err-general': 'Si è verificato un errore. Riprova!',
+        'pilot-name-ph': 'Dr. Marco Rossi',
+        'pilot-clinic-ph': 'Studio Dentista Sorriso',
+        'pilot-email-ph': 'info@studio.it',
+        'pilot-phone-ph': '+39 02 123 4567'},
 da: {
         'page-title': 'Anna — Seniorassistent hos DentAi | Døgnåben samtalehåndtering & bestilling',
         'brand-suffix': '-AI',
@@ -5721,7 +5971,7 @@ da: {
         'faq2-q': 'Hvad hvis AI-en ikke kan svare?',
         'faq2-a': 'Hvis Anna får et spørgsmål hun ikke er forberedt på (f.eks. specifikke medicinske spørgsmål, klagebehandling, komplekse pristilbud), giver hun automatisk praksisens reception besked om et tilbagekald — hun noterer patientens oplysninger og forespørgslens detaljer, så receptionen kan ringe patienten tilbage hurtigst muligt. Hvis praksissen er lukket, noterer Anna forespørgslen, og receptionen ringer patienten tilbage næste arbejdsdag. Patienten står aldrig uden svar.',
         'faq3-q': 'Hvordan får man adgang til systemet?',
-        'faq3-a': 'Anna er foreløbigt tilgængelig som en portefølje-demo — udviklet af Peter Petor som privatperson, og er ikke kommercielt tilgængelig endnu. Hjemmesiden og samtale-demoen kan testes af alle, således at du som tandlæge, udvikler eller forretningsinteresseret kan få et overblik over hvordan det fungerer. Hvis du tænker på lancering eller et unikt samarbejde (pilotprogram, integration), venligst kontakt på info@dentai.me.',
+        'faq3-a': 'Anna er i øjeblikket tilgængelig via et gratis pilotprogram for et begrænset antal tandlægepraksisser. Systemet er udviklet af Peter Petor, og målet er at teste det i virkelige praksismiljøer. Hvis du er interesseret i pilotprogrammet, udfyld tilmeldingsformularen på denne side eller kontakt info@dentai.me.',
         'faq4-q': 'Hvilke sprog taler hun?',
         'faq4-a': 'Foreløbigt kommunikerer hun flydende på elleve sprog: dansk, norsk, svensk, finsk, engelsk, tysk, nederlandsk, fransk, italiensk, slovakisk og ungarsk. Sprogvalget sker automatisk — Anna genkender patientens sprog og svarer på det. Dette er særligt værdifuldt i turistprægede områder hvor udenlandske patienter ofte ringer til praksissen.',
         'faq5-a': 'I akutte situationer — for eksempel kraftig tandpine, traumer eller blødning — giver Anna øjeblikkeligt prioritet til samtalen. Hun genkender akut-nøgleord og forsøger at finde en tid samme dag så hurtigt som muligt. Ved virkelige nødsituationer (f.eks. kæbebrud, ukontrollerbar blødning) henviser hun patienten til den nærmeste skadestue. Akutte samtaler bliver aldrig fejlagtigt håndteret som rutinebestillinger.',
@@ -5760,10 +6010,10 @@ da: {
         'footer-desc': 'Anna — Seniorassistent hos DentAi. Døgnåben samtalehåndtering, netbestilling og automatisk bekræftelse, således at din praksis altid fungerer roligt.',
         'footer-langs': 'Sprog',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'Portefølje Demo Lavet af: Peter Petor',
+        'footer-portfolio': 'Pilotprogram tilgængeligt — Udviklet af: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privatlivspolitik',
-        'footer-gdpr': 'Juridisk bemærkning: Dette er en portefølje-demo. Venligst ikke opgiv ægte data! Jeg påtager mig intet ansvar for AI-ens svar.',
+        'footer-gdpr': 'Data indtastet i live-demoen gemmes ikke. AI-svar er kun til informationsformål og udgør ikke medicinsk rådgivning.',
         'footer-copy': '© 2026 DentAi Assistent. Alle rettigheder forbeholdes. Drevet af Anna AI.',
         'time-past': 'Det valgte tidspunkt er allerede passeret. Venligst vælg et fremtidigt tidspunkt.',
         'time-too-close': 'For tæt tidspunkt — minimum 2 timer i forvejen kræves for bestilling.',
@@ -5895,9 +6145,30 @@ da: {
         'roi-yearly-label': 'Pr. år',
         'roi-bookings-label': 'Ekstra bookinger/måned',
         'roi-monthly-sub': '',
-        'roi-cta': 'Anmod om demo →',
+        'roi-cta': 'Gratis prøveperiode →',
         'roi-disclaimer': 'Estimat. Faktiske resultater afhænger af klinikprofil og behandlingsforhold.',
-        'roi-value-currency': 'kr.'},
+        'roi-value-currency': 'kr.',
+        'pilot-badge': 'Begrænsede pladser',
+        'pilot-title': 'Prøv Anna i din klinik — gratis',
+        'pilot-desc': 'Vi starter et gratis pilotprogram for et begrænset antal tandlægeklinikker. Tilmeld dig, og vi viser dig personligt, hvordan Anna passer ind i din klinik.',
+        'pilot-name-label': 'Navn *',
+        'pilot-clinic-label': 'Kliniknavn',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Telefonnummer',
+        'pilot-submit': 'Tilmeld mig pilotprogrammet',
+        'pilot-success-title': 'Tak for din tilmelding!',
+        'pilot-success-desc': 'Vi kontakter dig inden for 24 timer på de oplyste kontaktoplysninger.',
+        'pilot-check1': 'Helt gratis',
+        'pilot-check2': 'Uden forpligtelse',
+        'pilot-check3': 'Hurtig tilbagemelding',
+        'pilot-err-required': 'Udfyld venligst navn og e-mail!',
+        'pilot-err-email': 'Ugyldig e-mailadresse!',
+        'pilot-sending': 'Sender...',
+        'pilot-err-general': 'Der opstod en fejl. Prøv igen!',
+        'pilot-name-ph': 'Dr. Lars Nielsen',
+        'pilot-clinic-ph': 'Smil Tandklinik',
+        'pilot-email-ph': 'info@klinik.dk',
+        'pilot-phone-ph': '+45 12 34 56 78'},
 
       no: {
         'page-title': 'Anna — DentAi Senior Assistent | Døgnåpen samtalehåndtering & bestilling',
@@ -6069,7 +6340,7 @@ da: {
         'faq2-q': 'Hva hvis AI-en ikke kan svare?',
         'faq2-a': 'Hvis Anna får et spørsmål hun ikke er forberedt på (f.eks. spesifikke medisinske spørsmål, klagehåndtering, komplekse pristilbud), gir hun automatisk praksisens resepsjon beskjed om et tilbakeringing — hun noterer pasientens opplysninger og forespørselens detaljer, slik at resepsjonen kan ringe pasienten tilbake så raskt som mulig. Hvis praksisen er stengt, noterer Anna forespørselen, og resepsjonen ringer pasienten tilbake neste arbeidsdag. Pasienten står aldri uten svar.',
         'faq3-q': 'Hvordan får man tilgang til systemet?',
-        'faq3-a': 'Anna er foreløpig tilgjengelig som en portefølje-demo — utviklet av Peter Petor som privatperson, og er ikke kommersielt tilgjengelig ennå. Nettsiden og samtale-demoen kan testes av alle, slik at du som tannlege, utvikler eller forretningsinteressert kan få en oversikt over hvordan det fungerer. Hvis du tenker på lansering eller et unikt samarbeid (pilotprogram, integrasjon), vennligst ta kontakt på info@dentai.me.',
+        'faq3-a': 'Anna er for tiden tilgjengelig gjennom et gratis pilotprogram for et begrenset antall tannlegepraksiser. Systemet er utviklet av Peter Petor, og målet er å teste det i virkelige praksismiljøer. Hvis du er interessert i pilotprogrammet, fyll ut påmeldingsskjemaet på denne siden eller kontakt info@dentai.me.',
         'faq4-q': 'Hvilke språk snakker hun?',
         'faq4-a': 'Foreløpig kommuniserer hun flytende på elleve språk: norsk, dansk, svensk, finsk, engelsk, tysk, nederlandsk, fransk, italiensk, slovakisk og ungarsk. Språkvalget skjer automatisk — Anna gjenkjenner pasientens språk og svarer på det. Dette er spesielt verdifullt i turistområder der utenlandske pasienter ofte ringer praksisen.',
         'faq5-a': 'I akutte situasjoner — for eksempel kraftig tannpine, tannskader eller blødning — gir Anna umiddelbart prioritet til samtalen. Hun gjenkjenner akutt-nøkkelord og forsøker å finne en time samme dag så raskt som mulig. Ved virkelige nødsituasjoner (f.eks. kjevebrudd, ukontrollerbar blødning) henviser hun pasienten til nærmeste akuttmottak. Akutte samtaler blir aldri feilaktig håndtert som rutinebestillinger.',
@@ -6108,10 +6379,10 @@ da: {
         'footer-desc': 'Anna — DentAi Senior Assistent. Døgnåpen samtalehåndtering, nettbestilling og automatisk bekreftelse, slik at praksisen din alltid fungerer rolig.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Informasjon',
-        'footer-portfolio': 'Portefølje Demo Laget av: Peter Petor',
+        'footer-portfolio': 'Pilotprogram tilgjengelig — Utviklet av: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Personvernerklæring',
-        'footer-gdpr': 'Juridisk merknad: Dette er en portefølje-demo. Vennligst ikke oppgi ekte data! Jeg tar ikke ansvar for AI-ens svar.',
+        'footer-gdpr': 'Data som legges inn i live-demoen lagres ikke. AI-svar er kun til informasjonsformål og utgjør ikke medisinsk rådgivning.',
         'footer-copy': '© 2026 DentAi Assistent. Alle rettigheter forbeholdt. Drevet av Anna AI.',
         'time-past': 'Det valgte tidspunktet er allerede passert. Vennligst velg et fremtidig tidspunkt.',
         'time-too-close': 'For nært tidspunkt — minimum 2 timer i forveien kreves for bestilling.',
@@ -6243,9 +6514,30 @@ da: {
         'roi-yearly-label': 'Per år',
         'roi-bookings-label': 'Ekstra bookinger/måned',
         'roi-monthly-sub': '',
-        'roi-cta': 'Be om demo →',
+        'roi-cta': 'Gratis prøveperiode →',
         'roi-disclaimer': 'Estimat. Faktiske resultater avhenger av klinikkprofil og behandlingsforhold.',
-        'roi-value-currency': 'kr'},
+        'roi-value-currency': 'kr',
+        'pilot-badge': 'Begrensede plasser',
+        'pilot-title': 'Prøv Anna i din klinikk — gratis',
+        'pilot-desc': 'Vi starter et gratis pilotprogram for et begrenset antall tannklinikker. Meld deg på, og vi viser deg personlig hvordan Anna passer inn i din klinikk.',
+        'pilot-name-label': 'Navn *',
+        'pilot-clinic-label': 'Klinikknavn',
+        'pilot-email-label': 'E-post *',
+        'pilot-phone-label': 'Telefonnummer',
+        'pilot-submit': 'Meld meg på pilotprogrammet',
+        'pilot-success-title': 'Takk for din påmelding!',
+        'pilot-success-desc': 'Vi kontakter deg innen 24 timer på de oppgitte kontaktopplysningene.',
+        'pilot-check1': 'Helt gratis',
+        'pilot-check2': 'Uden forpliktelse',
+        'pilot-check3': 'Rask tilbakemelding',
+        'pilot-err-required': 'Vennligst fyll ut navn og e-post!',
+        'pilot-err-email': 'Ugyldig e-postadresse!',
+        'pilot-sending': 'Sender...',
+        'pilot-err-general': 'Det oppstod en feil. Prøv igjen!',
+        'pilot-name-ph': 'Dr. Ole Hansen',
+        'pilot-clinic-ph': 'Smil Tannklinikk',
+        'pilot-email-ph': 'info@klinikk.no',
+        'pilot-phone-ph': '+47 22 12 34 56'},
 sv: {
         'page-title': 'Anna — Seniorassistent på DentAi | Dygnet runt samtalshantering & bokning',
         'brand-suffix': '-AI',
@@ -6416,7 +6708,7 @@ sv: {
         'faq2-q': 'Vad händer om AI:n inte kan svara?',
         'faq2-a': 'Om Anna får en fråga hon inte är förberedd på (t.ex. specifika medicinska frågor, klagomålshantering, komplexa prisförslag), meddelar hon automatiskt praktikens reception om ett återuppringning — hon noterar patientens uppgifter och förfrågans detaljer, så att receptionen kan ringa tillbaka patienten så snart som möjligt. Om praktiken är stängd noterar Anna förfrågan, och receptionen ringer patienten tillbaka nästa arbetsdag. Patienten lämnas aldrig utan svar.',
         'faq3-q': 'Hur får man tillgång till systemet?',
-        'faq3-a': 'Anna är för närvarande tillgänglig som en portfölj-demo — utvecklad av Peter Petor som privatperson, och är inte kommersiellt tillgänglig ännu. Webbplatsen och samtal-demo kan testas av alla, så att du som tandläkare, utvecklare eller affärsintresserad kan få en överblick över hur det fungerar. Om du tänker på lansering eller ett unikt samarbete (pilotprogram, integration), vänligen kontakta info@dentai.me.',
+        'faq3-a': 'Anna är för närvarande tillgänglig genom ett gratis pilotprogram för ett begränsat antal tandläkarpraktiker. Systemet har utvecklats av Peter Petor och målet är att testa det i verkliga praktikmiljöer. Om du är intresserad av pilotprogrammet, fyll i anmälningsformuläret på denna sida eller kontakta info@dentai.me.',
         'faq4-q': 'Vilka språk talar hon?',
         'faq4-a': 'För närvarande kommunicerar hon flytande på elva språk: svenska, danska, norska, finska, engelska, tyska, nederländska, franska, italienska, slovakiska och ungerska. Språkvalet sker automatiskt — Anna känner igen patientens språk och svarar på det. Detta är särskilt värdefullt i turistområden där utländska patienter ofta ringer praktiken.',
         'faq5-a': 'I akuta situationer — till exempel kraftig tandvärk, tandskador eller blödning — ger Anna omedelbart prioritet till samtalet. Hon känner igen akut-nyckelord och försöker hitta en tid samma dag så snabbt som möjligt. Vid verkliga nödsituationer (t.ex. käkfraktur, okontrollerbar blödning) hänvisar hon patienten till närmaste akutmottagning. Akuta samtal blir aldrig felaktigt hanterade som rutinbokningar.',
@@ -6455,10 +6747,10 @@ sv: {
         'footer-desc': 'Anna — Seniorassistent på DentAi. Dygnet runt samtalshantering, nätbokning och automatisk bekräftelse, så att din praktik alltid fungerar lugnt.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'Portfölj Demo Skapad av: Peter Petor',
+        'footer-portfolio': 'Pilotprogram tillgängligt — Utvecklad av: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Integritetspolicy',
-        'footer-gdpr': 'Juridiskt meddelande: Detta är en portfölj-demo. Vänligen uppge inte riktiga data! Jag tar inget ansvar för AI:ns svar.',
+        'footer-gdpr': 'Data som anges i live-demon lagras inte. AI-svar är endast i informationssyfte och utgör inte medicinsk rådgivning.',
         'footer-copy': '© 2026 DentAi Assistent. Alla rättigheter förbehållna. Drivs av Anna AI.',
         'time-past': 'Den valda tidspunkten har redan passerat. Vänligen välj en framtida tidspunkt.',
         'time-too-close': 'För nära tidspunkt — minimum 2 timmar i förväg krävs för bokning.',
@@ -6590,9 +6882,30 @@ sv: {
         'roi-yearly-label': 'Per år',
         'roi-bookings-label': 'Extra bokningar/månad',
         'roi-monthly-sub': '',
-        'roi-cta': 'Begär demo →',
+        'roi-cta': 'Gratis provperiod →',
         'roi-disclaimer': 'Uppskattning. Faktiska resultat beror på klinikprofil och behandlingsförhållanden.',
-        'roi-value-currency': 'kr'},
+        'roi-value-currency': 'kr',
+        'pilot-badge': 'Begränsade platser',
+        'pilot-title': 'Prova Anna i din klinik — gratis',
+        'pilot-desc': 'Vi startar ett gratis pilotprogram för ett begränsat antal tandkliniker. Anmäl dig så visar vi dig personligen hur Anna passar in i din klinik.',
+        'pilot-name-label': 'Namn *',
+        'pilot-clinic-label': 'Klinikknamn',
+        'pilot-email-label': 'E-post *',
+        'pilot-phone-label': 'Telefonnummer',
+        'pilot-submit': 'Anmäl mig till pilotprogrammet',
+        'pilot-success-title': 'Tack för din anmälan!',
+        'pilot-success-desc': 'Vi kontaktar dig inom 24 timmar på de angivna kontaktuppgifterna.',
+        'pilot-check1': 'Helt gratis',
+        'pilot-check2': 'Utan förpliktelse',
+        'pilot-check3': 'Snabb återkoppling',
+        'pilot-err-required': 'Vänligen fyll i namn och e-post!',
+        'pilot-err-email': 'Ogiltig e-postadress!',
+        'pilot-sending': 'Skickar...',
+        'pilot-err-general': 'Ett fel uppstod. Försök igen!',
+        'pilot-name-ph': 'Dr. Erik Johansson',
+        'pilot-clinic-ph': 'Leende Tandklinik',
+        'pilot-email-ph': 'info@klinik.se',
+        'pilot-phone-ph': '+46 8 123 456 78'},
 fi: {
         'page-title': 'Anna — DentAi Senior Avustaja | Ympärivuorokautinen puhelinvastaus & ajanvaraus',
         'brand-suffix': '-AI',
@@ -6763,7 +7076,7 @@ fi: {
         'faq2-q': 'Mitä jos tekoäly ei osaa vastata?',
         'faq2-a': 'Jos Anna saa kysymyksen johon hän ei ole varautunut (esim. yksityiskohtaiset lääketieteelliset kysymykset, valitusten käsittely, monimutkaiset hintatarjoukset), hän ilmoittaa automaattisesti vastaanoton takaisinsoittoa varten — hän kirjaa potilaan tiedot ja pyynnön yksityiskohdat, jotta vastaanotto voi soittaa potilaalle takaisin mahdollisimman pian. Jos vastaanotto on kiinni, Anna kirjaa pyynnön, ja vastaanotto soittaa potilaalle takaisin seuraavana työpäivänä. Potilas ei jää koskaan ilman vastausta.',
         'faq3-q': 'Miten pääsee käsiksi järjestelmään?',
-        'faq3-a': 'Anna on toistaiseksi saatavilla portfoliodemona — kehittänyt Peter Petor yksityishenkilönä, eikä se ole vielä kaupallisesti saatavilla. Verkkosivustoa ja puheludemoa voi testata kuka tahansa, niin että hammaslääkärinä, kehittäjänä tai liiketoiminnasta kiinnostuneena saat yleiskuvan siitä miten se toimii. Jos ajattelet lanseerausta tai ainutlaatuista yhteistyötä (pilotiohjelma, integraatio), ota yhteyttä info@dentai.me.',
+        'faq3-a': 'Anna on tällä hetkellä saatavilla ilmaisen pilottiohjelman kautta rajoitetulle määrälle hammaslääkärivastaanottoja. Järjestelmän on kehittänyt Peter Petor ja tavoitteena on testata sitä todellisissa vastaanottoympäristöissä. Jos olet kiinnostunut pilottiohjelmasta, täytä ilmoittautumislomake tällä sivulla tai ota yhteyttä info@dentai.me.',
         'faq4-q': 'Mitä kieliä hän puhuu?',
         'faq4-a': 'Toistaiseksi hän kommunikoi sujuvasti yhdellätoista kielellä: suomi, ruotsi, norja, tanska, englanti, saksa, hollanti, ranska, italia, slovakia ja unkari. Kielen valinta tapahtuu automaattisesti — Anna tunnistaa potilaan kielen ja vastaa sillä. Tämä on erityisen arvokasta turistialueilla joissa ulkomaiset potilaat soittavat usein vastaanottoon.',
         'faq5-a': 'Akuuteissa tilanteissa — esimerkiksi kova hammaskipu, hammasvammat tai verenvuoto — Anna antaa välittömästi prioriteetin puhelulle. Hän tunnistaa akuutti-avainsanat ja yrittää löytää ajan samana päivänä mahdollisimman nopeasti. Todellisissa hätätilanteissa (esim. leukanmurtuma, hallitsematon verenvuoto) hän ohjaa potilaan lähimpään päivystykseen. Akuutteja puheluita ei koskaan käsitellä virheellisesti rutiinivarauksina.',
@@ -6802,10 +7115,10 @@ fi: {
         'footer-desc': 'Anna — DentAi Senior Avustaja. Ympärivuorokautinen puhelinvastaus, verkkovaraus ja automaattinen vahvistus, jotta vastaanottosi toimii aina rauhallisesti.',
         'footer-langs': 'Kielet',
         'footer-info-title': 'Lisätietoa',
-        'footer-portfolio': 'Portfolio Demo Tekijä: Peter Petor',
+        'footer-portfolio': 'Pilottiohjelma saatavilla — Kehittänyt: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Tietosuojaseloste',
-        'footer-gdpr': 'Oikeudellinen huomautus: Tämä on portfoliodemo. Älä anna todellisia tietoja! En ota vastuuta tekoälyn vastauksista.',
+        'footer-gdpr': 'Data indtastet i live-demoen gemmes ikke. AI-svar er kun til informationsformål og udgør ikke medicinsk rådgivning.',
         'footer-copy': '© 2026 DentAi Avustaja. Kaikki oikeudet pidätetään. Voimanlähteenä Anna AI.',
         'time-past': 'Valittu kellonaika on jo mennyt. Valitse tuleva kellonaika.',
         'time-too-close': 'Liian lähellä oleva aika — vähintään 2 tuntia etukäteen vaaditaan varaukseen.',
@@ -6937,9 +7250,30 @@ fi: {
         'roi-yearly-label': 'Vuodessa',
         'roi-bookings-label': 'Lisävaraukset/kuukausi',
         'roi-monthly-sub': '',
-        'roi-cta': 'Pyydä demoa →',
+        'roi-cta': 'Ilmainen kokeilu →',
         'roi-disclaimer': 'Arvio. Todelliset tulokset riippuvat vastaanoton profiilista ja hoitosuhteista.',
-        'roi-value-currency': '€'},
+        'roi-value-currency': '€',
+        'pilot-badge': 'Rajoitetut paikat',
+        'pilot-title': 'Kokeile Annaa vastaanotollasi — ilmaiseksi',
+        'pilot-desc': 'Käynnistämme ilmaisen pilot-ohjelman rajoitetulle määrälle hammashoitoloita. Rekisteröidy, niin esittelemme henkilökohtaisesti, miten Anna sopii vastaanotollesi.',
+        'pilot-name-label': 'Nimi *',
+        'pilot-clinic-label': 'Hammashoitolan nimi',
+        'pilot-email-label': 'Sähköposti *',
+        'pilot-phone-label': 'Puhelinnumero',
+        'pilot-submit': 'Ilmoittaudun pilot-ohjelmaan',
+        'pilot-success-title': 'Kiitos ilmoittautumisestasi!',
+        'pilot-success-desc': 'Olemme sinuun yhteydessä 24 tunnin kuluessa annettuihin yhteystietoihin.',
+        'pilot-check1': 'Täysin ilmainen',
+        'pilot-check2': 'Ei sitovuutta',
+        'pilot-check3': 'Nopea vastaus',
+        'pilot-err-required': 'Täytä nimi ja sähköposti!',
+        'pilot-err-email': 'Virheellinen sähköpostiosoite!',
+        'pilot-sending': 'Lähetetään...',
+        'pilot-err-general': 'Tapahtui virhe. Yritä uudelleen!',
+        'pilot-name-ph': 'Dr. Matti Virtanen',
+        'pilot-clinic-ph': 'Hymy Hammaslääkäriasema',
+        'pilot-email-ph': 'info@asema.fi',
+        'pilot-phone-ph': '+358 9 123 4567'},
 
       sk: {
         'page-title': 'Anna — DentAi Senior Asistent | Nonstop príjem hovorov & rezervácia',
@@ -7111,7 +7445,7 @@ fi: {
         'faq2-q': 'Čo ak AI nevie odpovedať?',
         'faq2-a': 'Ak Anna dostane otázku, na ktorú nie je pripravená (napr. špecifická lekárska otázka, riešenie sťažností, komplexná cenová ponuka), automaticky upozorní recepciu ambulancie na spätné zavolanie — zaznamná údaje pacienta a podrobnosti požiadavky, aby recepcia mohla pacienta kontaktovať čo najskôr. Ak je ambulancia zatvorená, Anna si zaznamená požiadavku a recepcia nasledujúci pracovný deň pacientovi zavolá. Pacient nikdy neostane bez odpovede.',
         'faq3-q': 'Ako je možné získať prístup k systému?',
-        'faq3-a': 'Anna je momentálne dostupná ako portfóliová demo — vyvinutá Petrom Peterom ako súkromná osoba, zatiaľ sa nepredáva komerčne. Webová stránka a konverzačná demo sú k dispozícii na vyskúšanie pre každého, takže ako zubár, vývojár alebo obchodne záujemcový môžete získať prehľad o fungovaní. Ak uvažujete o nasadení alebo unikátnej spolupráci (pilotný program, integrácia), kontaktujte ma na info@dentai.me.',
+        'faq3-a': 'Anna je momentálne dostupná prostredníctvom bezplatného pilotného programu pre obmedzený počet zubných ambulancií. Systém vyvinul Peter Petor a cieľom je testovať ho v reálnych prostrediach. Ak máte záujem o pilotný program, vyplňte prihlasovací formulár na tejto stránke alebo napíšte na info@dentai.me.',
         'faq4-q': 'V koľkých jazykoch hovorí?',
         'faq4-a': 'Momentálne plynulo komunikuje v jedenástich jazykoch: slovensky, nórsky, dánsky, švédsky, fínsky, holandsky, anglicky, nemecky, francúzsky, taliansky a maďarsky. Výber jazyka je automatický — Anna rozpozná jazyk pacienta a odpovedá v ňom. To je obzvlášť cenné v turisticky frekventovaných oblastiach, kde zahraniční pacienti často volajú do ambulancie.',
         'faq5-q': 'Ako sa riešia urgentné prípady?',
@@ -7151,10 +7485,10 @@ fi: {
         'footer-desc': 'Anna — DentAi Senior Asistentka. Nonstop príjem hovorov, online rezervácia a automatické potvrdenie, aby vaša prax vždy fungovala pokojne.',
         'footer-langs': 'Jazyky',
         'footer-info-title': 'Informácie',
-        'footer-portfolio': 'Portfóliové demo Vytvoril: Peter Petor',
+        'footer-portfolio': 'Pilotný program dostupný — Vyvinul: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Oznámenie o ochrane údajov',
-        'footer-gdpr': 'Právne vyhlásenie: Toto je portfóliová demo. Prosím, neuvádzajte skutočné údaje! Za odpovede AI nepreberám zodpovednosť.',
+        'footer-gdpr': 'Údaje zadané v live deme sa neukladajú. Odpovede AI sú len informatívneho charakteru a nepredstavujú lekársku radu.',
         'footer-copy': '© 2026 DentAi Asistent. Všetky práva vyhradené. Prevádzkované AI Annou.',
         'time-past': 'Požadovaný termín už uplynul. Prosím, vyberte budúci termín.',
         'time-too-close': 'Termín je príliš skoro — minimálne 2 hodiny vopred je potrebné na rezerváciu.',
@@ -7286,9 +7620,30 @@ fi: {
         'roi-yearly-label': 'Ročne',
         'roi-bookings-label': 'Extra rezervácie/mesiac',
         'roi-monthly-sub': '',
-        'roi-cta': 'Vyžiadať demo →',
+        'roi-cta': 'Bezplatná skúšobná →',
         'roi-disclaimer': 'Odhad. Skutočné výsledky závisia od profilu praxe a pomerov ošetrení.',
-        'roi-value-currency': '€'}
+        'roi-value-currency': '€',
+        'pilot-badge': 'Obmedzená kapacita',
+        'pilot-title': 'Vyskúšajte Annu vo vašej praxi — zadarmo',
+        'pilot-desc': 'Spúšťame bezplatný pilotný program pre obmedzený počet zubných praxí. Prihláste sa a osobne vám ukážeme, ako sa Anna hodí do vašej praxe.',
+        'pilot-name-label': 'Meno *',
+        'pilot-clinic-label': 'Názov praxe',
+        'pilot-email-label': 'E-mail *',
+        'pilot-phone-label': 'Telefónne číslo',
+        'pilot-submit': 'Prihláste sa do pilotného programu',
+        'pilot-success-title': 'Ďakujeme za prihlásenie!',
+        'pilot-success-desc': 'Ozveme sa vám do 24 hodín na uvedené kontaktné údaje.',
+        'pilot-check1': 'Úplne zadarmo',
+        'pilot-check2': 'Bez záväzkov',
+        'pilot-check3': 'Rýchla odozva',
+        'pilot-err-required': 'Vyplňte prosím meno a e-mail!',
+        'pilot-err-email': 'Neplatná e-mailová adresa!',
+        'pilot-sending': 'Odosielam...',
+        'pilot-err-general': 'Nastala chyba. Skúste to znova!',
+        'pilot-name-ph': 'Dr. Ján Kováč',
+        'pilot-clinic-ph': 'Úsmev Zubná klinika',
+        'pilot-email-ph': 'info@klinika.sk',
+        'pilot-phone-ph': '+421 2 123 4567'}
     };
     // Init: localStorage → IP geolokáció → böngésző nyelv → angol
     const SUPPORTED_LANGS = ['hu', 'en', 'de', 'nl', 'fr', 'it', 'da', 'no', 'sv', 'fi', 'sk'];
