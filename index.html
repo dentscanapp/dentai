@@ -81,17 +81,10 @@
 
     .phone-frame{position:relative;width:min(280px,70vw);max-width:280px;aspect-ratio:280/580;border-radius:clamp(28px,7vw,40px);background:#0f172a;padding:clamp(8px,2.2vw,12px);box-shadow:0 0 0 2px #334155,0 25px 60px -12px rgba(0,0,0,.4),0 0 80px rgba(59,130,246,.15)}
 
-    /* YouTube embed — thumbnail + lightbox */
+    /* YouTube embed */
     @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
     .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
-    /* Inline video player */
-    #demo-video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5}
-    #yt-player-div{position:absolute;inset:0;width:100%;height:100%;z-index:5}
-    #yt-player-div iframe{position:absolute;inset:0;width:100%!important;height:100%!important;border:0}
-    #demo-video-overlay{position:absolute;inset:0;z-index:15;cursor:pointer;display:none}
-    #demo-video-overlay.controls-active{pointer-events:none}
-    #demo-video-overlay .play-indicator{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease;pointer-events:none}
-    #demo-video-overlay .play-indicator.show{opacity:1}
+    #demo-video-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;border-radius:1rem}
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
     /* === Toast notifications === */
@@ -472,12 +465,6 @@
                 <div class="pulse-dot" style="width:6px;height:6px;"></div>
                 <span class="text-white/80 text-[11px] font-medium" data-i18n="demo-video-live">Élő bemutató</span>
               </div>
-            </div>
-          </div>
-          <!-- Overlay: captures clicks so YouTube doesn't show big center play/pause icon -->
-          <div id="demo-video-overlay">
-            <div class="play-indicator">
-              <svg id="overlay-play-icon" class="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
           </div>
         </div>
@@ -2181,110 +2168,26 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-    // === YouTube demo video — inline lejátszás API-val ===
+    // === YouTube demo video — egyszerű inline lejátszás ===
     (function(){
       var cover = document.getElementById('demo-video-cover');
       var wrapper = document.getElementById('demo-video-wrapper');
-      var overlay = document.getElementById('demo-video-overlay');
-      var playIcon = document.getElementById('overlay-play-icon');
-      var indicator = overlay ? overlay.querySelector('.play-indicator') : null;
-      if(!cover || !wrapper || !overlay) return;
+      if(!cover || !wrapper) return;
 
-      var player = null;
-      var isPlaying = false;
-      var hideControlsTimer = null;
-
-      // YouTube IFrame API betöltése
-      var tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-      // Play/pause ikon váltása
-      function setPlayIcon(playing) {
-        if(!playIcon) return;
-        if(playing) {
-          playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>';
-        } else {
-          playIcon.innerHTML = '<path d="M8 5v14l11-7z" fill="currentColor"/>';
-        }
-      }
-
-      // Rövid indikátor megjelenítés
-      function flashIndicator(playing) {
-        if(!indicator) return;
-        setPlayIcon(playing);
-        indicator.classList.add('show');
-        setTimeout(function(){ indicator.classList.remove('show'); }, 600);
-      }
-
-      // Overlay kattintás → play/pause API-n keresztül (nagy középső gomb nélkül!)
-      overlay.addEventListener('click', function(e){
-        if(!player) return;
-        if(isPlaying) {
-          player.pauseVideo();
-        } else {
-          player.playVideo();
-        }
-        flashIndicator(!isPlaying);
-      });
-
-      // Amikor az egér az alsó 50px-en van (YouTube vezérlők területe),
-      // az overlay engedje át a kattintásokat
-      wrapper.addEventListener('mousemove', function(e){
-        var rect = wrapper.getBoundingClientRect();
-        var y = e.clientY - rect.top;
-        var h = rect.height;
-        // Alsó 50px = vezérlők területe
-        if(y > h - 50) {
-          overlay.classList.add('controls-active');
-        } else {
-          overlay.classList.remove('controls-active');
-        }
-      });
-      wrapper.addEventListener('mouseleave', function(){
-        overlay.classList.remove('controls-active');
-      });
-
-      // Cover kattintás → videó indítása
       cover.addEventListener('click', function(){
-        // Cover elrejtése
+        // Cover eltávolítása
+        cover.style.transition = 'opacity 0.4s ease';
         cover.style.opacity = '0';
-        cover.style.transition = 'opacity 0.3s ease';
-        setTimeout(function(){ cover.style.display = 'none'; }, 300);
-
-        // YouTube player létrehozása API-val
-        var playerDiv = document.createElement('div');
-        playerDiv.id = 'yt-player-div';
-        wrapper.insertBefore(playerDiv, overlay);
-
-        player = new YT.Player('yt-player-div', {
-          videoId: 'hEMnfcko0Ck',
-          width: '100%',
-          height: '100%',
-          playerVars: {
-            autoplay: 1,
-            rel: 0,
-            modestbranding: 1,
-            autohide: 1,
-            controls: 1,
-            iv_load_policy: 3,
-            showinfo: 0
-          },
-          events: {
-            onReady: function(event) {
-              // Overlay megjelenítése (ez fogja elkapni a kattintásokat)
-              overlay.style.display = 'block';
-            },
-            onStateChange: function(event) {
-              if(event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
-              } else {
-                isPlaying = false;
-              }
-            }
-          }
-        });
+        setTimeout(function(){ cover.remove(); }, 400);
+        // Sima YouTube iframe — semmi overlay, semmi API hack
+        // A YouTube saját maga kezeli a vezérlők auto-hide-ját
+        var iframe = document.createElement('iframe');
+        iframe.id = 'demo-video-iframe';
+        iframe.src = 'https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1&autohide=1';
+        iframe.title = 'Anna — DentAi bemutató';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.setAttribute('allowfullscreen', '');
+        wrapper.appendChild(iframe);
       });
     })();
 
