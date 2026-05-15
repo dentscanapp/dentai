@@ -81,15 +81,33 @@
 
     .phone-frame{position:relative;width:min(280px,70vw);max-width:280px;aspect-ratio:280/580;border-radius:clamp(28px,7vw,40px);background:#0f172a;padding:clamp(8px,2.2vw,12px);box-shadow:0 0 0 2px #334155,0 25px 60px -12px rgba(0,0,0,.4),0 0 80px rgba(59,130,246,.15)}
 
-    /* YouTube embed — thumbnail + lazy load player */
-    .video-embed-wrapper{position:relative;overflow:visible!important}
+    /* YouTube embed — thumbnail + lazy load player, tiszta képernyő */
     @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
     .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
     #demo-video-container.playing #demo-video-thumb,
     #demo-video-container.playing #demo-video-play{display:none}
     #demo-video-container.playing{cursor:default}
     #demo-video-container.playing #demo-video-player{display:block}
-    #demo-video-container #demo-video-player iframe{width:100%;height:100%;border:0;border-radius:1rem}
+    #demo-video-container #demo-video-player{display:none}
+    /* A player konténer: a videó teljesen kitölti, a YouTube alsó sáv kívülre esik */
+    #demo-video-player{
+      position:absolute;
+      top:0;left:0;right:0;bottom:0;
+      overflow:hidden;
+      border-radius:1rem;
+      z-index:20;
+    }
+    #demo-video-player>div,
+    #demo-video-player iframe{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      /* 12%-kal magasabb, mint a konténer — így a YouTube alsó sáv kívül esik az overflow:hidden-en */
+      height:calc(100% + 52px);
+      border:0;
+      border-radius:1rem;
+    }
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
     /* === Toast notifications === */
@@ -2174,15 +2192,68 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-    // === YouTube demo video — lazy load kattintásra ===
+    // === YouTube demo video — lazy load kattintásra, tiszta képernyő ===
     (function(){
       var container = document.getElementById('demo-video-container');
       if(!container) return;
-      container.addEventListener('click', function(){
+      var isPlaying = false;
+      container.addEventListener('click', function(e){
+        // Ha már játszik, toggle pause/play az API-val
+        if(isPlaying && window._ytDemoPlayer){
+          var p = window._ytDemoPlayer;
+          if(p.getPlayerState && p.getPlayerState() === 1){
+            p.pauseVideo();
+          } else {
+            p.playVideo();
+          }
+          return;
+        }
         if(container.classList.contains('playing')) return;
         container.classList.add('playing');
+        isPlaying = true;
         var player = document.getElementById('demo-video-player');
-        player.innerHTML = '<iframe src="https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1&autohide=1&showinfo=0&iv_load_policy=3" title="Anna — DentAi Senior Asszisztens bemutató" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;height:100%;border:0;border-radius:1rem;"></iframe>';
+        player.innerHTML = '<div id="yt-demo-iframe"></div>';
+        // YouTube IFrame API betöltése
+        var tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+        window.onYouTubeIframeAPIReady = function(){
+          window._ytDemoPlayer = new YT.Player('yt-demo-iframe', {
+            videoId: 'hEMnfcko0Ck',
+            playerVars: {
+              autoplay: 1,
+              modestbranding: 1,
+              rel: 0,
+              showinfo: 0,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              iv_load_policy: 3,
+              autohide: 1,
+              playsinline: 1
+            },
+            events: {
+              onReady: function(e){
+                // Eltüntetjük a fókuszt, hogy a YouTube elrejtse a UI-t
+                var iframe = document.querySelector('#demo-video-player iframe');
+                if(iframe){
+                  iframe.style.cssText = 'width:100%;height:100%;border:0;border-radius:1rem;';
+                }
+              },
+              onStateChange: function(e){
+                // PLAYING -> elrejtjük a custom overlay-t
+                if(e.data === YT.PlayerState.PLAYING){
+                  var iframe = document.querySelector('#demo-video-player iframe');
+                  if(iframe) iframe.blur();
+                }
+              }
+            }
+          });
+        };
+        // Ha az API már be volt töltve
+        if(typeof YT !== 'undefined' && YT.Player){
+          window.onYouTubeIframeAPIReady();
+        }
       });
     })();
 
