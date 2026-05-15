@@ -85,8 +85,7 @@
     @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
     .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
     /* Inline video player */
-    #demo-video-player{position:absolute;inset:0;z-index:20}
-    #demo-video-player iframe{width:100%;height:100%;border:0;border-radius:1rem}
+    #demo-video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5}
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
     /* === Toast notifications === */
@@ -440,8 +439,6 @@
       </div>
       <div class="max-w-4xl mx-auto">
         <div id="demo-video-wrapper" class="relative rounded-2xl overflow-hidden shadow-2xl shadow-dental-600/20 border border-slate-200/60" style="aspect-ratio:16/9;">
-          <!-- YouTube iframe (hidden initially) -->
-          <div id="demo-video-player" style="display:none;"></div>
           <!-- Thumbnail cover (visible initially, hidden on play) -->
           <div id="demo-video-cover" class="absolute inset-0 z-10 cursor-pointer group">
             <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" style="background-image:url('https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg');">
@@ -2175,17 +2172,23 @@
     // === YouTube demo video — inline lejátszás ===
     (function(){
       var cover = document.getElementById('demo-video-cover');
-      var player = document.getElementById('demo-video-player');
-      if(!cover || !player) return;
+      var wrapper = document.getElementById('demo-video-wrapper');
+      if(!cover || !wrapper) return;
 
       cover.addEventListener('click', function(){
         // Cover elrejtése
         cover.style.opacity = '0';
         cover.style.transition = 'opacity 0.3s ease';
         setTimeout(function(){ cover.style.display = 'none'; }, 300);
-        // YouTube iframe betöltése normál vezérlőkkel
-        player.style.display = 'block';
-        player.innerHTML = '<iframe src="https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1" title="Anna — DentAi bemutató" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+        // YouTube iframe közvetlenül a wrapper-be, normál vezérlőkkel
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1&autohide=1';
+        iframe.title = 'Anna — DentAi bemutató';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        wrapper.appendChild(iframe);
+        // Fókusz az iframe-re, hogy a YouTube player megkapja az egér eseményeket
+        setTimeout(function(){ iframe.focus(); }, 100);
       });
     })();
 
