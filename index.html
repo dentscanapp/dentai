@@ -81,10 +81,15 @@
 
     .phone-frame{position:relative;width:min(280px,70vw);max-width:280px;aspect-ratio:280/580;border-radius:clamp(28px,7vw,40px);background:#0f172a;padding:clamp(8px,2.2vw,12px);box-shadow:0 0 0 2px #334155,0 25px 60px -12px rgba(0,0,0,.4),0 0 80px rgba(59,130,246,.15)}
 
-    /* YouTube embed — vezérlők auto-hide kikényszerítése */
+    /* YouTube embed — thumbnail + lazy load player */
     .video-embed-wrapper{position:relative;overflow:visible!important}
-    .video-embed-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:1rem;background:#000}
-    .video-embed-wrapper:after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;border-radius:1rem;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(226,232,240,.6)}
+    @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
+    .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
+    #demo-video-container.playing #demo-video-thumb,
+    #demo-video-container.playing #demo-video-play{display:none}
+    #demo-video-container.playing{cursor:default}
+    #demo-video-container.playing #demo-video-player{display:block}
+    #demo-video-container #demo-video-player iframe{width:100%;height:100%;border:0;border-radius:1rem}
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
     /* === Toast notifications === */
@@ -437,21 +442,37 @@
         <p class="mt-4 text-base text-slate-500 leading-relaxed" data-i18n="demo-video-desc">Nézze meg, hogyan fogadja Anna a hívásokat, foglal időpontot és válaszol a páciensek kérdéseire — mindezt valós időben, teljesen automatikusan.</p>
       </div>
       <div class="max-w-4xl mx-auto">
-        <div class="video-embed-wrapper relative shadow-2xl shadow-dental-600/20 border border-slate-200/60 rounded-2xl overflow-visible" style="padding-bottom:56.25%;height:0;">
-          <iframe
-            id="demo-video-iframe"
-            src="https://www.youtube.com/embed/hEMnfcko0Ck?rel=0&modestbranding=1&autohide=1&showinfo=0&iv_load_policy=3"
-            title="Anna — DentAi Senior Asszisztens bemutató"
-            class="absolute top-0 left-0 w-full h-full"
-            style="border:0;border-radius:1rem;"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
-        </div>
-        <div class="mt-6 flex items-center justify-center gap-3">
-          <div class="pulse-dot" style="width:8px;height:8px;"></div>
-          <span class="text-sm font-medium text-slate-500" data-i18n="demo-video-live">Élő bemutató — Anna valós idejű működése</span>
+        <div id="demo-video-container" class="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl shadow-dental-600/20 border border-slate-200/60" style="aspect-ratio:16/9;">
+          <!-- Thumbnail háttér -->
+          <div id="demo-video-thumb" class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" style="background-image:url('https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg');">
+            <!-- Sötét overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/30 to-slate-900/10"></div>
+          </div>
+          <!-- Play gomb -->
+          <div id="demo-video-play" class="absolute inset-0 flex items-center justify-center z-10">
+            <div class="relative">
+              <div class="absolute inset-0 rounded-full bg-dental-600/30 animate-ping-slow"></div>
+              <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/95 backdrop-blur-sm shadow-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:shadow-dental-600/30">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-dental-600 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <!-- Alsó info sáv -->
+          <div class="absolute bottom-0 left-0 right-0 z-10 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-dental-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-dental-600/30">A</div>
+              <div>
+                <p class="text-white font-semibold text-sm" data-i18n="demo-video-badge-title">Anna — DentAi bemutató</p>
+                <p class="text-white/60 text-xs" data-i18n="demo-video-badge-sub">Kattintson a lejátszáshoz</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5">
+              <div class="pulse-dot" style="width:6px;height:6px;"></div>
+              <span class="text-white/80 text-[11px] font-medium" data-i18n="demo-video-live">Élő bemutató</span>
+            </div>
+          </div>
+          <!-- Ide töltjük be az iframe-et kattintáskor -->
+          <div id="demo-video-player" class="absolute inset-0 hidden"></div>
         </div>
       </div>
     </div>
@@ -2153,30 +2174,16 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-    // === YouTube demo video — vezérlők auto-hide ===
+    // === YouTube demo video — lazy load kattintásra ===
     (function(){
-      var tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      var demoPlayer;
-      window.onYouTubeIframeAPIReady = function(){
-        demoPlayer = new YT.Player('demo-video-iframe',{
-          events:{
-            onStateChange:function(e){
-              // Ha a videó elindul, kikényszerítjük a vezérlők elrejtését
-              if(e.data===YT.PlayerState.PLAYING){
-                var iframe=document.getElementById('demo-video-iframe');
-                if(iframe){
-                  // Eltávolítjuk és visszatesszük a focus-t, hogy a YouTube elrejtse a vezérlőket
-                  iframe.blur();
-                  document.body.focus();
-                }
-              }
-            }
-          }
-        });
-      };
+      var container = document.getElementById('demo-video-container');
+      if(!container) return;
+      container.addEventListener('click', function(){
+        if(container.classList.contains('playing')) return;
+        container.classList.add('playing');
+        var player = document.getElementById('demo-video-player');
+        player.innerHTML = '<iframe src="https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1&autohide=1&showinfo=0&iv_load_policy=3" title="Anna — DentAi Senior Asszisztens bemutató" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;height:100%;border:0;border-radius:1rem;"></iframe>';
+      });
     })();
 
     // === Toast notification system ===
@@ -3690,6 +3697,8 @@
         'demo-video-title': 'Lássa Annát működés közben',
         'demo-video-desc': 'Nézze meg, hogyan fogadja Anna a hívásokat, foglal időpontot és válaszol a páciensek kérdéseire — mindezt valós időben, teljesen automatikusan.',
         'demo-video-live': 'Élő bemutató — Anna valós idejű működése',
+        'demo-video-badge-title': 'Anna — DentAi bemutató',
+        'demo-video-badge-sub': 'Kattintson a lejátszáshoz',
         'how-title-sub': 'Hogyan működik',
         'how-title': 'Négy lépésben a nyugodt praxis',
         'how-desc': 'Teljes körű automatizáció a hívástól a vizitig. A páciens csak bejelentkezik, a háttérmunkát pedig Anna végzi.',
@@ -4063,6 +4072,8 @@
         'demo-video-title': 'See Anna in action',
         'demo-video-desc': 'Watch how Anna answers calls, books appointments, and responds to patient questions — all in real time, fully automated.',
         'demo-video-live': 'Live demo — Anna\'s real-time operation',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Click to play',
         'how-title-sub': 'How it works',
         'how-title': 'A smoothly running practice in four steps',
         'how-desc': 'Full automation from the call to the visit. The patient simply books — Anna handles everything behind the scenes.',
@@ -4436,6 +4447,8 @@
         'demo-video-title': 'Sehen Sie Anna in Aktion',
         'demo-video-desc': 'Sehen Sie, wie Anna Anrufe entgegennimmt, Termine bucht und auf Patientenfragen antwortet — alles in Echtzeit, vollautomatisch.',
         'demo-video-live': 'Live-Demo — Anna in Echtzeit',
+        'demo-video-badge-title': 'Anna — DentAi Demo',
+        'demo-video-badge-sub': 'Klicken zum Abspielen',
         'how-title-sub': 'So funktioniert es',
         'how-title': 'In vier Schritten zum stressfreien Praxisalltag',
         'how-desc': 'Vollautomatisierung vom Anruf bis zum Besuch. Der Patient meldet sich nur an — Anna erledigt den Rest im Hintergrund.',
@@ -4809,6 +4822,8 @@ nl: {
         'demo-video-title': 'Zie Anna in actie',
         'demo-video-desc': 'Bekijk hoe Anna gesprekken beantwoordt, afspraken inplant en reageert op vragen van patiënten — allemaal in realtime, volledig geautomatiseerd.',
         'demo-video-live': 'Live demo — Anna in realtime',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Klik om af te spelen',
         'how-title-sub': 'Hoe het werkt',
         'how-title': 'Een rustige praktijk in vier stappen',
         'how-desc': 'Volledige automatisering van oproep tot afspraak. De patiënt hoeft zich alleen aan te melden — Anna regelt de rest op de achtergrond.',
@@ -5183,6 +5198,8 @@ nl: {
         'demo-video-title': 'Voyez Anna en action',
         'demo-video-desc': 'Regardez comment Anna répond aux appels, réserve des rendez-vous et répond aux questions des patients — le tout en temps réel, entièrement automatisé.',
         'demo-video-live': 'Démonstration en direct — Anna en temps réel',
+        'demo-video-badge-title': 'Anna — DentAi démo',
+        'demo-video-badge-sub': 'Cliquez pour lancer',
         'how-title-sub': 'Comment ça marche',
         'how-title': 'Un cabinet serein en quatre étapes',
         'how-desc': 'Automatisation complète de l\'appel à la visite. Le patient prend simplement rendez-vous — Anna s\'occupe du reste.',
@@ -5556,6 +5573,8 @@ nl: {
         'demo-video-title': 'Vedi Anna in azione',
         'demo-video-desc': 'Guarda come Anna risponde alle chiamate, prenota appuntamenti e risponde alle domande dei pazienti — tutto in tempo reale, completamente automatizzato.',
         'demo-video-live': 'Demo dal vivo — Anna in tempo reale',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Clicca per riprodurre',
         'how-title-sub': 'Come funziona',
         'how-title': 'Uno studio sereno in quattro passi',
         'how-desc': 'Automazione completa dalla chiamata alla visita. Il paziente prenota — Anna fa tutto il resto.',
@@ -5929,6 +5948,8 @@ da: {
         'demo-video-title': 'Se Anna i aksjon',
         'demo-video-desc': 'Se hvordan Anna tar imot anrop, booker avtaler og svarer på pasienters spørsmål — alt i sanntid, fullautomatisk.',
         'demo-video-live': 'Live-demo — Anna i sanntid',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Klikk for å spille av',
         'how-title-sub': 'Hvordan det fungerer',
         'how-title': 'En velfungerende praksis i fire trin',
         'how-desc': 'Fuldautomatisering fra samtale til tid. Patienten melder sig bare, Anna gør resten i baggrunden.',
@@ -6302,6 +6323,8 @@ da: {
         'demo-video-title': 'Sjå Anna i aksjon',
         'demo-video-desc': 'Sjå korleis Anna tek imot anrop, bookar avtalar og svarar på pasientanes spørsmål — alt i sanntid, fullautomatisk.',
         'demo-video-live': 'Live-demo — Anna i sanntid',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Klikk for å spela av',
         'how-title-sub': 'Hvordan det fungerer',
         'how-title': 'En velordnet praksis i fire trinn',
         'how-desc': 'Fullautomatisering fra samtale til time. Pasienten melder seg bare, Anna gjør resten i bakgrunnen.',
@@ -6674,6 +6697,8 @@ sv: {
         'demo-video-title': 'Se Anna i aktion',
         'demo-video-desc': 'Se hur Anna besvarar samtal, bokar tider och svarar på patienternas frågor — allt i realtid, helt automatiserat.',
         'demo-video-live': 'Live-demo — Anna i realtid',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Klicka för att spela',
         'how-title-sub': 'Hur det fungerar',
         'how-title': 'En välordnad praktik i fyra steg',
         'how-desc': 'Fullautomatisering från samtal till tid. Patienten anmäler sig bara, Anna gör resten i bakgrunden.',
@@ -7046,6 +7071,8 @@ fi: {
         'demo-video-title': 'Katso Anna toiminnassa',
         'demo-video-desc': 'Katso, miten Anna vastaa puheluihin, varaa aikoja ja vastaa potilaiden kysymyksiin — kaikki reaaliajassa, täysin automatisoidusti.',
         'demo-video-live': 'Live-demo — Anna reaaliajassa',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Napsauta toistaaksesi',
         'how-title-sub': 'Miten se toimii',
         'how-title': 'Hyvin organisoitu vastaanotto neljässä vaiheessa',
         'how-desc': 'Täysautomaatio puhelusta aikaan. Potilas vain ilmoittautuu, Anna hoitaa loput taustalla.',
@@ -7419,6 +7446,8 @@ fi: {
         'demo-video-title': 'Pozrite Anna v akcii',
         'demo-video-desc': 'Pozrite sa, ako Anna prijíma hovory, rezervuje termíny a odpovedá na otázky pacientov — všetko v reálnom čase, plne automaticky.',
         'demo-video-live': 'Živá demo — Anna v reálnom čase',
+        'demo-video-badge-title': 'Anna — DentAi demo',
+        'demo-video-badge-sub': 'Kliknite pre prehratie',
         'how-title-sub': 'Ako to funguje',
         'how-title': 'Pokojná prax v štyroch krokoch',
         'how-desc': 'Kompletná automatizácia od hovoru po vyšetrenie. Pacient sa len prihlási, prácu v pozadí vykoná Anna.',
