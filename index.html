@@ -84,6 +84,8 @@
     /* YouTube embed */
     @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
     .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
+    #demo-video-wrapper{background:#1e293b}
+    #demo-video-thumb{display:block}
     #demo-video-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;border-radius:1rem}
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
@@ -440,9 +442,8 @@
         <div id="demo-video-wrapper" class="relative rounded-2xl overflow-hidden shadow-2xl shadow-dental-600/20 border border-slate-200/60" style="aspect-ratio:16/9;">
           <!-- Thumbnail cover (visible initially, hidden on play) -->
           <div id="demo-video-cover" class="absolute inset-0 z-10 cursor-pointer group">
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" style="background-image:url('https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg');">
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
-            </div>
+            <img id="demo-video-thumb" src="https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg" alt="Anna bemutató videó" class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://img.youtube.com/vi/hEMnfcko0Ck/sddefault.jpg';}else if(this.dataset.fallback==='1'){this.dataset.fallback='2';this.src='https://img.youtube.com/vi/hEMnfcko0Ck/hqdefault.jpg';}">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             <!-- Play gomb — kisebb mobilon -->
             <div class="absolute inset-0 flex items-center justify-center">
               <div class="relative">
