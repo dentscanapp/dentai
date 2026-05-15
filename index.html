@@ -81,33 +81,12 @@
 
     .phone-frame{position:relative;width:min(280px,70vw);max-width:280px;aspect-ratio:280/580;border-radius:clamp(28px,7vw,40px);background:#0f172a;padding:clamp(8px,2.2vw,12px);box-shadow:0 0 0 2px #334155,0 25px 60px -12px rgba(0,0,0,.4),0 0 80px rgba(59,130,246,.15)}
 
-    /* YouTube embed — thumbnail + lazy load player, tiszta képernyő */
+    /* YouTube embed — thumbnail + lightbox */
     @keyframes ping-slow{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.8);opacity:0}100%{transform:scale(1.8);opacity:0}}
     .animate-ping-slow{animation:ping-slow 2.5s cubic-bezier(0,0,.2,1) infinite}
-    #demo-video-container.playing #demo-video-thumb,
-    #demo-video-container.playing #demo-video-play{display:none}
-    #demo-video-container.playing{cursor:default}
-    #demo-video-container.playing #demo-video-player{display:block}
-    #demo-video-container #demo-video-player{display:none}
-    /* A player konténer: a videó teljesen kitölti, a YouTube alsó sáv kívülre esik */
-    #demo-video-player{
-      position:absolute;
-      top:0;left:0;right:0;bottom:0;
-      overflow:hidden;
-      border-radius:1rem;
-      z-index:20;
-    }
-    #demo-video-player>div,
-    #demo-video-player iframe{
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      /* 12%-kal magasabb, mint a konténer — így a YouTube alsó sáv kívül esik az overflow:hidden-en */
-      height:calc(100% + 52px);
-      border:0;
-      border-radius:1rem;
-    }
+    /* Lightbox */
+    #video-lightbox.open{opacity:1;visibility:visible;pointer-events:auto}
+    #video-lightbox iframe{width:100%;height:100%;border:0}
     .phone-screen{width:100%;height:100%;border-radius:clamp(20px,5.5vw,30px);background:#fff;overflow:hidden;position:relative}
 
     /* === Toast notifications === */
@@ -460,14 +439,13 @@
         <p class="mt-4 text-base text-slate-500 leading-relaxed" data-i18n="demo-video-desc">Nézze meg, hogyan fogadja Anna a hívásokat, foglal időpontot és válaszol a páciensek kérdéseire — mindezt valós időben, teljesen automatikusan.</p>
       </div>
       <div class="max-w-4xl mx-auto">
-        <div id="demo-video-container" class="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl shadow-dental-600/20 border border-slate-200/60" style="aspect-ratio:16/9;">
+        <div id="demo-video-trigger" class="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl shadow-dental-600/20 border border-slate-200/60" style="aspect-ratio:16/9;">
           <!-- Thumbnail háttér -->
-          <div id="demo-video-thumb" class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" style="background-image:url('https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg');">
-            <!-- Sötét overlay -->
+          <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" style="background-image:url('https://img.youtube.com/vi/hEMnfcko0Ck/maxresdefault.jpg');">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/30 to-slate-900/10"></div>
           </div>
           <!-- Play gomb -->
-          <div id="demo-video-play" class="absolute inset-0 flex items-center justify-center z-10">
+          <div class="absolute inset-0 flex items-center justify-center z-10">
             <div class="relative">
               <div class="absolute inset-0 rounded-full bg-dental-600/30 animate-ping-slow"></div>
               <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/95 backdrop-blur-sm shadow-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:shadow-dental-600/30">
@@ -489,12 +467,20 @@
               <span class="text-white/80 text-[11px] font-medium" data-i18n="demo-video-live">Élő bemutató</span>
             </div>
           </div>
-          <!-- Ide töltjük be az iframe-et kattintáskor -->
-          <div id="demo-video-player" class="absolute inset-0 hidden"></div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Video Lightbox Modal -->
+  <div id="video-lightbox" class="fixed inset-0 z-[200] bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300" style="pointer-events:none;">
+    <div class="relative w-full max-w-5xl" style="aspect-ratio:16/9;">
+      <button id="video-lightbox-close" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10" aria-label="Bezárás">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <div id="video-lightbox-player" class="w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-black"></div>
+    </div>
+  </div>
 
   <!-- How It Works Section -->
   <section id="how-it-works" class="py-16 lg:py-24 bg-slate-50">
@@ -2192,68 +2178,34 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-    // === YouTube demo video — lazy load kattintásra, tiszta képernyő ===
+    // === YouTube demo video — lightbox megnyitás ===
     (function(){
-      var container = document.getElementById('demo-video-container');
-      if(!container) return;
-      var isPlaying = false;
-      container.addEventListener('click', function(e){
-        // Ha már játszik, toggle pause/play az API-val
-        if(isPlaying && window._ytDemoPlayer){
-          var p = window._ytDemoPlayer;
-          if(p.getPlayerState && p.getPlayerState() === 1){
-            p.pauseVideo();
-          } else {
-            p.playVideo();
-          }
-          return;
-        }
-        if(container.classList.contains('playing')) return;
-        container.classList.add('playing');
-        isPlaying = true;
-        var player = document.getElementById('demo-video-player');
-        player.innerHTML = '<div id="yt-demo-iframe"></div>';
-        // YouTube IFrame API betöltése
-        var tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(tag);
-        window.onYouTubeIframeAPIReady = function(){
-          window._ytDemoPlayer = new YT.Player('yt-demo-iframe', {
-            videoId: 'hEMnfcko0Ck',
-            playerVars: {
-              autoplay: 1,
-              modestbranding: 1,
-              rel: 0,
-              showinfo: 0,
-              controls: 0,
-              disablekb: 1,
-              fs: 0,
-              iv_load_policy: 3,
-              autohide: 1,
-              playsinline: 1
-            },
-            events: {
-              onReady: function(e){
-                // Eltüntetjük a fókuszt, hogy a YouTube elrejtse a UI-t
-                var iframe = document.querySelector('#demo-video-player iframe');
-                if(iframe){
-                  iframe.style.cssText = 'width:100%;height:100%;border:0;border-radius:1rem;';
-                }
-              },
-              onStateChange: function(e){
-                // PLAYING -> elrejtjük a custom overlay-t
-                if(e.data === YT.PlayerState.PLAYING){
-                  var iframe = document.querySelector('#demo-video-player iframe');
-                  if(iframe) iframe.blur();
-                }
-              }
-            }
-          });
-        };
-        // Ha az API már be volt töltve
-        if(typeof YT !== 'undefined' && YT.Player){
-          window.onYouTubeIframeAPIReady();
-        }
+      var trigger = document.getElementById('demo-video-trigger');
+      var lightbox = document.getElementById('video-lightbox');
+      var closeBtn = document.getElementById('video-lightbox-close');
+      var playerDiv = document.getElementById('video-lightbox-player');
+      if(!trigger || !lightbox || !playerDiv) return;
+
+      function openLightbox(){
+        playerDiv.innerHTML = '<iframe src="https://www.youtube.com/embed/hEMnfcko0Ck?autoplay=1&rel=0&modestbranding=1" title="Anna — DentAi bemutató" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox(){
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        // iframe eltávolítás -> videó megáll
+        setTimeout(function(){ playerDiv.innerHTML = ''; }, 300);
+      }
+
+      trigger.addEventListener('click', openLightbox);
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function(e){
+        if(e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
       });
     })();
 
