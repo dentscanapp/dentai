@@ -207,13 +207,6 @@
   </style>
 </head>
 <body class="bg-white text-slate-800 antialiased">
-<!-- FOR SALE Banner -->
-<div id="sale-banner" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;text-align:center;padding:18px 16px;font-size:22px;font-weight:900;letter-spacing:2px;text-transform:uppercase;position:relative;z-index:9999;box-shadow:0 4px 20px rgba(220,38,38,0.4);">
-  <span data-i18n="sale-banner">🔴 ELADÓ — Ez a rendszer megvásárolható!</span>
-  <div style="font-size:14px;font-weight:500;margin-top:6px;letter-spacing:0.5px;text-transform:none;">
-    <span data-i18n="sale-banner-sub">Érdeklődés: </span><a href="mailto:info@dentai.me" style="color:#fde68a;text-decoration:underline;font-weight:700;">info@dentai.me</a>
-  </div>
-</div>
 
   
   <!-- DentAi Loader — eltűnik amikor a nyelv detektálás kész -->
@@ -1833,6 +1826,28 @@
           </div>
         </div>
 
+        
+
+        <!-- FAQ 3 (AI Act) -->
+        <div class="faq-item bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-dental-200/80">
+          <button class="faq-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left focus:outline-none" aria-expanded="false">
+            <div class="flex items-center gap-3.5">
+              <span class="flex-shrink-0 w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              </span>
+              <h3 class="font-semibold text-slate-800 text-sm sm:text-base" data-i18n="faq3-q">Megfelel az EU MI-rendeletnek (AI Act)?</h3>
+            </div>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 pb-5 pt-0">
+              <div class="pl-[52px]">
+                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">Igen, a rendszer az EU 2024/1689 rendelet 50. cikke szerinti átláthatósági követelményeknek megfelelően működik. A hívó tájékoztatást kap az AI interakcióról; a rendszer kizárólag adminisztratív feladatokat lát el; bármikor kérhető emberi munkatárs visszahívása; és a hangadatok nem kerülnek rögzítésre.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- FAQ 7 -->
         <div class="faq-item bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-dental-200/80">
           <button class="faq-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left focus:outline-none" aria-expanded="false">
@@ -1954,25 +1969,6 @@
         </div>
 
 
-        <!-- FAQ 3 -->
-        <div class="faq-item bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-dental-200/80">
-          <button class="faq-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left focus:outline-none" aria-expanded="false">
-            <div class="flex items-center gap-3.5">
-              <span class="flex-shrink-0 w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              </span>
-              <h3 class="font-semibold text-slate-800 text-sm sm:text-base" data-i18n="faq3-q">Hogyan érhető el a rendszer?</h3>
-            </div>
-            <svg class="faq-chevron w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <div class="px-6 pb-5 pt-0">
-              <div class="pl-[52px]">
-                <p class="text-sm text-slate-500 leading-relaxed" data-i18n="faq3-a">A DentAI rendszer eladó. A rendszert Petor Péter fejlesztette. Ha érdekli a megvásárlása, írjon az <a href="mailto:info@dentai.me" class="text-dental-600 hover:underline">info@dentai.me</a> címre.</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
 
       </div>
@@ -2005,18 +2001,58 @@
         </div>
         <div class="text-center md:text-left"><h4 class="font-semibold text-white mb-3" data-i18n="footer-langs">Nyelvek</h4><div class="flex items-center gap-2 justify-center md:justify-start flex-wrap"><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#CE2939"></rect><rect y="4.7" width="20" height="4.7" fill="#fff"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#477050"></rect></svg>Magyar</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#012169"></rect><path d="M0 0l20 14M20 0L0 14" stroke="#fff" stroke-width="2"></path><path d="M0 0l20 14M20 0L0 14" stroke="#C8102E" stroke-width="1"></path><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="3.5"></path><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"></path></svg>English</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#000"></rect><rect y="4.7" width="20" height="4.7" fill="#DD0000"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#FFCE00"></rect></svg>Deutsch</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#AE1C28"></rect><rect y="4.7" width="20" height="4.6" fill="#fff"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#21468B"></rect></svg>Nederlands</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#002395"></rect><rect x="6.7" width="6.6" height="14" fill="#fff"></rect><rect x="13.3" width="6.7" height="14" rx="1" fill="#ED2939"></rect></svg>Français</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="6.7" height="14" rx="1" fill="#009246"></rect><rect x="6.7" width="6.6" height="14" fill="#fff"></rect><rect x="13.3" width="6.7" height="14" rx="1" fill="#CE2B37"></rect></svg>Italiano</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#C60C30"></rect><rect x="6" width="2.5" height="14" fill="#fff"></rect><rect y="5.75" width="20" height="2.5" fill="#fff"></rect></svg>Dansk</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#EF2B2D"></rect><rect x="6" width="3" height="14" fill="#fff"></rect><rect y="5.5" width="20" height="3" fill="#fff"></rect><rect x="7" width="1.5" height="14" fill="#002868"></rect><rect y="6.25" width="20" height="1.5" fill="#002868"></rect></svg>Norsk</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#006AA7"></rect><rect x="5.5" width="2.5" height="14" fill="#FECC02"></rect><rect y="5.75" width="20" height="2.5" fill="#FECC02"></rect></svg>Svenska</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"></rect><rect x="5.5" width="2.5" height="14" fill="#003580"></rect><rect y="5.75" width="20" height="2.5" fill="#003580"></rect></svg>Suomi</span><span class="inline-flex items-center gap-1.5 bg-slate-800 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-300"><svg class="w-3.5 h-3.5" viewBox="0 0 20 14" fill="none"><rect width="20" height="4.7" rx="1" fill="#fff" stroke="#94a3b8" stroke-width="0.5"></rect><rect y="4.7" width="20" height="4.6" fill="#0B4EA2"></rect><rect y="9.3" width="20" height="4.7" rx="1" fill="#CE2939"></rect></svg>Slovenčina</span></div></div>
         
-        <!-- Új Információk szekció a footerben -->
+                <!-- Információk szekció a footerben -->
         <div class="text-center md:text-left">
           <h4 class="font-semibold text-white mb-3" data-i18n="footer-info-title">Információk</h4>
-          <p class="text-sm font-medium text-slate-300" data-i18n="footer-portfolio">Rendszer eladó<br>Fejlesztette: Petor Péter</p>
-          <ul class="mt-3 space-y-1.5 text-sm">
+          <ul class="mt-3 space-y-2 text-sm">
             <li><button type="button" data-legal-open="impressum" class="text-slate-300 hover:text-white hover:underline transition-colors text-left" data-i18n="footer-impressum">Impresszum</button></li>
-            <li><button type="button" data-legal-open="privacy" class="text-slate-300 hover:text-white hover:underline transition-colors text-left" data-i18n="footer-privacy">Adatkezelési Tájékoztató</button></li>
+            <li><button type="button" data-legal-open="privacy" class="text-slate-300 hover:text-white hover:underline transition-colors text-left" data-i18n="        'footer-ai-act': 'AI Átláthatósági Nyilatkozat (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) megfelelőség',
+        'footer-ai-badge-text': 'Az MI-rendszer az 50. cikk szerinti átláthatósági követelményeknek teljes mértékben megfelel. A hívásokat automatizált AI asszisztens kezeli.',
+                'footer-ai-act': 'AI Transparency Notice (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Compliance',
+        'footer-ai-badge-text': 'The AI system fully complies with Article 50 transparency obligations. Calls are handled by an automated AI assistant.',
+                'footer-ai-act': 'KI-Transparenzerklärung (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Konformität',
+        'footer-ai-badge-text': 'Das KI-System erfüllt die Transparenzanforderungen nach Art. 50 vollständig. Anrufe werden von einem automatisierten KI-Assistenten bearbeitet.',
+                'footer-ai-act': 'AI Transparantieverklaring (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Naleving',
+        'footer-ai-badge-text': 'Het AI-systeem voldoet volledig aan de transparantieverplichtingen onder Artikel 50. Gesprekken worden afgehandeld door een geautomatiseerde AI-assistent.',
+                'footer-ai-act': 'Déclaration de transparence IA (EU AI Act)',
+        'footer-ai-badge-title': 'Conformité EU AI Act (2024/1689)',
+        'footer-ai-badge-text': 'Le système IA respecte pleinement les obligations de transparence de l\'article 50. Les appels sont gérés par un assistant IA automatisé.',
+                'footer-ai-act': 'Dichiarazione Trasparenza IA (EU AI Act)',
+        'footer-ai-badge-title': 'Conformità EU AI Act (2024/1689)',
+        'footer-ai-badge-text': 'Il sistema IA rispetta pienamente gli obblighi di trasparenza previsti dall\'Articolo 50. Le chiamate sono gestite da un assistente IA automatizzato.',
+                'footer-ai-act': 'AI Gennemsigtighedserklæring (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Overholdelse',
+        'footer-ai-badge-text': 'AI-systemet overholder gennemsigtighedskravene i artikel 50 fuldt ud. Opkald håndteres af en automatiseret AI-assistent.',
+                'footer-ai-act': 'AI Åpenhetserklæring (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Samsvar',
+        'footer-ai-badge-text': 'AI-systemet samsvarer fullt ut med åpenhetskravene i artikkel 50. Samtaler håndteres av en automatisert AI-assistent.',
+                'footer-ai-act': 'AI Transparensförklaring (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Efterlevnad',
+        'footer-ai-badge-text': 'AI-systemet uppfyller transparenskraven i artikel 50 fullt ut. Samtal hanteras av en automatiserad AI-assistent.',
+                'footer-ai-act': 'AI Avoimuusilmoitus (EU AI Act)',
+        'footer-ai-badge-title': 'EU AI Act (2024/1689) Noudattaminen',
+        'footer-ai-badge-text': 'AI-järjestelmä noudattaa täysin 50 artiklan avoimuusvelvoitteita. Puhelut hoitaa automaattinen AI-avustaja.',
+                'footer-ai-act': 'Vyhlásenie o transparentnosti AI (EU AI Act)',
+        'footer-ai-badge-title': 'Súlad s EU AI Act (2024/1689)',
+        'footer-ai-badge-text': 'Systém AI plne vyhovuje požiadavkám na transparentnosť podľa článku 50. Hovory spravuje automatizovaný AI asistent.',
+        footer-privacy">Adatkezelési Tájékoztató</button></li>
+            <li><button type="button" data-legal-open="privacy" class="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium hover:underline transition-colors text-left" data-i18n="footer-ai-act"><svg class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg><span>AI Átláthatósági Nyilatkozat (EU AI Act)</span></button></li>
           </ul>
-          <p class="text-[11px] text-slate-500 mt-3 leading-relaxed" data-i18n="footer-gdpr">A hívások nem kerülnek rögzítésre. Az AI válaszai tájékoztató jellegűek.</p>
+          <div class="mt-4 p-3 bg-slate-800/80 border border-slate-700/60 rounded-xl text-xs text-slate-300">
+            <div class="flex items-center gap-1.5 text-emerald-400 font-semibold mb-1">
+              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              <span data-i18n="footer-ai-badge-title">EU AI Act (2024/1689) megfelelőség</span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed" data-i18n="footer-ai-badge-text">Az MI-rendszer az 50. cikk szerinti átláthatósági követelményeknek teljes mértékben megfelel. A hívásokat automatizált AI asszisztens kezeli.</p>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-3 leading-relaxed" data-i18n="footer-gdpr">A hívások nem kerülnek rögzítésre. Az AI válaszai tájékoztató jellegűek (EU 2024/1689 AI Act 50. cikk).</p>
         </div>
       </div>
-      <div class="mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500" data-i18n="footer-copy">© 2026 DentAi asszisztens. Minden jog fenntartva. Anna AI által működtetve.</div>
+      <div class="mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500" data-i18n="footer-copy">© 2026 DentAi asszisztens. Minden jog fenntartva. Powered by Anna AI — EU AI Act 50. cikk átláthatósági megfelelés.</div>
     </div>
   </footer>
 
@@ -2045,7 +2081,7 @@
             <p><span class="font-semibold" data-i18n="imp-purpose-label">Oldal célja:</span> <span data-i18n="imp-purpose-value">Portfolió / technológiai demó (nem kereskedelmi szolgáltatás)</span></p>
             <p><span class="font-semibold" data-i18n="imp-host-label">Tárhelyszolgáltató:</span> <span data-i18n="imp-host-value">Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA)</span></p>
           </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed" data-i18n="imp-legal-basis">Jogszabályi alap: 2001. évi CVIII. törvény (Ektv.) az elektronikus kereskedelmi szolgáltatásokról.</p>
+          <p class="text-[11px] text-slate-500 leading-relaxed" data-i18n="imp-legal-basis">Jogszabályi alap: 2001. évi CVIII. törvény (Ektv.) és az EU mesterséges intelligenciáról szóló rendelete (EU 2024/1689) 50. cikk.</p>
         </div>
         <!-- Privacy panel -->
         <div data-legal-panel="privacy" class="hidden space-y-3">
@@ -2085,7 +2121,11 @@
             <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h6">6. Felelősségkizárás</h4>
             <p data-i18n="priv-p6">Az AI által generált válaszok tájékoztató jellegűek. Az üzemeltető semmilyen felelősséget nem vállal a felhasználó által megadott adatokért, illetve a mesterséges intelligencia válaszaiból eredő esetleges károkért.</p>
           </div>
-          <p class="text-[11px] text-slate-400 mt-3" data-i18n="priv-updated">Hatályos: 2026. április 26.</p>
+                    <div>
+            <h4 class="font-semibold text-slate-900 mb-0.5" data-i18n="priv-h7">7. EU MI-rendelet (AI Act) megfelelés</h4>
+            <p data-i18n="priv-p7">A rendszer az EU 2024/1689 rendelet (AI Act) 50. cikkének átláthatósági követelményeivel összhangban működik. Az asszisztens nem végez orvosi diagnózist, kizárólag tájékoztatási és időpontfoglalási feladatokat lát el. A hívók a beszélgetés előtt és alatt is egyértelmű tájékoztatást kapnak az AI jelenlétéről, és bármikor kérhetik emberi munkatárs felügyeletét vagy visszahívását.</p>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-3" data-i18n="priv-updated">Hatályos: 2026. augusztus 2.</p>
         </div>
       </div>
       <!-- OK gomb -->
@@ -2105,7 +2145,7 @@
         <h3 class="text-lg font-bold text-slate-900" data-i18n="modal-title">Beleegyező nyilatkozat</h3>
       </div>
       <div class="overflow-y-auto flex-1 min-h-0 -webkit-overflow-scrolling-touch">
-        <p class="text-sm text-slate-600 leading-relaxed mb-5" data-i18n="modal-text">A hívást mesterséges intelligencia (AI) kezeli. A beszélgetés során a hangadatok valós időben feldolgozásra kerülnek, de nem kerülnek rögzítésre vagy tárolásra. A hívás indításával elfogadja, hogy az AI válaszokat generál.</p>
+        <p class="text-sm text-slate-600 leading-relaxed mb-5" data-i18n="modal-text">Ön mesterséges intelligencia (AI) rendszerrel lép interakcióba az EU MI-rendelet (EU 2024/1689) 50. cikke szerinti tájékoztatás alapján. A hívást AI asszisztens kezeli — nem orvos vagy recepciós. Anna kizárólag adminisztratív feladatokat lát el (időpontfoglalás, tájékoztatás), orvosi diagnózist nem ad. A hangadatok valós időben feldolgozásra kerülnek, de nem kerülnek rögzítésre vagy tárolásra. Emberi munkatárs visszahívását bármikor kérheti.</p>
         <label class="flex items-start gap-3 cursor-pointer mb-5 group">
           <div class="relative flex-shrink-0 mt-0.5">
             <input type="checkbox" id="consent-checkbox" class="peer sr-only">
@@ -2117,7 +2157,128 @@
         </label>
       </div>
       <div class="flex gap-3 mt-auto pt-3 flex-shrink-0">
-        <button id="consent-cancel-btn" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors" data-i18n="modal-cancel">Mégse</button>
+        <button id="consent-cancel-btn" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors" data-i18n="        'modal-text': 'Ön mesterséges intelligencia (AI) rendszerrel lép interakcióba az EU MI-rendelet (EU 2024/1689) 50. cikke szerinti tájékoztatás alapján. A hívást AI asszisztens kezeli — nem orvos vagy recepciós. Anna kizárólag adminisztratív feladatokat lát el (időpontfoglalás, tájékoztatás), orvosi diagnózist nem ad. A hangadatok valós időben feldolgozásra kerülnek, de nem kerülnek rögzítésre vagy tárolásra. Emberi munkatárs visszahívását bármikor kérheti.',
+        'faq3-q': 'Megfelel az EU MI-rendeletnek (AI Act)?',
+        'faq3-a': 'Igen, a rendszer az EU 2024/1689 rendelet 50. cikke szerinti átláthatósági követelményeknek megfelelően működik. A hívó egyértelmű tájékoztatást kap az AI interakcióról; a rendszer kizárólag adminisztratív feladatokat lát el; bármikor kérhető emberi munkatárs visszahívása; és a hangadatok nem kerülnek rögzítésre.',
+        'faq6-q': 'Hogyan kezeli az adatvédelmet (GDPR) és az MI-rendeletet (AI Act)?',
+        'faq6-a': 'Anna a GDPR és az EU MI-rendelet (EU 2024/1689) 50. cikke szerint működik. A hangfeldolgozást az ElevenLabs biztosítja Zero Retention Mode-ban — a hívások nem kerülnek rögzítésre és nem tárolódnak. Az AI kizárólag tájékoztat és időpontot foglal, orvosi diagnózist nem ad.',
+        'footer-gdpr': 'A hívások nem kerülnek rögzítésre. Az AI válaszai tájékoztató jellegűek (EU 2024/1689 AI Act 50. cikk).',
+        'footer-copy': '© 2026 DentAi asszisztens. Minden jog fenntartva. Powered by Anna AI — EU AI Act 50. cikk átláthatósági megfelelés.',
+        'imp-legal-basis': 'Jogszabályi alap: 2001. évi CVIII. törvény (Ektv.) és az EU mesterséges intelligenciáról szóló rendelete (EU 2024/1689) 50. cikk.',
+        'priv-h7': '7. EU MI-rendelet (AI Act) megfelelés',
+        'priv-p7': 'A rendszer az EU 2024/1689 rendelet (AI Act) 50. cikkének átláthatósági követelményeivel összhangban működik. Az asszisztens nem végez orvosi diagnózist, kizárólag tájékoztatási és időpontfoglalási feladatokat lát el. A hívók a beszélgetés előtt és alatt is egyértelmű tájékoztatást kapnak az AI jelenlétéről, és bármikor kérhetik emberi munkatárs felügyeletét vagy visszahívását.',
+        'priv-updated': 'Hatályos: 2026. augusztus 2.',
+                'modal-text': 'You are interacting with an artificial intelligence (AI) system in accordance with Article 50 of the EU AI Act (Regulation (EU) 2024/1689). The call is handled by an automated AI assistant — not a doctor or receptionist. Anna performs administrative tasks only (scheduling, basic inquiries) and does not provide medical diagnoses or advice. Voice data is processed in real time and is neither recorded nor stored. You may request a call back from a human staff member at any time.',
+        'faq3-q': 'Does it comply with the EU AI Act?',
+        'faq3-a': 'Yes, the system operates in full compliance with the specific transparency obligations under Article 50 of Regulation (EU) 2024/1689 (EU AI Act). Callers are explicitly informed of the AI interaction; the system performs administrative duties only; human callback escalation is available at all times; and voice data is processed with zero retention.',
+        'faq6-q': 'How is data protection (GDPR) and AI Act compliance handled?',
+        'faq6-a': 'Anna operates in compliance with GDPR (EU 2016/679) and Article 50 of the EU AI Act (EU 2024/1689). Voice processing is provided by ElevenLabs in Zero Retention Mode — calls are not recorded and no conversational data is stored. The AI provides informational assistance only and does not perform clinical triage or medical diagnosis.',
+        'footer-gdpr': 'Calls are not recorded. AI responses are for informational purposes only (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistant. All rights reserved. Powered by Anna AI — EU AI Act Art. 50 transparency compliance.',
+        'imp-legal-basis': 'Legal basis: Hungarian Act CVIII of 2001 on Electronic Commerce, and Regulation (EU) 2024/1689 (EU AI Act) Article 50.',
+        'priv-h7': '7. EU AI Act Compliance',
+        'priv-p7': 'The system operates in accordance with the transparency requirements of Article 50 of Regulation (EU) 2024/1689 (AI Act). The assistant does not provide medical diagnoses and solely performs administrative scheduling and information tasks. Users are clearly notified of the AI interaction prior to and during the call, with the option to request human staff intervention at any time.',
+        'priv-updated': 'Effective date: August 2, 2026.',
+                'modal-text': 'Sie interagieren gemäß Art. 50 der EU-KI-Verordnung (Verordnung (EU) 2024/1689) mit einem System der künstlichen Intelligenz (KI). Der Anruf wird von einem KI-Assistenten bearbeitet – nicht von einem Arzt oder Rezeptionisten. Anna übernimmt ausschließlich administrative Aufgaben (Terminvergabe, Auskünfte) und stellt keine medizinischen Diagnosen. Sprachdaten werden in Echtzeit verarbeitet und weder aufgezeichnet noch gespeichert. Sie können jederzeit einen Rückruf durch ein menschliches Personal anfordern.',
+        'faq3-q': 'Entspricht das System der EU-KI-Verordnung (AI Act)?',
+        'faq3-a': 'Ja, das System erfüllt die Transparenzanforderungen nach Art. 50 der Verordnung (EU) 2024/1689 (EU-KI-Verordnung). Anrufer werden ausdrücklich über die KI-Interaktion informiert; das System nimmt nur administrative Aufgaben wahr; die Weiterleitung an menschliches Personal ist jederzeit möglich; und Sprachdaten werden ohne Speicherung (Zero Retention) verarbeitet.',
+        'faq6-q': 'Wie wird der Datenschutz (DSGVO) und die KI-Verordnung (AI Act) umgesetzt?',
+        'faq6-a': 'Anna arbeitet in Übereinstimmung mit der DSGVO und Art. 50 der EU-KI-Verordnung (EU 2024/1689). Die Sprachverarbeitung erfolgt über ElevenLabs im Zero-Retention-Modus – Anrufe werden nicht aufgezeichnet. Die KI stellt keine medizinischen Diagnosen.',
+        'footer-gdpr': 'Anrufe werden nicht aufgezeichnet. KI-Antworten dienen nur zu Informationszwecken (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistentin. Alle Rechte vorbehalten. Betrieben von Anna KI — EU AI Act Art. 50 Transparenzkonformität.',
+        'imp-legal-basis': 'Rechtsgrundlage: Ungarisches Gesetz CVIII von 2001 über elektronischen Handel sowie Verordnung (EU) 2024/1689 (EU-KI-Verordnung) Art. 50.',
+        'priv-h7': '7. Einhaltung der EU-KI-Verordnung (AI Act)',
+        'priv-p7': 'Das System arbeitet gemäß den Transparenzanforderungen von Artikel 50 der Verordnung (EU) 2024/1689 (KI-Gesetz). Der Assistent führt keine medizinischen Diagnosen durch, sondern übernimmt ausschließlich administrative Aufgaben. Benutzer werden vor und während des Anrufs über die KI-Interaktion informiert.',
+        'priv-updated': 'In Kraft ab: 2. August 2026.',
+                'modal-text': 'U communiceert met een systeem voor kunstmatige intelligentie (AI) conform Artikel 50 van de EU AI-verordening (Verordening (EU) 2024/1689). Het gesprek wordt afgehandeld door een AI-assistent — niet door een arts of receptionist. Anna voert uitsluitend administratieve taken uit (afspraken maken, informatie verstrekken) en geeft geen medisch advies of diagnose. Spraakgegevens worden in real-time verwerkt en niet opgenomen of opgeslagen. U kunt op elk moment vragen om door een menselijke medewerker teruggebeld te worden.',
+        'faq3-q': 'Voldoet het systeem aan de EU AI-verordening (AI Act)?',
+        'faq3-a': 'Ja, het systeem voldoet aan de transparantieverplichtingen onder Artikel 50 van Verordening (EU) 2024/1689 (EU AI Act). Bellers worden duidelijk geïnformeerd over de AI-interactie; het systeem voert alleen administratieve taken uit; menselijke terugbeloptie is altijd beschikbaar; en spraakgegevens worden niet opgeslagen.',
+        'faq6-q': 'Hoe wordt privacy (AVG/GDPR) en de AI-verordening (AI Act) geregeld?',
+        'faq6-a': 'Anna werkt conform de AVG en Artikel 50 van de EU AI Act (EU 2024/1689). Spraakverwerking via ElevenLabs vindt plaats in Zero Retention Mode — gesprekken worden niet opgenomen. De AI geeft geen medische diagnoses.',
+        'footer-gdpr': 'Gesprekken worden niet opgenomen. AI-antwoorden zijn louter ter informatie (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistente. Alle rechten voorbehouden. Aangedreven door Anna AI — EU AI Act Art. 50 transparantie.',
+        'imp-legal-basis': 'Wettelijke grondslag: Hongaarse Wet CVIII van 2001 inzake elektronische handel en Verordening (EU) 2024/1689 (EU AI Act) Artikel 50.',
+        'priv-h7': '7. Naleving van de EU AI-verordening (AI Act)',
+        'priv-p7': 'Het systeem werkt in overeenstemming met de transparantie-eisen van Artikel 50 van Verordening (EU) 2024/1689 (AI Act). De assistent stelt geen medische diagnoses en voert uitsluitend administratieve taken uit. Gebruikers worden vooraf en tijdens het gesprek geïnformeerd over de AI-interactie.',
+        'priv-updated': 'Geldig vanaf: 2 augustus 2026.',
+                'modal-text': 'Vous interagissez avec un système d\'intelligence artificielle (IA) conformément à l\'article 50 du règlement européen sur l\'IA (Règlement (UE) 2024/1689). L\'appel est géré par un assistant IA automatisé — et non par un médecin ou un réceptionniste. Anna effectue uniquement des tâches administratives (prise de rendez-vous, renseignements) et ne fournit aucun diagnostic médical. Les données vocales sont traitées en temps réel et ne sont ni enregistrées ni stockées. Vous pouvez à tout moment demander à être rappelé par un agent humain.',
+        'faq3-q': 'Le système est-il conforme au règlement européen sur l\'IA (AI Act) ?',
+        'faq3-a': 'Oui, le système fonctionne en pleine conformité avec les obligations de transparence de l\'article 50 du Règlement (UE) 2024/1689 (AI Act). Les appelants sont explicitement informés de l\'interaction avec l\'IA ; le système réalise uniquement des tâches administratives ; l\'escalade vers un humain est disponible à tout moment ; et les données vocales ne sont pas conservées.',
+        'faq6-q': 'Comment la protection des données (RGPD) et le règlement IA (AI Act) sont-ils appliqués ?',
+        'faq6-a': 'Anna fonctionne conformément au RGPD et à l\'article 50 du règlement européen sur l\'IA (UE 2024/1689). Le traitement vocal via ElevenLabs s\'effectue en Mode Zero Retention — les appels ne sont pas enregistrés. L\'IA ne fournit aucun diagnostic médical.',
+        'footer-gdpr': 'Les appels ne sont pas enregistrés. Les réponses de l\'IA sont à titre informatif (UE 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistante. Tous droits réservés. Propulsé par Anna IA — Conformité transparence EU AI Act Art. 50.',
+        'imp-legal-basis': 'Base juridique : Loi hongroise CVIII de 2001 sur le commerce électronique et Règlement (UE) 2024/1689 (AI Act) Article 50.',
+        'priv-h7': '7. Conformité au Règlement européen sur l\'IA (AI Act)',
+        'priv-p7': 'Le système fonctionne conformément aux exigences de transparence de l\'article 50 du Règlement (UE) 2024/1689 (AI Act). L\'assistant ne fournit pas de diagnostic médical et réalise exclusivement des tâches administratives. Les utilisateurs sont clairement informés de l\'interaction avec l\'IA.',
+        'priv-updated': 'En vigueur à compter du : 2 août 2026.',
+                'modal-text': 'Stai interagendo con un sistema di intelligenza artificiale (IA) ai sensi dell\'Articolo 50 del Regolamento UE sull\'IA (Regolamento (UE) 2024/1689). La chiamata è gestita da un assistente IA automatizzato — non da un medico o receptionist. Anna svolge solo mansioni amministrative (prenotazione appuntamenti, informazioni) e non fornisce diagnosi mediche. I dati vocali sono elaborati in tempo reale e non vengono registrati né archiviati. Puoi richiedere in qualsiasi momento di essere ricontattato da un operatore umano.',
+        'faq3-q': 'È conforme al Regolamento UE sull\'IA (AI Act)?',
+        'faq3-a': 'Sì, il sistema opera in piena conformità con gli obblighi di trasparenza previsti dall\'Articolo 50 del Regolamento (UE) 2024/1689 (AI Act). Gli utenti sono chiaramente informati dell\'interazione con l\'IA; il sistema svolge solo compiti amministrativi; la richiesta di contatto umano è sempre disponibile; e i dati vocali non vengono conservati.',
+        'faq6-q': 'Come vengono gestiti la protezione dei dati (GDPR) e l\'AI Act?',
+        'faq6-a': 'Anna opera in conformità con il GDPR e l\'Articolo 50 dell\'EU AI Act (UE 2024/1689). L\'elaborazione vocale tramite ElevenLabs avviene in Zero Retention Mode — le chiamate non vengono registrate. L\'IA non fornisce diagnosi mediche.',
+        'footer-gdpr': 'Le chiamate non vengono registrate. Le risposte dell\'IA sono a scopo informativo (UE 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistente. Tutti i diritti riservati. Powered by Anna IA — Conformità trasparenza EU AI Act Art. 50.',
+        'imp-legal-basis': 'Base giuridica: Legge ungherese CVIII del 2001 sul commercio elettronico e Regolamento (UE) 2024/1689 (EU AI Act) Articolo 50.',
+        'priv-h7': '7. Conformità al Regolamento UE sull\'IA (AI Act)',
+        'priv-p7': 'Il sistema opera in conformità con i requisiti di trasparenza dell\'Articolo 50 del Regolamento (UE) 2024/1689 (AI Act). L\'assistente non fornisce diagnosi mediche ed esegue esclusivamente compiti amministrativi di prenotazione e informazione.',
+        'priv-updated': 'In vigore dal: 2 agosto 2026.',
+                'modal-text': 'Du interagerer med et kunstig intelligens-system (AI) i henhold til artikel 50 i EU\'s AI-forordning (forordning (EU) 2024/1689). Opkaldet håndteres af en AI-assistent — ikke en læge eller receptionist. Anna udfører kun administrative opgaver (tidsbestilling, information) og yder ikke medicinsk rådgivning eller diagnose. Stemmedata behandles i realtid og hverken optages eller gemmes. Du kan til enhver tid anmode om at blive ringet op af en menneskelig medarbejder.',
+        'faq3-q': 'Overholder systemet EU\'s AI-forordning (AI Act)?',
+        'faq3-a': 'Ja, systemet overholder gennemsigtighedskravene i artikel 50 i forordning (EU) 2024/1689 (EU AI Act). Opkaldere informeres tydeligt om AI-interaktionen; systemet udfører kun administrative opgaver; menneskelig opfølgning kan altid anmodes; og stemmedata gemmes ikke.',
+        'faq6-q': 'Hvordan håndteres databeskyttelse (GDPR) og AI-forordningen (AI Act)?',
+        'faq6-a': 'Anna fungerer i overensstemmelse med GDPR og artikel 50 i EU AI Act (EU 2024/1689). Stemmebehandling via ElevenLabs sker i Zero Retention Mode — opkald optages ikke. AI\'en stiller ikke medicinske diagnoser.',
+        'footer-gdpr': 'Opkald optages ikke. AI-svar er kun til orientering (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistent. Alle rettigheder forbeholdes. Drevet af Anna AI — EU AI Act Art. 50 gennemsigtighed.',
+        'imp-legal-basis': 'Retsgrundlag: Ungarsk lov CVIII af 2001 om elektronisk handel og forordning (EU) 2024/1689 (EU AI Act) artikel 50.',
+        'priv-h7': '7. Overholdelse af EU\'s AI-forordning (AI Act)',
+        'priv-p7': 'Systemet fungerer i overensstemmelse med gennemsigtighedskravene i artikel 50 i forordning (EU) 2024/1689 (AI Act). Assistenten stiller ikke medicinske diagnoser og udfører udelukkende administrative opgaver.',
+        'priv-updated': 'Gældende fra: 2. august 2026.',
+                'modal-text': 'Du samhandler med et kunstig intelligens-system (AI) i henhold til artikkel 50 i EU AI-forordningen (forordning (EU) 2024/1689). Samtalen håndteres av en AI-assistent — ikke en lege eller resepsjonist. Anna utfører kun administrative oppgaver (bestilling, informasjon) og gir ikke medisinsk diagnose eller råd. Stemmedata behandles i sanntid og blir verken tatt opp eller lagret. Du kan når som helst be om å bli oppringt av en menneskelig medarbeider.',
+        'faq3-q': 'Samsvarer systemet med EU AI-forordningen (AI Act)?',
+        'faq3-a': 'Ja, systemet samsvarer med åpenhetskravene i artikkel 50 i forordning (EU) 2024/1689 (EU AI Act). Innringere informeres tydelig om AI-interaksjonen; systemet utfører kun administrative oppgaver; menneskelig kontakt kan alltid bes om; og stemmedata lagres ikke.',
+        'faq6-q': 'Hvordan håndteres personvern (GDPR) og AI-forordningen (AI Act)?',
+        'faq6-a': 'Anna fungerer i samsvar med GDPR og artikkel 50 i EU AI Act (EU 2024/1689). Stemmebehandling via ElevenLabs skjer i Zero Retention Mode — samtaler tas ikke opp. AI-en stiller ikke medisinske diagnoser.',
+        'footer-gdpr': 'Samtaler tas ikke opp. AI-svar er kun til orientering (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistent. Alle rettigheter forbeholdt. Drevet av Anna AI — EU AI Act Art. 50 åpenhet.',
+        'imp-legal-basis': 'Rettslig grunnlag: Ungarsk lov CVIII av 2001 om elektronisk handel og forordning (EU) 2024/1689 (EU AI Act) artikkel 50.',
+        'priv-h7': '7. Overholdelse av EU AI-forordningen (AI Act)',
+        'priv-p7': 'Systemet fungerer i samsvar med åpenhetskravene i artikkel 50 i forordning (EU) 2024/1689 (AI Act). Assistenten stiller ikke medisinske diagnoser og utfører utelukkende administrative oppgaver.',
+        'priv-updated': 'Gjeldende fra: 2. august 2026.',
+                'modal-text': 'Du interagerar med ett AI-system för artificiell intelligens i enlighet med artikel 50 i EU:s AI-förordning (förordning (EU) 2024/1689). Samtalet hanteras av en AI-assistent — inte en läkare eller receptionist. Anna utför endast administrativa uppgifter (tidsbokning, information) och ger inga medicinska diagnoser eller råd. Röstdata behandlas i realtid och spelas verken in eller lagras. Du kan när som helst begära att bli uppringd av en mänsklig medarbetare.',
+        'faq3-q': 'Uppfyller systemet kraven i EU:s AI-förordning (AI Act)?',
+        'faq3-a': 'Ja, systemet uppfyller transparenskraven i artikel 50 i förordning (EU) 2024/1689 (EU AI Act). Inringare informeras tydligt om AI-interaktionen; systemet utför endast administrativa uppgifter; möjlighet till mänsklig återuppringning finns alltid; och röstdata lagras inte.',
+        'faq6-q': 'Hur hanteras dataskydd (GDPR) och AI-förordningen (AI Act)?',
+        'faq6-a': 'Anna fungerar i enlighet med GDPR och artikel 50 i EU AI Act (EU 2024/1689). Röstbehandling via ElevenLabs sker i Zero Retention Mode — samtal spelas inte in. AI:n ställer inga medicinska diagnoser.',
+        'footer-gdpr': 'Samtal spelas inte in. AI-svar är endast i informationssyfte (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Assistent. Alla rättigheter förbehållna. Drivs av Anna AI — EU AI Act Art. 50 transparens.',
+        'imp-legal-basis': 'Rättslig grund: Ungersk lag CVIII från 2001 om elektronisk handel och förordning (EU) 2024/1689 (EU AI Act) artikel 50.',
+        'priv-h7': '7. Efterlevnad av EU:s AI-förordning (AI Act)',
+        'priv-p7': 'Systemet fungerar i enlighet med transparenskraven i artikel 50 i förordning (EU) 2024/1689 (AI Act). Assistenten ställer inga medicinska diagnoser och utför uteslutande administrativa uppgifter.',
+        'priv-updated': 'Gäller från: 2 augusti 2026.',
+                'modal-text': 'Olet vuorovaikutuksessa tekoälyjärjestelmän (AI) kanssa EU:n tekoälyasetuksen (asetus (EU) 2024/1689) 50 artiklan mukaisesti. Puhelun hoitaa automaattinen AI-avustaja — ei lääkäri tai vastaanottovirkailija. Anna hoitaa vain hallinnollisia tehtäviä (ajanvaraus, tiedustelut) eikä anna lääketieteellisiä diagnooseja tai neuvoja. Äänitiedot käsitellään reaaliajassa, eikä niitä tallenneta. Voit milloin tahansa pyytää ihmistyöntekijän takaisinsoittoa.',
+        'faq3-q': 'Noudattaako järjestelmä EU:n tekoälyasetusta (AI Act)?',
+        'faq3-a': 'Kyllä, järjestelmä noudattaa asetuksen (EU) 2024/1689 (EU AI Act) 50 artiklan avoimuusvelvoitteita. Soittajille ilmoitetaan selkeästi AI-vuorovaikutuksesta; järjestelmä hoitaa vain hallinnollisia tehtäviä; takaisinsoitto ihmistyöntekijältä on aina pyydettävissä; eikä äänitietoja tallenneta.',
+        'faq6-q': 'Miten tietosuojaa (GDPR) ja tekoälyasetusta (AI Act) käsitellään?',
+        'faq6-a': 'Anna toimii GDPR:n ja EU:n tekoälyasetuksen (EU 2024/1689) 50 artiklan mukaisesti. Äänenkäsittely tapahtuu ElevenLabs Zero Retention Mode -tilassa — puheluita ei tallenneta. Tekoäly ei tee lääketieteellisiä diagnooseja.',
+        'footer-gdpr': 'Puheluita ei tallenneta. AI-vastaukset ovat vain tiedoksi (EU 2024/1689 AI Act Art. 50).',
+        'footer-copy': '© 2026 DentAi Avustaja. Kaikki oikeudet pidätetään. Voimanlähteenä Anna AI — EU AI Act Art. 50 avoimuus.',
+        'imp-legal-basis': 'Oikeudellinen perusta: Unkarin laki CVIII/2001 sähköisestä kaupankäynnistä ja asetus (EU) 2024/1689 (EU AI Act) 50 artikla.',
+        'priv-h7': '7. EU:n tekoälyasetuksen (AI Act) noudattaminen',
+        'priv-p7': 'Järjestelmä toimii asetuksen (EU) 2024/1689 (AI Act) 50 artiklan avoimuusvaatimusten mukaisesti. Avustaja ei tee lääketieteellisiä diagnooseja ja hoitaa yksinomaan hallinnollisia ajanvaraus- ja tiedotustehtäviä.',
+        'priv-updated': 'Voimassa: 2. elokuuta 2026.',
+                'modal-text': 'Komunikujete so systémom umelej inteligencie (AI) v súlade s článkom 50 nariadenia EÚ o AI (Nariadenie (EÚ) 2024/1689). Hovor spravuje automatizovaný AI asistent — nie lekár ani recepčná. Anna vykonáva výhradne administratívne úkony (rezervácia termínov, informácie) a neposkytuje lekársku diagnózu ani rady. Hlasové údaje sa spracovávajú v reálnom čase a nenahrávajú sa ani neukladajú. Kedykoľvek môžete požiadať o spätné zavolanie ľudským pracovníkom.',
+        'faq3-q': 'Vyhovuje systém nariadeniu EÚ o AI (AI Act)?',
+        'faq3-a': 'Áno, systém funguje v plnom súlade s požiadavkami na transparentnosť podľa článku 50 nariadenia (EÚ) 2024/1689 (EU AI Act). Volajúci sú jasne informovaní o AI interakcii; systém vykonáva len administratívne úlohy; kedykoľvek je možné požiadať o spätný kontakt človekom; a hlasové údaje sa neukladajú.',
+        'faq6-q': 'Ako sa zabezpečuje ochrana údajov (GDPR) a nariadenie o AI (AI Act)?',
+        'faq6-a': 'Anna funguje v súlade s GDPR a článkom 50 EU AI Act (EÚ 2024/1689). Spracovanie hlasu cez ElevenLabs prebieha v Zero Retention Mode — hovory sa nenahrávajú. AI neposkytuje lekárske diagnózy.',
+        'footer-gdpr': 'Hovory sa nenahrávajú. Odpovede AI sú len informatívne (EÚ 2024/1689 AI Act Čl. 50).',
+        'footer-copy': '© 2026 DentAi Asistent. Všetky práva vyhradené. Prevádzkované AI Annou — EU AI Act Čl. 50 transparentnosť.',
+        'imp-legal-basis': 'Právny základ: Maďarský zákon CVIII z roku 2001 o elektronickom obchode a Nariadenie (EÚ) 2024/1689 (EU AI Act) článok 50.',
+        'priv-h7': '7. Súlad s nariadením EÚ o AI (AI Act)',
+        'priv-p7': 'Systém funguje v súlade s požiadavkami na transparentnosť podľa článku 50 nariadenia (EÚ) 2024/1689 (AI Act). Asistent neposkytuje lekárske diagnózy a vykonáva výhradne administratívne úlohy.',
+        'priv-updated': 'Platné od: 2. augusta 2026.',
+        modal-cancel">Mégse</button>
         <button id="consent-accept-btn" class="flex-1 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-300 pointer-events-none transition-all" data-i18n="modal-accept">Elfogadom</button>
       </div>
     </div>
@@ -3551,8 +3712,7 @@
 // --- i18n Language Switching ---
     const translations = {
       hu: {
-        'sale-banner': '🔴 ELADÓ — Ez a rendszer megvásárolható!',
-        'sale-banner-sub': 'Érdeklődés: ',
+
         'page-title': 'Anna — DentAi Senior Asszisztens | 0–24 híváskezelés & foglalás',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI asszisztens',
@@ -3728,8 +3888,7 @@
         'faq1-a': 'Igen! Anna a meglévő telefonszámára érkező hívásokat veszi fel — nincs szükség új számra, szolgáltatóváltásra vagy extra eszközre. A rendszer zökkenőmentesen integrálható a jelenlegi telefonvonalával, így a páciensek ugyanazon a számon hívhatják Önt, amit eddig is ismertek. A beállítás mindössze néhány percet vesz igénybe.',
         'faq2-q': 'Mi van, ha az AI nem tud válaszolni?',
         'faq2-a': 'Ha Anna olyan kérdést kap, amelyre nincs felkészítve (pl. egyedi orvosi kérdés, panaszkezelés, komplex árajánlat), automatikusan értesíti a rendelő recepcióját a visszahívásról — feljegyzi a páciens adatait és a kérés részleteit, hogy a recepciós a lehető leghamarabb visszakeresi a pácienst. Ha a rendelő zárva van, Anna jegyzetet készít a kérésről, és a következő munkanapon a recepciós felkeresi a pácienst. A páciens sosem marad válasz nélkül.',
-        'faq3-q': 'Hogyan érhető el a rendszer?',
-        'faq3-a': 'A DentAI rendszer eladó. A rendszert Petor Péter fejlesztette. Ha érdekli a megvásárlása, írjon az info@dentai.me címre.',
+
         'faq4-q': 'Milyen nyelveken beszél?',
         'faq4-a': 'Jelenleg tizenegy nyelven kommunikál folyékonyan: magyarul, angolul, németül, hollandul, franciául, olaszul, dánul, norvégul, svédül, finnül és szlovákul. A nyelvválasztás automatikus — Anna felismeri a páciens nyelvét, és azon válaszol. Ez különösen értékes a turisztikailag frekventált régiókban, ahol külföldi páciensek is gyakran hívják a rendelőt.',
         'faq5-q': 'Hogyan kezeli a sürgős eseteket?',
@@ -3769,7 +3928,6 @@
         'footer-desc': 'Anna — a DentAi Senior Asszisztense. 0–24 híváskezelés, online foglalás és automatikus visszaigazolás, hogy a praxisa mindig nyugodtan működjön.',
         'footer-langs': 'Nyelvek',
         'footer-info-title': 'Információk',
-        'footer-portfolio': 'Rendszer eladó — Fejlesztette: Petor Péter',
         'footer-impressum': 'Impresszum',
         'footer-privacy': 'Adatkezelési Tájékoztató',
         'footer-gdpr': 'A hívások nem kerülnek rögzítésre. Az AI válaszai tájékoztató jellegűek.',
@@ -3911,8 +4069,6 @@
         'roi-value-currency': 'Ft',
         },
       en: {
-        'sale-banner': '🔴 FOR SALE — This system is available for purchase!',
-        'sale-banner-sub': 'Inquiries: ',
         'page-title': 'Anna — DentAi Senior Assistant | 24/7 Call Handling & Booking',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Assistant',
@@ -4089,7 +4245,6 @@
         'faq2-q': 'What happens if the AI can\'t answer?',
         'faq2-a': 'If Anna receives a question she isn\'t prepared for (e.g. specific medical questions, complaint handling, complex quotes), she automatically notifies the practice reception for a callback — she records the patient\'s details and the request so the receptionist can get back to the patient as soon as possible. If the practice is closed, Anna takes a note of the request, and the receptionist will call the patient back on the next working day. The patient is never left without a response.',
         'faq3-q': 'How is the system available?',
-        'faq3-a': 'The DentAI system is for sale. The system was developed by Peter Petor. If you are interested in purchasing it, contact info@dentai.me.',
         'faq4-q': 'What languages does she speak?',
         'faq4-a': 'She currently communicates fluently in eleven languages: Hungarian, English, German, Dutch, French, Italian, Danish, Norwegian, Swedish, Finnish and Slovak. Language selection is automatic — Anna recognizes the patient\'s language and responds in it. This is especially valuable in tourist-frequented regions where international patients often call the practice.',
         'faq5-q': 'How does she handle emergencies?',
@@ -4129,7 +4284,6 @@
         'footer-desc': 'Anna — the DentAi Senior Assistant. 24/7 call handling, online booking, and automatic confirmation, so your practice always runs smoothly.',
         'footer-langs': 'Languages',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'System for sale — Developed by: Peter Petor',
         'footer-impressum': 'Imprint',
         'footer-privacy': 'Privacy Policy',
         'footer-gdpr': 'Calls are not recorded. AI responses are for informational purposes only.',
@@ -4271,8 +4425,6 @@
         'roi-value-currency': '$',
         },
       de: {
-        'sale-banner': '🔴 ZU VERKAUFEN — Dieses System ist käuflich!',
-        'sale-banner-sub': 'Anfragen: ',
         'page-title': 'Anna — DentAi Senior Assistentin | 24/7 Anrufbearbeitung & Terminbuchung',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior KI-Assistentin',
@@ -4489,7 +4641,6 @@
         'footer-desc': 'Anna — die DentAi Senior Assistentin. 24/7 Anrufbearbeitung, Online-Buchung und automatische Bestätigung, damit Ihre Praxis immer reibungslos läuft.',
         'footer-langs': 'Sprachen',
         'footer-info-title': 'Informationen',
-        'footer-portfolio': 'System zu verkaufen — Entwickelt von: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Datenschutzerklärung',
         'footer-gdpr': 'Anrufe werden nicht aufgezeichnet. KI-Antworten dienen nur zu Informationszwecken.',
@@ -4631,8 +4782,6 @@
         'roi-value-currency': '€',
         },
 nl: {
-        'sale-banner': '🔴 TE KOOP — Dit systeem is beschikbaar voor aankoop!',
-        'sale-banner-sub': 'Informatie: ',
         'page-title': 'Anna — DentAi Senior Assistente | 24/7 Oproepafhandeling & Afspraakboeking',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI-assistente',
@@ -4809,7 +4958,6 @@ nl: {
         'faq2-q': 'Wat als de AI niet kan antwoorden?',
         'faq2-a': 'Als Anna een vraag krijgt waarop ze niet voorbereid is (bijv. specifieke medische vragen, klachtenbeheer, complexe offertes), stelt ze automatisch de receptie van de praktijk op de hoogte voor een terugbelverzoek — ze noteert de patiëntgegevens en het verzoek, zodat de receptie de patiënt zo snel mogelijk kan terugbellen. Is de praktijk gesloten, dan noteert Anna het verzoek en belt de receptie de patiënt terug op de volgende werkdag. De patiënt blijft nooit zonder antwoord.',
         'faq3-q': 'Hoe is het systeem beschikbaar?',
-        'faq3-a': 'Het DentAI-systeem is te koop. Het systeem is ontwikkeld door Peter Petor. Als u geïnteresseerd bent in de aankoop, neem contact op via info@dentai.me.',
         'faq4-q': 'Welke talen spreekt ze?',
         'faq4-a': 'Ze communiceert momenteel vloeiend in elf talen: Nederlands, Hongaars, Engels, Duits, Frans, Italiaans, Deens, Noors, Zweeds, Fins en Slowaaks. De taalkeuze gebeurt automatisch — Anna herkent de taal van de patiënt en antwoordt in die taal. Dit is vooral waardevol in toeristische regio\'s waar internationale patiënten vaak de praktijk bellen.',
         'faq5-q': 'Hoe gaat ze om met noodgevallen?',
@@ -4849,7 +4997,6 @@ nl: {
         'footer-desc': 'Anna — de DentAi Senior Assistente. 24/7 oproepafhandeling, online boeking en automatische bevestiging, zodat uw praktijk altijd soepel draait.',
         'footer-langs': 'Talen',
         'footer-info-title': 'Informatie',
-        'footer-portfolio': 'Systeem te koop — Ontwikkeld door: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privacyverklaring',
         'footer-gdpr': 'Gegevens ingevoerd in de live demo worden niet opgeslagen. AI-antwoorden zijn uitsluitend informatief en vormen geen medisch advies.',
@@ -4992,8 +5139,6 @@ nl: {
         },
 
       fr: {
-        'sale-banner': '🔴 À VENDRE — Ce système est disponible à l\'achat!',
-        'sale-banner-sub': 'Renseignements : ',
         'page-title': 'Anna — DentAi Assistante Senior | Gestion d\'appels 24/7 & Prise de rendez-vous',
         'brand-suffix': '-AI',
         'senior-badge': 'Assistante IA Senior',
@@ -5210,7 +5355,6 @@ nl: {
         'footer-desc': 'Anna — l\'Assistante Senior DentAi. Gestion d\'appels 24/7, réservation en ligne et confirmation automatique, pour que votre cabinet fonctionne toujours sereinement.',
         'footer-langs': 'Langues',
         'footer-info-title': 'Informations',
-        'footer-portfolio': 'Système à vendre — Développé par : Peter Petor',
         'footer-impressum': 'Mentions légales',
         'footer-privacy': 'Politique de confidentialité',
         'footer-gdpr': 'Les données saisies dans la démo ne sont pas stockées. Les réponses de l\'IA sont à titre informatif et ne constituent pas un avis médical.',
@@ -5352,8 +5496,6 @@ nl: {
         'roi-value-currency': '€',
         },
       it: {
-        'sale-banner': '🔴 IN VENDITA — Questo sistema è disponibile per l\'acquisto!',
-        'sale-banner-sub': 'Informazioni: ',
         'page-title': 'Anna — DentAi Assistente Senior | Gestione chiamate 24/7 & Prenotazione',
         'brand-suffix': '-AI',
         'senior-badge': 'Assistente IA Senior',
@@ -5530,7 +5672,6 @@ nl: {
         'faq2-q': 'Cosa succede se l\'IA non sa rispondere?',
         'faq2-a': 'Se Anna riceve una domanda a cui non è preparata (ad es. domande mediche specifiche, gestione reclami, preventivi complessi), notifica automaticamente la reception dello studio per una richiamata — registra i dati del paziente e i dettagli della richiesta affinché la receptionist possa richiamare il paziente il prima possibile. Se lo studio è chiuso, Anna prende nota della richiesta, e la receptionist richiama il paziente il giorno lavorativo successivo. Il paziente non resta mai senza risposta.',
         'faq3-q': 'Come è disponibile il sistema?',
-        'faq3-a': 'Il sistema DentAI è in vendita. Il sistema è stato sviluppato da Peter Petor. Se siete interessati all\'acquisto, contattate info@dentai.me.',
         'faq4-q': 'In quali lingue parla?',
         'faq4-a': 'Attualmente comunica scorrevolmente in undici lingue: ungherese, inglese, tedesco, olandese, francese, italiano, danese, norvegese, svedese, finlandese e slovacco. La selezione della lingua è automatica — Anna riconosce la lingua del paziente e risponde in quella lingua. Questo è particolarmente prezioso nelle regioni turistiche dove i pazienti internazionali chiamano spesso lo studio.',
         'faq5-q': 'Come gestisce le emergenze?',
@@ -5570,7 +5711,6 @@ nl: {
         'footer-desc': 'Anna — l\'Assistente Senior DentAi. Gestione chiamate 24/7, prenotazione online e conferma automatica, affinché il Suo studio funzioni sempre senza intoppi.',
         'footer-langs': 'Lingue',
         'footer-info-title': 'Informazioni',
-        'footer-portfolio': 'Sistema in vendita — Sviluppato da: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Informativa sulla privacy',
         'footer-gdpr': 'I dati inseriti nella demo non vengono archiviati. Le risposte dell\'IA sono solo a scopo informativo e non costituiscono consulenza medica.',
@@ -5712,8 +5852,6 @@ nl: {
         'roi-value-currency': '€',
         },
 da: {
-        'sale-banner': '🔴 TIL SALG — Dette system er tilgængeligt for køb!',
-        'sale-banner-sub': 'Forespørgsler: ',
         'page-title': 'Anna — Seniorassistent hos DentAi | Døgnåben samtalehåndtering & bestilling',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Assistent',
@@ -5890,7 +6028,6 @@ da: {
         'faq2-q': 'Hvad hvis AI-en ikke kan svare?',
         'faq2-a': 'Hvis Anna får et spørgsmål hun ikke er forberedt på (f.eks. specifikke medicinske spørgsmål, klagebehandling, komplekse pristilbud), giver hun automatisk praksisens reception besked om et tilbagekald — hun noterer patientens oplysninger og forespørgslens detaljer, så receptionen kan ringe patienten tilbage hurtigst muligt. Hvis praksissen er lukket, noterer Anna forespørgslen, og receptionen ringer patienten tilbage næste arbejdsdag. Patienten står aldrig uden svar.',
         'faq3-q': 'Hvordan får man adgang til systemet?',
-        'faq3-a': 'DentAI-systemet er til salg. Systemet er udviklet af Peter Petor. Hvis du er interesseret i at købe det, kontakt info@dentai.me.',
         'faq4-q': 'Hvilke sprog taler hun?',
         'faq4-a': 'Foreløbigt kommunikerer hun flydende på elleve sprog: dansk, norsk, svensk, finsk, engelsk, tysk, nederlandsk, fransk, italiensk, slovakisk og ungarsk. Sprogvalget sker automatisk — Anna genkender patientens sprog og svarer på det. Dette er særligt værdifuldt i turistprægede områder hvor udenlandske patienter ofte ringer til praksissen.',
         'faq5-a': 'I akutte situationer — for eksempel kraftig tandpine, traumer eller blødning — giver Anna øjeblikkeligt prioritet til samtalen. Hun genkender akut-nøgleord og forsøger at finde en tid samme dag så hurtigt som muligt. Ved virkelige nødsituationer (f.eks. kæbebrud, ukontrollerbar blødning) henviser hun patienten til den nærmeste skadestue. Akutte samtaler bliver aldrig fejlagtigt håndteret som rutinebestillinger.',
@@ -5929,7 +6066,6 @@ da: {
         'footer-desc': 'Anna — Seniorassistent hos DentAi. Døgnåben samtalehåndtering, netbestilling og automatisk bekræftelse, således at din praksis altid fungerer roligt.',
         'footer-langs': 'Sprog',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'System til salg — Udviklet af: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Privatlivspolitik',
         'footer-gdpr': 'Data indtastet i live-demoen gemmes ikke. AI-svar er kun til informationsformål og udgør ikke medicinsk rådgivning.',
@@ -6072,8 +6208,6 @@ da: {
         },
 
       no: {
-        'sale-banner': '🔴 TIL SALGS — Dette systemet er tilgjengelig for kjøp!',
-        'sale-banner-sub': 'Henvendelser: ',
         'page-title': 'Anna — DentAi Senior Assistent | Døgnåpen samtalehåndtering & bestilling',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Assistent',
@@ -6250,7 +6384,6 @@ da: {
         'faq2-q': 'Hva hvis AI-en ikke kan svare?',
         'faq2-a': 'Hvis Anna får et spørsmål hun ikke er forberedt på (f.eks. spesifikke medisinske spørsmål, klagehåndtering, komplekse pristilbud), gir hun automatisk praksisens resepsjon beskjed om et tilbakeringing — hun noterer pasientens opplysninger og forespørselens detaljer, slik at resepsjonen kan ringe pasienten tilbake så raskt som mulig. Hvis praksisen er stengt, noterer Anna forespørselen, og resepsjonen ringer pasienten tilbake neste arbeidsdag. Pasienten står aldri uten svar.',
         'faq3-q': 'Hvordan får man tilgang til systemet?',
-        'faq3-a': 'DentAI-systemet er til salgs. Systemet er utviklet av Peter Petor. Hvis du er interessert i å kjøpe det, kontakt info@dentai.me.',
         'faq4-q': 'Hvilke språk snakker hun?',
         'faq4-a': 'Foreløpig kommuniserer hun flytende på elleve språk: norsk, dansk, svensk, finsk, engelsk, tysk, nederlandsk, fransk, italiensk, slovakisk og ungarsk. Språkvalget skjer automatisk — Anna gjenkjenner pasientens språk og svarer på det. Dette er spesielt verdifullt i turistområder der utenlandske pasienter ofte ringer praksisen.',
         'faq5-a': 'I akutte situasjoner — for eksempel kraftig tannpine, tannskader eller blødning — gir Anna umiddelbart prioritet til samtalen. Hun gjenkjenner akutt-nøkkelord og forsøker å finne en time samme dag så raskt som mulig. Ved virkelige nødsituasjoner (f.eks. kjevebrudd, ukontrollerbar blødning) henviser hun pasienten til nærmeste akuttmottak. Akutte samtaler blir aldri feilaktig håndtert som rutinebestillinger.',
@@ -6289,7 +6422,6 @@ da: {
         'footer-desc': 'Anna — DentAi Senior Assistent. Døgnåpen samtalehåndtering, nettbestilling og automatisk bekreftelse, slik at praksisen din alltid fungerer rolig.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Informasjon',
-        'footer-portfolio': 'System til salgs — Utviklet av: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Personvernerklæring',
         'footer-gdpr': 'Data som legges inn i live-demoen lagres ikke. AI-svar er kun til informasjonsformål og utgjør ikke medisinsk rådgivning.',
@@ -6431,8 +6563,6 @@ da: {
         'roi-value-currency': 'kr',
         },
 sv: {
-        'sale-banner': '🔴 TILL SALU — Detta system är tillgängligt för köp!',
-        'sale-banner-sub': 'Förfrågningar: ',
         'page-title': 'Anna — Seniorassistent på DentAi | Dygnet runt samtalshantering & bokning',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Assistent',
@@ -6609,7 +6739,6 @@ sv: {
         'faq2-q': 'Vad händer om AI:n inte kan svara?',
         'faq2-a': 'Om Anna får en fråga hon inte är förberedd på (t.ex. specifika medicinska frågor, klagomålshantering, komplexa prisförslag), meddelar hon automatiskt praktikens reception om ett återuppringning — hon noterar patientens uppgifter och förfrågans detaljer, så att receptionen kan ringa tillbaka patienten så snart som möjligt. Om praktiken är stängd noterar Anna förfrågan, och receptionen ringer patienten tillbaka nästa arbetsdag. Patienten lämnas aldrig utan svar.',
         'faq3-q': 'Hur får man tillgång till systemet?',
-        'faq3-a': 'DentAI-systemet är till salu. Systemet har utvecklats av Peter Petor. Om du är intresserad av att köpa det, kontakta info@dentai.me.',
         'faq4-q': 'Vilka språk talar hon?',
         'faq4-a': 'För närvarande kommunicerar hon flytande på elva språk: svenska, danska, norska, finska, engelska, tyska, nederländska, franska, italienska, slovakiska och ungerska. Språkvalet sker automatiskt — Anna känner igen patientens språk och svarar på det. Detta är särskilt värdefullt i turistområden där utländska patienter ofta ringer praktiken.',
         'faq5-a': 'I akuta situationer — till exempel kraftig tandvärk, tandskador eller blödning — ger Anna omedelbart prioritet till samtalet. Hon känner igen akut-nyckelord och försöker hitta en tid samma dag så snabbt som möjligt. Vid verkliga nödsituationer (t.ex. käkfraktur, okontrollerbar blödning) hänvisar hon patienten till närmaste akutmottagning. Akuta samtal blir aldrig felaktigt hanterade som rutinbokningar.',
@@ -6648,7 +6777,6 @@ sv: {
         'footer-desc': 'Anna — Seniorassistent på DentAi. Dygnet runt samtalshantering, nätbokning och automatisk bekräftelse, så att din praktik alltid fungerar lugnt.',
         'footer-langs': 'Språk',
         'footer-info-title': 'Information',
-        'footer-portfolio': 'System till salu — Utvecklad av: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Integritetspolicy',
         'footer-gdpr': 'Data som anges i live-demon lagras inte. AI-svar är endast i informationssyfte och utgör inte medicinsk rådgivning.',
@@ -6790,8 +6918,6 @@ sv: {
         'roi-value-currency': 'kr',
         },
 fi: {
-        'sale-banner': '🔴 MYYTÄVÄNÄ — Tämä järjestelmä on ostettavissa!',
-        'sale-banner-sub': 'Tiedustelut: ',
         'page-title': 'Anna — DentAi Senior Avustaja | Ympärivuorokautinen puhelinvastaus & ajanvaraus',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Avustaja',
@@ -6968,7 +7094,6 @@ fi: {
         'faq2-q': 'Mitä jos tekoäly ei osaa vastata?',
         'faq2-a': 'Jos Anna saa kysymyksen johon hän ei ole varautunut (esim. yksityiskohtaiset lääketieteelliset kysymykset, valitusten käsittely, monimutkaiset hintatarjoukset), hän ilmoittaa automaattisesti vastaanoton takaisinsoittoa varten — hän kirjaa potilaan tiedot ja pyynnön yksityiskohdat, jotta vastaanotto voi soittaa potilaalle takaisin mahdollisimman pian. Jos vastaanotto on kiinni, Anna kirjaa pyynnön, ja vastaanotto soittaa potilaalle takaisin seuraavana työpäivänä. Potilas ei jää koskaan ilman vastausta.',
         'faq3-q': 'Miten pääsee käsiksi järjestelmään?',
-        'faq3-a': 'DentAI-järjestelmä on myynnissä. Järjestelmän on kehittänyt Peter Petor. Jos olet kiinnostunut ostamaan sen, ota yhteyttä info@dentai.me.',
         'faq4-q': 'Mitä kieliä hän puhuu?',
         'faq4-a': 'Toistaiseksi hän kommunikoi sujuvasti yhdellätoista kielellä: suomi, ruotsi, norja, tanska, englanti, saksa, hollanti, ranska, italia, slovakia ja unkari. Kielen valinta tapahtuu automaattisesti — Anna tunnistaa potilaan kielen ja vastaa sillä. Tämä on erityisen arvokasta turistialueilla joissa ulkomaiset potilaat soittavat usein vastaanottoon.',
         'faq5-a': 'Akuuteissa tilanteissa — esimerkiksi kova hammaskipu, hammasvammat tai verenvuoto — Anna antaa välittömästi prioriteetin puhelulle. Hän tunnistaa akuutti-avainsanat ja yrittää löytää ajan samana päivänä mahdollisimman nopeasti. Todellisissa hätätilanteissa (esim. leukanmurtuma, hallitsematon verenvuoto) hän ohjaa potilaan lähimpään päivystykseen. Akuutteja puheluita ei koskaan käsitellä virheellisesti rutiinivarauksina.',
@@ -7007,7 +7132,6 @@ fi: {
         'footer-desc': 'Anna — DentAi Senior Avustaja. Ympärivuorokautinen puhelinvastaus, verkkovaraus ja automaattinen vahvistus, jotta vastaanottosi toimii aina rauhallisesti.',
         'footer-langs': 'Kielet',
         'footer-info-title': 'Lisätietoa',
-        'footer-portfolio': 'Järjestelmä myynnissä — Kehittänyt: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Tietosuojaseloste',
         'footer-gdpr': 'Data indtastet i live-demoen gemmes ikke. AI-svar er kun til informationsformål og udgør ikke medicinsk rådgivning.',
@@ -7150,8 +7274,6 @@ fi: {
         },
 
       sk: {
-        'sale-banner': '🔴 NA PREDAJ — Tento systém je dostupný na kúpu!',
-        'sale-banner-sub': 'Informácie: ',
         'page-title': 'Anna — DentAi Senior Asistent | Nonstop príjem hovorov & rezervácia',
         'brand-suffix': '-AI',
         'senior-badge': 'Senior AI Asistent',
@@ -7328,7 +7450,6 @@ fi: {
         'faq2-q': 'Čo ak AI nevie odpovedať?',
         'faq2-a': 'Ak Anna dostane otázku, na ktorú nie je pripravená (napr. špecifická lekárska otázka, riešenie sťažností, komplexná cenová ponuka), automaticky upozorní recepciu ambulancie na spätné zavolanie — zaznamná údaje pacienta a podrobnosti požiadavky, aby recepcia mohla pacienta kontaktovať čo najskôr. Ak je ambulancia zatvorená, Anna si zaznamená požiadavku a recepcia nasledujúci pracovný deň pacientovi zavolá. Pacient nikdy neostane bez odpovede.',
         'faq3-q': 'Ako je možné získať prístup k systému?',
-        'faq3-a': 'Systém DentAI je na predaj. Systém vyvinul Peter Petor. Ak máte záujem o kúpu, napíšte na info@dentai.me.',
         'faq4-q': 'V koľkých jazykoch hovorí?',
         'faq4-a': 'Momentálne plynulo komunikuje v jedenástich jazykoch: slovensky, nórsky, dánsky, švédsky, fínsky, holandsky, anglicky, nemecky, francúzsky, taliansky a maďarsky. Výber jazyka je automatický — Anna rozpozná jazyk pacienta a odpovedá v ňom. To je obzvlášť cenné v turisticky frekventovaných oblastiach, kde zahraniční pacienti často volajú do ambulancie.',
         'faq5-q': 'Ako sa riešia urgentné prípady?',
@@ -7368,7 +7489,6 @@ fi: {
         'footer-desc': 'Anna — DentAi Senior Asistentka. Nonstop príjem hovorov, online rezervácia a automatické potvrdenie, aby vaša prax vždy fungovala pokojne.',
         'footer-langs': 'Jazyky',
         'footer-info-title': 'Informácie',
-        'footer-portfolio': 'Systém na predaj — Vyvinul: Peter Petor',
         'footer-impressum': 'Impressum',
         'footer-privacy': 'Oznámenie o ochrane údajov',
         'footer-gdpr': 'Údaje zadané v live deme sa neukladajú. Odpovede AI sú len informatívneho charakteru a nepredstavujú lekársku radu.',
